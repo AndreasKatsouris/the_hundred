@@ -111,7 +111,34 @@ nav.nav button[aria-current=page] svg{stroke-width:2}
 #splash .st{font:600 .75rem 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);min-height:20px}
 #splash .sb{width:220px;height:4px;background:var(--sand);border-radius:3px;overflow:hidden;margin-top:10px}#splash .sb i{display:block;height:100%;width:0;background:var(--ink)}
 #splash .sk{position:absolute;bottom:calc(24px + env(safe-area-inset-bottom));font-size:.8rem;color:var(--muted)}
-</style></head><body>
+
+body.gate main,body.gate nav.nav,body.gate header.top{visibility:hidden}
+#auth{position:fixed;inset:0;height:100dvh;z-index:50;background:var(--bone);overflow-y:auto;display:none;align-items:flex-start;justify-content:center;padding:24px 16px calc(24px + env(safe-area-inset-bottom))}
+#auth .box{width:100%;max-width:420px;margin:auto}
+#auth .brandrow{margin-bottom:4px}#auth h2{font-size:1.9rem;margin:20px 0 4px}
+#auth .lead{color:var(--muted);margin:0 0 16px}
+#auth label{display:block;margin-top:12px;font-size:.85rem;color:var(--ink2);font-weight:500}
+#auth input{margin-top:4px}
+#auth .btn.primary{width:100%;margin-top:16px}
+#aTabs{display:flex;gap:8px;margin-top:16px}#aTabs .btn{flex:1;border-radius:var(--r3)}#aTabs .btn[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bone)}
+#aMsg:empty{display:none}
+#aHint{font-size:.8rem;color:var(--muted);margin:6px 0 0}
+input[type=email],input[type=password]{width:100%;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
+input[aria-invalid=true]{border-color:var(--crit)}
+.code{font:600 1.3rem var(--mono);letter-spacing:3px;background:var(--sand);border:1px solid var(--line2);border-radius:var(--r3);padding:8px 14px}
+button.lb{width:100%;background:none;border:0;border-bottom:1px solid var(--line);text-align:left;cursor:pointer;min-height:44px;font:inherit}
+button.lb:hover{background:var(--sand)}
+#sheet{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center}
+#sheet[hidden]{display:none}
+#sheet .shbk{position:absolute;inset:0;background:rgb(26 24 18 / .45);border:0;padding:0;cursor:pointer}
+#sheet .shp{position:relative;width:100%;max-width:560px;max-height:88dvh;overflow-y:auto;background:var(--bone);border-radius:var(--r4) var(--r4) 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom));border-top:1px solid var(--line2)}
+#sheet .shh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}#sheet h2{font-size:1.7rem}
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sgrid div{background:var(--cream);border:1px solid var(--line);border-radius:var(--r3);padding:10px;text-align:center}
+.sgrid b{display:block;font:600 1.3rem var(--mono)}.sgrid span{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.acct{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:16px 0 0;color:var(--ink2);font-size:.9rem}
+.pgrid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+</style></head><body class="gate">
 <div id="splash" role="img" aria-label="The Hundred is loading"><canvas id="sc"></canvas><p class="sn">The Hundred</p><div class="st" id="sp">0%</div><div class="sb"><i id="sbar"></i></div><div class="sk">Tap to skip</div></div>
 <header class="top"><div class="wrap"><h1 class="brandrow"><canvas id="mark" width="72" height="72" aria-hidden="true"></canvas><span>The Hundred</span></h1>
 <div class="sub">SA Top 100 golf courses &middot; Golf Digest 2026</div></div></header>
@@ -139,38 +166,55 @@ nav.nav button[aria-current=page] svg{stroke-width:2}
 </section>
 
 <section id="pL" class="pane">
- <div class="panel"><h2>Your group</h2>
-  <form id="pf" class="row" novalidate><input id="pn" type="text" placeholder="Golfer's name" aria-label="Golfer's name" maxlength="24" autocomplete="off"><button class="btn" type="submit">Add</button></form>
-  <div class="fmsg" id="pmsg" role="alert"></div>
-  <div class="scroll" id="plist" style="padding-top:0"></div>
+ <div class="acct"><span id="acct"></span><button class="btn" id="logout">Log out</button></div>
+ <div id="lMain">
+  <div class="panel" id="lhead"></div>
+  <div class="panel" id="rpanel"><h2>Log a round</h2>
+   <div id="rforW" style="display:none"><div class="lab">Golfer</div><select id="rfor" aria-label="Golfer"></select></div>
+   <div class="lab" style="margin-top:12px">Date</div><input type="date" id="rd" aria-label="Date of round">
+   <div class="lab" style="margin-top:12px">Course</div>
+   <input type="text" id="rcc" list="cl" placeholder="Start typing a course" aria-label="Course" autocomplete="off"><datalist id="cl"></datalist>
+   <div class="scroll" id="recent" style="padding-bottom:0"></div>
+   <div class="fmsg" id="cmsg" role="alert"></div>
+   <div class="pgrid2"><div><div class="lab">Gross</div><input type="number" inputmode="numeric" id="rg" data-k="g" aria-label="Gross strokes"></div><div><div class="lab">Points</div><input type="number" inputmode="numeric" id="rs" data-k="s" aria-label="Stableford points"></div></div>
+   <div class="fmsg" id="smsg" role="alert"></div>
+   <button class="btn primary" id="saveR" style="width:100%">Save round</button>
+   <p class="about" style="margin:8px 0 0">Gross is total strokes. Points are Stableford points. Everyone logs their own round; the league owner can log for others.</p>
+  </div>
+  <div class="panel"><h2>Leaderboard</h2>
+   <div class="scroll" id="lsort" role="group" aria-label="Rank by"></div>
+   <div id="lb"></div></div>
+  <div class="panel"><h2>Rounds</h2><div id="hist"></div></div>
  </div>
- <div class="panel" id="rpanel"><h2>Log a round</h2>
-  <div class="lab">Date</div><input type="date" id="rd" aria-label="Date of round">
-  <div class="lab" style="margin-top:12px">Course</div>
-  <input type="text" id="rcc" list="cl" placeholder="Start typing a course" aria-label="Course" autocomplete="off"><datalist id="cl"></datalist>
-  <div class="scroll" id="recent" style="padding-bottom:0"></div>
-  <div class="fmsg" id="cmsg" role="alert"></div>
-  <div id="rt"></div>
-  <div class="fmsg" id="smsg" role="alert"></div>
-  <button class="btn primary" id="saveR" style="width:100%">Save round</button>
-  <p class="about" style="margin:8px 0 0">Gross is total strokes. Points are Stableford points. Leave a golfer blank if they did not play.</p>
- </div>
- <div class="panel"><h2>Leaderboard</h2>
-  <div class="scroll" id="lsort" role="group" aria-label="Rank by"></div>
-  <div id="lb"></div></div>
- <div class="panel"><h2>Rounds</h2><div id="hist"></div></div>
- <details class="panel"><summary>Share or back up</summary>
-  <p class="about">League data is saved on this device only. Copy this text to the other golfers' phones and use Import there.</p>
-  <textarea id="ex" aria-label="League data" spellcheck="false"></textarea>
-  <div class="row wrap2" style="margin-top:8px"><button class="btn" id="exb">Refresh</button><button class="btn" id="imp">Import</button></div>
-  <div id="ibox"></div>
+ <details class="panel" id="lJoin"><summary>Join or start a league</summary>
+  <div class="lab" style="margin-top:8px">Join with an invite code</div>
+  <div class="row"><input id="jc" type="text" placeholder="6-character code" aria-label="Invite code" maxlength="12" autocomplete="off" autocapitalize="characters"><button class="btn" id="jgo">Join</button></div>
+  <div class="fmsg" id="jmsg" role="alert"></div>
+  <div class="lab" style="margin-top:8px">Or start a new league</div>
+  <div class="row"><input id="cn" type="text" placeholder="League name" aria-label="League name" maxlength="40" autocomplete="off"><button class="btn primary" id="cgo">Create</button></div>
+  <div class="fmsg" id="cmsg2" role="alert"></div>
+  <p class="about">You become the owner and get an invite code to share with your group.</p>
  </details>
 </section>
 
 <details class="about"><summary>About this data</summary>
-<p>Ranking and locations: satop100courses.com (Golf Digest South Africa Top 100, 2026 list). Garden Route courses are shown as Western Cape (inferred, as George, Knysna, Mossel Bay, Plettenberg Bay and Herold's Bay are in that province). Map coordinates are approximate, town level (inferred). Played, Wish list and League data are stored in this browser only.</p></details>
+<p>Ranking and locations: satop100courses.com (Golf Digest South Africa Top 100, 2026 list). Garden Route courses are shown as Western Cape (inferred, as George, Knysna, Mossel Bay, Plettenberg Bay and Herold's Bay are in that province). Map coordinates are approximate, town level (inferred). Played, wish list and league scores are saved to your account. Wish lists are private. Played courses and rounds are visible to members of your leagues.</p></details>
 </main>
 
+<div id="auth" role="dialog" aria-modal="true" aria-labelledby="aTitle"><div class="box">
+ <div class="brandrow"><span style="font-family:var(--serif);font-size:1.6rem">The Hundred</span></div>
+ <h2 id="aTitle">Welcome back</h2><p class="lead">Track the SA Top 100 with your golf group.</p>
+ <div id="aTabs" role="group" aria-label="Account"><button type="button" class="btn" data-am="in" aria-pressed="true">Log in</button><button type="button" class="btn" data-am="up" aria-pressed="false">Create account</button></div>
+ <form id="aForm" novalidate>
+  <div id="aNameW" style="display:none"><label for="aName">Your name</label><input id="aName" type="text" maxlength="40" autocomplete="name" placeholder="As your group knows you"></div>
+  <div id="aEmailW"><label for="aEmail">Email</label><input id="aEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false"></div>
+  <div id="aPassW"><label for="aPass" id="aPassL">Password</label><input id="aPass" type="password" autocomplete="current-password"><p id="aHint" style="display:none">At least 8 characters (0/8). Avoid your name or email.</p></div>
+  <div id="aMsg" role="status" style="margin-top:12px"></div>
+  <button type="submit" class="btn primary" id="aGo">Log in</button>
+ </form>
+ <div style="display:flex;justify-content:center"><button type="button" class="btn link" id="aForgot" data-am="forgot">Forgot your password?</button><button type="button" class="btn link" id="aBack" data-am="in" style="display:none">Back to log in</button></div>
+</div></div>
+<div id="sheet" role="dialog" aria-modal="true" aria-labelledby="shName" hidden><button class="shbk" data-close="" aria-label="Close profile"></button><div class="shp"><div class="shh"><h2 id="shName"></h2><button class="btn" id="shClose" data-close="">Close</button></div><div id="shBody"></div></div></div>
 <div id="toast" role="status"><span id="tmsg"></span><button id="tact"></button></div>
 <nav class="nav" aria-label="Sections">
 <button id="tC" aria-current="page"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Courses</button>
@@ -178,16 +222,17 @@ nav.nav button[aria-current=page] svg{stroke-width:2}
 <button id="tL"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0V4zM8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 13v4M8 20h8"/></svg>League</button>
 </nav>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
 <script>
 const D=[{"rank":1,"name":"The Links at Fancourt","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.963,"lng":22.461},{"rank":2,"name":"Blair Atholl","town":"Lanseria","region":"","province":"Gauteng","inferred":false,"lat":-25.94,"lng":27.93},{"rank":3,"name":"Pearl Valley","town":"Near Paarl","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.73,"lng":18.97},{"rank":4,"name":"Durban Country Club","town":"Durban","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.85,"lng":31.02},{"rank":5,"name":"Leopard Creek","town":"Malelane","region":"","province":"Mpumalanga","inferred":false,"lat":-25.49,"lng":31.51},{"rank":6,"name":"Arabella","town":"Near Kleinmond","region":"","province":"Western Cape","inferred":false,"lat":-34.34,"lng":19.03},{"rank":7,"name":"St Francis Links","town":"St Francis Bay","region":"","province":"Eastern Cape","inferred":false,"lat":-34.17,"lng":24.83},{"rank":8,"name":"Glendower","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2,"lng":28.04},{"rank":9,"name":"Sishen","town":"Kathu","region":"","province":"Northern Cape","inferred":false,"lat":-27.7,"lng":23.05},{"rank":10,"name":"Gary Player CC","town":"Sun City","region":"","province":"North West","inferred":false,"lat":-25.34,"lng":27.09},{"rank":11,"name":"Elements","town":"Near Bela Bela","region":"","province":"Limpopo","inferred":false,"lat":-24.88,"lng":28.29},{"rank":12,"name":"Royal Johannesburg (East)","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2199,"lng":28.0417},{"rank":13,"name":"Pezula","town":"Knysna","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.04,"lng":23.05},{"rank":14,"name":"Fancourt Montagu","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.9829,"lng":22.4627},{"rank":15,"name":"Pinnacle Point","town":"Mossel Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.18,"lng":22.14},{"rank":16,"name":"The Club at Steyn City","town":"Fourways","region":"","province":"Gauteng","inferred":false,"lat":-26.01,"lng":28.01},{"rank":17,"name":"East London","town":"East London","region":"","province":"Eastern Cape","inferred":false,"lat":-33.02,"lng":27.91},{"rank":18,"name":"Zimbali","town":"Ballito","region":"KZN North Coast","province":"KwaZulu-Natal","inferred":false,"lat":-29.54,"lng":31.21},{"rank":19,"name":"Humewood","town":"Port Elizabeth","region":"","province":"Eastern Cape","inferred":false,"lat":-33.96,"lng":25.6},{"rank":20,"name":"Champagne Sports Resort","town":"Central Drakensberg","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.03,"lng":29.38},{"rank":21,"name":"Highland Gate","town":"Near Dullstroom","region":"","province":"Mpumalanga","inferred":false,"lat":-25.42,"lng":30.11},{"rank":22,"name":"Pretoria Country Club","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.75,"lng":28.19},{"rank":23,"name":"Simola","town":"Knysna","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.0599,"lng":23.0517},{"rank":24,"name":"Erinvale","town":"Somerset West","region":"","province":"Western Cape","inferred":false,"lat":-34.08,"lng":18.84},{"rank":25,"name":"Royal Johannesburg (West)","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.181,"lng":28.0546},{"rank":26,"name":"Fancourt Outeniqua","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.944,"lng":22.4756},{"rank":27,"name":"CCJ Woodmead","town":"Sandton","region":"","province":"Gauteng","inferred":false,"lat":-26.11,"lng":28.06},{"rank":28,"name":"Houghton","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2049,"lng":28.0124},{"rank":29,"name":"George Golf Club","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.9679,"lng":22.4334},{"rank":30,"name":"Parkview","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2172,"lng":28.067},{"rank":31,"name":"Prince's Grant","town":"KwaDukuza","region":"KZN North Coast","province":"KwaZulu-Natal","inferred":false,"lat":-29.33,"lng":31.29},{"rank":32,"name":"De Zalze","town":"Stellenbosch","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.93,"lng":18.86},{"rank":33,"name":"Victoria","town":"Pietermaritzburg","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.6,"lng":30.38},{"rank":34,"name":"CCJ Rocklands","town":"Sandton","region":"","province":"Gauteng","inferred":false,"lat":-26.1299,"lng":28.0617},{"rank":35,"name":"Hermanus – East Course","town":"Hermanus","region":"","province":"Western Cape","inferred":false,"lat":-34.42,"lng":19.24},{"rank":36,"name":"Kyalami","town":"Midrand","region":"","province":"Gauteng","inferred":false,"lat":-25.99,"lng":28.13},{"rank":37,"name":"Eye of Africa","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1652,"lng":28.0306},{"rank":38,"name":"Pecanwood","town":"Hartbeespoort Dam","region":"","province":"North West","inferred":false,"lat":-25.73,"lng":27.9},{"rank":39,"name":"Maccauvlei","town":"Vereeniging","region":"","province":"Free State","inferred":false,"lat":-26.67,"lng":27.93},{"rank":40,"name":"Ebotse Links","town":"Benoni","region":"","province":"Gauteng","inferred":false,"lat":-26.19,"lng":28.32},{"rank":41,"name":"Serengeti (Signature)","town":"Kempton Park","region":"","province":"Gauteng","inferred":false,"lat":-26.1,"lng":28.23},{"rank":42,"name":"Modderfontein","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2355,"lng":28.0216},{"rank":43,"name":"Woodhill","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.7699,"lng":28.1917},{"rank":44,"name":"Randpark Firethorn","town":"Randburg","region":"","province":"Gauteng","inferred":false,"lat":-26.09,"lng":28},{"rank":45,"name":"Cotswold Downs","town":"Hillcrest","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.78,"lng":30.76},{"rank":46,"name":"Royal Cape","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.93,"lng":18.42},{"rank":47,"name":"Bryanston","town":"Sandton","region":"","province":"Gauteng","inferred":false,"lat":-26.091,"lng":28.0746},{"rank":48,"name":"Steenberg","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.9499,"lng":18.4217},{"rank":49,"name":"Killarney","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1849,"lng":28.0813},{"rank":50,"name":"San Lameer","town":"Near Southbroom","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.91,"lng":30.3},{"rank":51,"name":"Plettenberg Bay CC","town":"Plettenberg Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.05,"lng":23.37},{"rank":52,"name":"Wild Coast","town":"Near Port Edward","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-31.05,"lng":30.22},{"rank":53,"name":"Wingate Park","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.731,"lng":28.2046},{"rank":54,"name":"The Woods at Mount Edgecombe","town":"Umhlanga","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.73,"lng":31.08},{"rank":55,"name":"Clovelly","town":"Fish Hoek","region":"","province":"Western Cape","inferred":false,"lat":-34.14,"lng":18.43},{"rank":56,"name":"Gowrie Farm","town":"Nottingham Road","region":"KZN Midlands","province":"KwaZulu-Natal","inferred":false,"lat":-29.35,"lng":29.99},{"rank":57,"name":"Stellenbosch","town":"Stellenbosch","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.9499,"lng":18.8617},{"rank":58,"name":"Atlantic Beach Links","town":"Melkbosstrand","region":"","province":"Western Cape","inferred":false,"lat":-33.73,"lng":18.45},{"rank":59,"name":"Zebula","town":"Near Bela Bela","region":"","province":"Limpopo","inferred":false,"lat":-24.8999,"lng":28.2917},{"rank":60,"name":"Wanderers","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1817,"lng":27.9956},{"rank":61,"name":"Dainfern","town":"Fourways","region":"","province":"Gauteng","inferred":false,"lat":-26.0299,"lng":28.0117},{"rank":62,"name":"The Lakes at Mount Edgecombe","town":"Umhlanga","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.7499,"lng":31.0817},{"rank":63,"name":"Eagle Canyon","town":"Honeydew","region":"","province":"Gauteng","inferred":false,"lat":-26.08,"lng":27.92},{"rank":64,"name":"Goldfields West","town":"Carletonville","region":"","province":"Gauteng","inferred":false,"lat":-26.36,"lng":27.4},{"rank":65,"name":"Irene","town":"Centurion","region":"","province":"Gauteng","inferred":false,"lat":-25.86,"lng":28.19},{"rank":66,"name":"Krugersdorp","town":"Krugersdorp","region":"","province":"Gauteng","inferred":false,"lat":-26.1,"lng":27.77},{"rank":67,"name":"Ruimsig","town":"Roodepoort","region":"","province":"Gauteng","inferred":false,"lat":-26.16,"lng":27.87},{"rank":68,"name":"Waterkloof Golf Club","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.7549,"lng":28.1624},{"rank":69,"name":"Paarl (Old Course)","town":"Paarl","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.7499,"lng":18.9717},{"rank":70,"name":"Knysna Golf Club","town":"Knysna","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.021,"lng":23.0646},{"rank":71,"name":"Oubaai","town":"Herold's Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.04,"lng":22.4},{"rank":72,"name":"Reading Country Club","town":"Alberton","region":"","province":"Gauteng","inferred":false,"lat":-26.27,"lng":28.12},{"rank":73,"name":"Umhlali","town":"Ballito","region":"KZN North Coast","province":"KwaZulu-Natal","inferred":false,"lat":-29.5599,"lng":31.2117},{"rank":74,"name":"Mbombela","town":"Mbombela","region":"","province":"Mpumalanga","inferred":false,"lat":-25.47,"lng":30.97},{"rank":75,"name":"Glenvista","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2471,"lng":28.0621},{"rank":76,"name":"Parys","town":"Parys","region":"","province":"Free State","inferred":false,"lat":-26.9,"lng":27.46},{"rank":77,"name":"Lost City","town":"Sun City","region":"","province":"North West","inferred":false,"lat":-25.3599,"lng":27.0917},{"rank":78,"name":"Mossel Bay Golf Club","town":"Mossel Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.1999,"lng":22.1417},{"rank":79,"name":"Umdoni Park","town":"Pennington","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.38,"lng":30.69},{"rank":80,"name":"St Francis Bay","town":"St Francis Bay","region":"","province":"Eastern Cape","inferred":false,"lat":-34.1899,"lng":24.8317},{"rank":81,"name":"Goose Valley","town":"Plettenberg Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.0699,"lng":23.3717},{"rank":82,"name":"Centurion","town":"Centurion","region":"","province":"Gauteng","inferred":false,"lat":-25.8799,"lng":28.1917},{"rank":83,"name":"King David Mowbray","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.911,"lng":18.4346},{"rank":84,"name":"Royal Port Alfred","town":"Port Alfred","region":"","province":"Eastern Cape","inferred":false,"lat":-33.59,"lng":26.89},{"rank":85,"name":"Katberg","town":"Near Fort Beaufort","region":"","province":"Eastern Cape","inferred":false,"lat":-32.78,"lng":26.63},{"rank":86,"name":"Olivewood","town":"Chintsa East","region":"","province":"Eastern Cape","inferred":false,"lat":-32.84,"lng":28.12},{"rank":87,"name":"Selborne Park","town":"Pennington","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.3999,"lng":30.6917},{"rank":88,"name":"Benoni CC","town":"Benoni","region":"","province":"Gauteng","inferred":false,"lat":-26.2099,"lng":28.3217},{"rank":89,"name":"Kingswood","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.9802,"lng":22.488},{"rank":90,"name":"Kambaku","town":"Komatipoort","region":"","province":"Mpumalanga","inferred":false,"lat":-25.43,"lng":31.95},{"rank":91,"name":"Westlake","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.9349,"lng":18.3924},{"rank":92,"name":"Port Elizabeth Golf Club","town":"Port Elizabeth","region":"","province":"Eastern Cape","inferred":false,"lat":-33.9799,"lng":25.6017},{"rank":93,"name":"Jackal Creek","town":"Honeydew","region":"","province":"Gauteng","inferred":false,"lat":-26.0999,"lng":27.9217},{"rank":94,"name":"Wedgewood","town":"Port Elizabeth","region":"","province":"Eastern Cape","inferred":false,"lat":-33.941,"lng":25.6146},{"rank":95,"name":"Huddle Park","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1466,"lng":28.0567},{"rank":96,"name":"Bloemfontein","town":"Bloemfontein","region":"","province":"Free State","inferred":false,"lat":-29.12,"lng":26.21},{"rank":97,"name":"Bosch Hoek","town":"Near Howick","region":"KZN Midlands","province":"KwaZulu-Natal","inferred":false,"lat":-29.48,"lng":30.23},{"rank":98,"name":"Emfuleni","town":"Vanderbijlpark","region":"","province":"Gauteng","inferred":false,"lat":-26.71,"lng":27.84},{"rank":99,"name":"Southbroom","town":"Southbroom","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.9299,"lng":30.3017},{"rank":100,"name":"Somerset West CC","town":"Somerset West","region":"","province":"Western Cape","inferred":false,"lat":-34.0999,"lng":18.8417}];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 let storeOK=true;
-const rd=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){storeOK=false;return null}};
-const wr=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){storeOK=false;return false}};
-let played=new Set(rd('sa100played')||[]),fav=new Set(rd('sa100fav')||[]);
-let LG=rd('sa100league');if(!LG||!LG.players||!LG.rounds)LG={players:[],rounds:[]};
+const CFG=window.HUNDRED_CONFIG||{};
+let played=new Set(),fav=new Set(),playedOn={};
+let sb=null,me=null,prof=null,myLeagues=[],curL=null,members=[],profs={},rounds=[];
 const S={q:'',prov:'',show:'all',view:'cards',sort:'rank',lsort:'tot'};
 let map=null,layer=null,tileErr=0;
 const dmy=iso=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');return m?m[3]+'/'+m[2]+'/'+m[1]:(iso||'')};
@@ -196,9 +241,7 @@ const STAR='<svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.
 
 let tt=null;
 function toast(msg,label,fn){$('tmsg').textContent=msg;const b=$('tact');b.style.display=label?'':'none';b.textContent=label||'';b.onclick=()=>{$('toast').classList.remove('on');if(fn)fn()};$('toast').classList.add('on');clearTimeout(tt);tt=setTimeout(()=>$('toast').classList.remove('on'),label?9000:3500)}
-function saveP(){if(!wr('sa100played',[...played])|!wr('sa100fav',[...fav]))storeWarn()}
-function saveLG(){if(!wr('sa100league',LG)){storeWarn();return false}return true}
-function storeWarn(){toast('Could not save on this device. Open this file in Chrome or Safari so your ticks and scores are kept.')}
+
 
 function filtered(){
  const q=S.q.trim().toLowerCase();
@@ -241,74 +284,231 @@ function showTab(t){['C','M','L'].forEach(k=>{$('p'+k).classList.toggle('on',k==
 ['C','M','L'].forEach(k=>$('t'+k).onclick=()=>showTab(k));
 
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
- if(d.f){const n=+d.f;fav.has(n)?fav.delete(n):fav.add(n);saveP();render()}
- else if(d.p){const n=+d.p;const was=played.has(n);was?played.delete(n):played.add(n);saveP();render();if(map)map.closePopup();toast((was?'Removed ':'Ticked ')+D[n-1].name+(was?' from played.':' as played.'),'Undo',()=>{was?played.add(n):played.delete(n);saveP();render()})}
+ if(d.f){togglePlayedOrFav('f',+d.f)}
+ else if(d.p){togglePlayedOrFav('p',+d.p)}
  else if(d.m){const c=D[+d.m-1];showTab('M');if(map)map.setView([c.lat,c.lng],12,{animate:!reduce})}
  else if(d.show!==undefined){S.show=d.show;render()}
  else if(d.prov!==undefined){S.prov=d.prov;render()}
  else if(d.clear){S.q='';$('q').value='';S.prov='';S.show='all';render()}
  else if(d.ls){S.lsort=d.ls;renderLeague()}
  else if(d.rc){$('rcc').value=d.rc;$('cmsg').textContent=''}
- else if(d.dr){const r=LG.rounds.find(x=>x.id===d.dr);LG.rounds=LG.rounds.filter(x=>x.id!==d.dr);saveLG();renderLeague();toast('Round deleted.','Undo',()=>{LG.rounds.push(r);saveLG();renderLeague()})}
- else if(d.dp){const n=d.dp,snap=JSON.stringify(LG);LG.players=LG.players.filter(x=>x!==n);LG.rounds.forEach(r=>delete r.scores[n]);saveLG();renderLeague();toast(n+' removed from the group.','Undo',()=>{LG=JSON.parse(snap);saveLG();renderLeague()})}});
+ else if(d.dr){deleteRound(d.dr)}
+ else if(d.gp){openProfile(d.gp)}
+ else if(d.sl){curL=d.sl;try{localStorage.setItem('hundredLeague',curL)}catch(e){}refreshLeague()}
+ else if(d.am){authMode=d.am;renderAuth()}
+ else if(d.cp){copyCode()}
+ else if(d.sh){shareCode()}
+ else if(d.close!==undefined){closeProfile()}
+});
 $('q').addEventListener('input',e=>{S.q=e.target.value;render()});
 $('sort').addEventListener('change',e=>{S.sort=e.target.value;render()});
 $('bView').onclick=()=>{S.view=S.view==='cards'?'list':'cards';render()};
 $('mclr').onclick=()=>{S.q='';$('q').value='';S.prov='';S.show='all';render()};
 
+const myId=()=>me?me.id:null;
+const nameOf=id=>id===myId()?(prof?prof.display_name:'You'):(profs[id]?profs[id].display_name:'Golfer');
+const curLeague=()=>myLeagues.find(l=>l.id===curL)||null;
+const iOwn=()=>members.some(m=>m.user_id===myId()&&m.role==='owner');
+const SAVEFAIL='That did not save. Check your signal and try again.';
+
+function apply(kind,n,on){const s=kind==='p'?played:fav;on?s.add(n):s.delete(n);render();if(map)map.closePopup()}
+async function togglePlayedOrFav(kind,n){
+ if(!sb||!me)return;
+ const tbl=kind==='p'?'played':'wishlist',was=(kind==='p'?played:fav).has(n);
+ apply(kind,n,!was);
+ const res=was?await sb.from(tbl).delete().eq('user_id',me.id).eq('course_rank',n):await sb.from(tbl).upsert({user_id:me.id,course_rank:n},{onConflict:'user_id,course_rank',ignoreDuplicates:true});
+ if(res.error){apply(kind,n,was);toast(SAVEFAIL);return}
+ if(kind==='p'){if(was)delete playedOn[n];toast((was?'Removed ':'Ticked ')+D[n-1].name+(was?' from played.':' as played.'),'Undo',()=>togglePlayedOrFav('p',n))}
+}
+
+function showAuth(on){$('auth').style.display=on?'flex':'none';document.body.classList.toggle('gate',on||!me)}
+let authMode='in';
+const COMMON=['password','password1','12345678','123456789','qwertyui','qwerty123','iloveyou','golfgolf','letmein1','welcome1'];
+const emailOK=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+function passMsg(){
+ const p=$('aPass').value,e=$('aEmail').value.trim().toLowerCase(),n=$('aName').value.trim().toLowerCase();
+ if(p.length<8)return 'Use at least 8 characters.';
+ if(COMMON.includes(p.toLowerCase()))return 'That password is too common. Pick something only you would use.';
+ const loc=e.split('@')[0];
+ if((loc.length>=3&&p.toLowerCase().includes(loc))||(n.length>=3&&p.toLowerCase().includes(n)))return 'Do not use your name or email in the password.';
+ return ''}
+function authInfo(m,kind){$('aMsg').className=kind==='ok'?'banner ok':kind==='err'?'banner err':'';$('aMsg').textContent=m||'';if(kind==='err')$('aMsg').setAttribute('role','alert');else $('aMsg').setAttribute('role','status')}
+function renderAuth(){
+ const reset=authMode==='reset',up=authMode==='up',forgot=authMode==='forgot';
+ $('aTabs').style.display=reset||forgot?'none':'flex';
+ document.querySelectorAll('#aTabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.am===authMode));
+ $('aNameW').style.display=up?'':'none';$('aEmailW').style.display=reset?'none':'';$('aPassW').style.display=forgot?'none':'';
+ $('aHint').style.display=up||reset?'':'none';$('aForgot').style.display=authMode==='in'?'':'none';$('aBack').style.display=forgot?'':'none';
+ $('aPassL').textContent=reset?'New password':'Password';
+ $('aGo').textContent=reset?'Save new password':up?'Create account':forgot?'Email me a reset link':'Log in';
+ $('aPass').autocomplete=up||reset?'new-password':'current-password';
+ $('aTitle').textContent=reset?'Choose a new password':forgot?'Reset your password':up?'Create your account':'Welcome back';
+ authInfo('');['aName','aEmail','aPass'].forEach(i=>$(i).removeAttribute('aria-invalid'))}
+function fieldErr(id,msg){authInfo(msg,'err');const el=$(id);el.setAttribute('aria-invalid','true');el.focus()}
+const redirect=()=>location.href.split('#')[0].split('?')[0];
+async function authSubmit(){
+ if(!sb){authInfo('Sign-in is not available right now. Check your signal and reopen the app.','err');return}
+ const email=$('aEmail').value.trim(),pass=$('aPass').value,name=$('aName').value.trim();
+ ['aName','aEmail','aPass'].forEach(i=>$(i).removeAttribute('aria-invalid'));
+ const go=$('aGo');
+ if(authMode==='reset'){const m=passMsg();if(m)return fieldErr('aPass',m);go.disabled=true;const r=await sb.auth.updateUser({password:pass});go.disabled=false;
+  if(r.error)return authInfo('Could not save the new password. Open the reset link in your email again and retry.','err');
+  authMode='in';$('aPass').value='';const s=await sb.auth.getSession();if(s.data&&s.data.session)await enter(s.data.session.user);else renderAuth();toast('Password updated.');return}
+ if(!emailOK(email))return fieldErr('aEmail','That email address does not look right. Check it and try again.');
+ if(authMode==='forgot'){go.disabled=true;await sb.auth.resetPasswordForEmail(email,{redirectTo:redirect()});go.disabled=false;
+  return authInfo('If that email has an account, a reset link is on its way. Check your inbox.','ok')}
+ if(authMode==='up'){
+  if(!name)return fieldErr('aName','Add the name your group knows you by.');
+  const m=passMsg();if(m)return fieldErr('aPass',m);
+  go.disabled=true;const r=await sb.auth.signUp({email,password:pass,options:{data:{display_name:name},emailRedirectTo:redirect()}});go.disabled=false;
+  if(r.error){const t=(r.error.message||'').toLowerCase();
+   return authInfo(t.includes('registered')?'That email already has an account. Tap Log in instead.':t.includes('rate')?'Too many emails sent just now. Wait a few minutes and try again.':'Could not create the account. Check your details and try again.','err')}
+  if(r.data&&r.data.user&&r.data.user.identities&&r.data.user.identities.length===0)return authInfo('That email already has an account. Tap Log in instead.','err');
+  if(r.data&&r.data.session){await enter(r.data.user);return}
+  return authInfo('Almost there. We emailed you a link. Tap it to confirm, then log in here.','ok')}
+ if(!pass)return fieldErr('aPass','Enter your password.');
+ go.disabled=true;const r=await sb.auth.signInWithPassword({email,password:pass});go.disabled=false;
+ if(r.error){const t=(r.error.message||'').toLowerCase();
+  return authInfo(t.includes('confirm')?'Confirm your email first. Tap the link we sent you, then log in.':'Email or password is not right. Try again or reset your password.','err')}
+ await enter(r.data.user)}
+
+function resetData(){played=new Set();fav=new Set();playedOn={};prof=null;myLeagues=[];curL=null;members=[];profs={};rounds=[];render();renderLeague()}
+async function enter(user){
+ me=user;
+ let p=await sb.from('profiles').select('*').eq('id',me.id).maybeSingle();
+ if(!p.data){const nm=((me.user_metadata&&me.user_metadata.display_name)||(me.email||'Golfer').split('@')[0]).slice(0,40);
+  const ins=await sb.from('profiles').insert({id:me.id,display_name:nm}).select().maybeSingle();p={data:ins.data||{id:me.id,display_name:nm}}}
+ prof=p.data;
+ await loadMine();
+ showAuth(false);document.body.classList.remove('gate');
+ render();renderLeague()}
+async function loadMine(){
+ const [pl,wl,ms]=await Promise.all([sb.from('played').select('course_rank,played_on').eq('user_id',me.id),sb.from('wishlist').select('course_rank').eq('user_id',me.id),sb.from('league_members').select('league_id,role').eq('user_id',me.id)]);
+ played=new Set((pl.data||[]).map(r=>r.course_rank));playedOn={};(pl.data||[]).forEach(r=>{if(r.played_on)playedOn[r.course_rank]=r.played_on});
+ fav=new Set((wl.data||[]).map(r=>r.course_rank));
+ const ids=(ms.data||[]).map(r=>r.league_id);
+ if(ids.length){const ls=await sb.from('leagues').select('id,name,invite_code').in('id',ids);myLeagues=(ls.data||[]).sort((a,b)=>a.name.localeCompare(b.name))}else myLeagues=[];
+ let saved=null;try{saved=localStorage.getItem('hundredLeague')}catch(e){}
+ curL=myLeagues.some(l=>l.id===saved)?saved:(myLeagues[0]?myLeagues[0].id:null);
+ await loadLeague()}
+async function loadLeague(){
+ if(!curL){members=[];rounds=[];return}
+ const [ms,rs]=await Promise.all([sb.from('league_members').select('user_id,role').eq('league_id',curL),sb.from('rounds').select('*').eq('league_id',curL).order('played_on',{ascending:false})]);
+ members=ms.data||[];rounds=rs.data||[];
+ const ids=[...new Set(members.map(m=>m.user_id).concat(rounds.map(r=>r.user_id)))];
+ if(ids.length){const ps=await sb.from('profiles').select('id,display_name').in('id',ids);profs={};(ps.data||[]).forEach(p=>profs[p.id]=p)}}
+async function refreshLeague(){if(!me)return;await loadLeague();renderLeague()}
+
+function stats(){
+ const st={};members.forEach(m=>st[m.user_id]={n:0,tot:0,best:0,wins:0,low:null});
+ const g={};rounds.forEach(r=>{const k=r.played_on+'|'+r.course_name.toLowerCase();(g[k]=g[k]||[]).push(r)});
+ rounds.forEach(r=>{const a=st[r.user_id];if(!a)return;a.n++;a.tot+=r.points;a.best=Math.max(a.best,r.points);if(a.low==null||r.gross<a.low)a.low=r.gross;
+  const grp=g[r.played_on+'|'+r.course_name.toLowerCase()],top=Math.max.apply(null,grp.map(x=>x.points));if(grp.length>1&&r.points===top&&top>0)a.wins++});
+ return st}
 function renderLeague(){
- $('plist').innerHTML=LG.players.length?LG.players.map(p=>'<span class="chip" style="cursor:default;display:inline-flex;align-items:center;gap:4px">'+esc(p)+'<button class="btn link" data-dp="'+esc(p)+'" aria-label="Remove '+esc(p)+'" style="padding:0 4px;min-height:44px">Remove</button></span>').join(''):'';
- if(!LG.players.length)$('plist').innerHTML='<span class="about" style="padding:4px 0">Add the first golfer above to start the league.</span>';
- edges($('plist'));
- const keep={};LG.players.forEach((p,i)=>{const g=$('g'+i),s=$('s'+i);if(g)keep[p]=[g.value,s.value]});
- $('rt').innerHTML=LG.players.length?'<div class="pgrid lab"><span>Golfer</span><span>Gross</span><span>Points</span></div>'+LG.players.map((p,i)=>'<div class="pgrid"><span class="nmx">'+esc(p)+'</span><input type="number" inputmode="numeric" id="g'+i+'" data-k="g" aria-label="'+esc(p)+' gross strokes"><input type="number" inputmode="numeric" id="s'+i+'" data-k="s" aria-label="'+esc(p)+' Stableford points"></div>').join(''):'<p class="about">Your golfers will appear here once added.</p>';
- LG.players.forEach((p,i)=>{if(keep[p]){$('g'+i).value=keep[p][0];$('s'+i).value=keep[p][1]}});
- const rc=[];[...LG.rounds].sort((a,b)=>b.id.localeCompare(a.id)).forEach(r=>{if(!rc.includes(r.course))rc.push(r.course)});
+ const has=myLeagues.length>0;
+ $('lMain').style.display=has?'':'none';$('lJoin').open=!has;
+ $('acct').innerHTML=me?'Signed in as <b>'+esc(prof?prof.display_name:'')+'</b> ('+esc(me.email||'')+')':'';
+ if(!has)return;
+ const L=curLeague();if(!L)return;
+ $('lhead').innerHTML='<h2>'+esc(L.name)+'</h2>'+(myLeagues.length>1?'<div class="scroll" id="lsel" role="group" aria-label="Your leagues">'+myLeagues.map(l=>'<button class="chip" data-sl="'+l.id+'" aria-pressed="'+(l.id===curL)+'">'+esc(l.name)+'</button>').join('')+'</div>':'')+
+  '<div class="lab" style="margin-top:8px">Invite code</div><div class="row wrap2"><span class="code">'+esc(L.invite_code)+'</span><button class="btn" data-cp="1">Copy</button><button class="btn" data-sh="1">Share on WhatsApp</button></div>'+
+  '<div class="lab" style="margin-top:12px">Golfers ('+members.length+')</div><div class="scroll" id="mlist" style="padding-top:4px">'+members.map(m=>'<button class="chip" data-gp="'+m.user_id+'">'+esc(nameOf(m.user_id))+(m.role==='owner'?'<span class="n">owner</span>':'')+'</button>').join('')+'</div><p class="about" style="margin:4px 0 0">Tap a golfer to see the courses they have played.</p>';
+ const lsel=$('lsel');if(lsel)edges(lsel);edges($('mlist'));
+ const own=iOwn();$('rforW').style.display=own?'':'none';
+ if(own){const cur=$('rfor').value||myId();$('rfor').innerHTML=members.map(m=>'<option value="'+m.user_id+'">'+esc(nameOf(m.user_id))+'</option>').join('');$('rfor').value=members.some(m=>m.user_id===cur)?cur:myId()}
+ const rc=[];rounds.forEach(r=>{if(!rc.includes(r.course_name))rc.push(r.course_name)});
  $('recent').innerHTML=rc.slice(0,4).map(c=>'<button class="chip" data-rc="'+esc(c)+'">'+esc(c)+'</button>').join('');edges($('recent'));
- const st={};LG.players.forEach(p=>st[p]={n:0,tot:0,best:0,wins:0,low:null});
- LG.rounds.forEach(r=>{let top=-1;Object.values(r.scores).forEach(s=>{if(s.pts!=null&&s.pts>top)top=s.pts});
-  Object.entries(r.scores).forEach(([p,s])=>{const a=st[p];if(!a)return;a.n++;if(s.pts!=null){a.tot+=s.pts;a.best=Math.max(a.best,s.pts);if(s.pts===top&&top>0)a.wins++}if(s.gross!=null&&(a.low==null||s.gross<a.low))a.low=s.gross})});
  chipRow($('lsort'),[['tot','Total points'],['avg','Average'],['wins','Wins'],['best','Best round'],['low','Lowest gross']],S.lsort,'data-ls');
- const k=S.lsort;const rows=Object.entries(st).map(([p,a])=>({p,n:a.n,tot:a.tot,avg:a.n?a.tot/a.n:0,best:a.best,wins:a.wins,low:a.low}));
+ const st=stats(),k=S.lsort;
+ const rows=Object.entries(st).map(([id,a])=>({id,n:a.n,tot:a.tot,avg:a.n?a.tot/a.n:0,best:a.best,wins:a.wins,low:a.low}));
  rows.sort((x,y)=>k==='low'?((x.low==null)-(y.low==null)||x.low-y.low):(y[k]-x[k]||y.tot-x.tot));
- if(!rows.length)$('lb').innerHTML='<div class="empty"><p>No golfers yet. Add your group above, then log the first round.</p></div>';
- else if(!LG.rounds.length)$('lb').innerHTML='<div class="empty"><p>No rounds logged yet. Log the first round above and the table fills in.</p></div>';
- else $('lb').innerHTML='<div class="lb h"><span>#</span><span>Golfer</span><span style="text-align:right">Pts</span><span style="text-align:right">Avg</span><span style="text-align:right">Wins</span></div>'+rows.map((x,i)=>'<div class="lb"><span class="pos'+(i===0?' lead':'')+'">'+(i+1)+'</span><span class="who"><b>'+esc(x.p)+'</b><small>'+x.n+' rd'+(x.n===1?'':'s')+' &middot; best '+x.best+' &middot; low '+(x.low==null?'-':x.low)+'</small></span><span class="num'+(k==='tot'?' k':'')+'">'+x.tot+'</span><span class="num'+(k==='avg'?' k':'')+'">'+x.avg.toFixed(1)+'</span><span class="num'+(k==='wins'?' k':'')+'">'+x.wins+'</span></div>').join('');
- const rs=[...LG.rounds].sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));
- $('hist').innerHTML=rs.length?rs.map(r=>'<div class="rnd"><div class="d">'+dmy(r.date)+'</div><div class="c">'+esc(r.course)+'</div>'+Object.entries(r.scores).map(([p,s])=>'<div class="ln">'+esc(p)+': '+(s.gross==null?'-':s.gross)+' gross, '+(s.pts==null?'-':s.pts)+' pts</div>').join('')+'<button class="btn link" data-dr="'+r.id+'" style="padding-left:0">Delete round</button></div>').join(''):'<div class="empty"><p>Rounds you log will be listed here, newest first.</p></div>';
- $('ex').value=JSON.stringify(LG)}
+ if(!rounds.length)$('lb').innerHTML='<div class="empty"><p>No rounds yet. Log the first round above and the table fills in. Share the invite code so your group can join.</p></div>';
+ else $('lb').innerHTML='<div class="lb h"><span>#</span><span>Golfer</span><span style="text-align:right">Pts</span><span style="text-align:right">Avg</span><span style="text-align:right">Wins</span></div>'+rows.map((x,i)=>'<button class="lb" data-gp="'+x.id+'" aria-label="View '+esc(nameOf(x.id))+' profile"><span class="pos'+(i===0&&x.n?' lead':'')+'">'+(i+1)+'</span><span class="who"><b>'+esc(nameOf(x.id))+'</b><small>'+x.n+' rd'+(x.n===1?'':'s')+' &middot; best '+x.best+' &middot; low '+(x.low==null?'-':x.low)+'</small></span><span class="num'+(k==='tot'?' k':'')+'">'+x.tot+'</span><span class="num'+(k==='avg'?' k':'')+'">'+x.avg.toFixed(1)+'</span><span class="num'+(k==='wins'?' k':'')+'">'+x.wins+'</span></button>').join('');
+ $('hist').innerHTML=rounds.length?rounds.map(r=>'<div class="rnd"><div class="d">'+dmy(r.played_on)+'</div><div class="c">'+esc(r.course_name)+'</div><div class="ln">'+esc(nameOf(r.user_id))+': '+r.gross+' gross, '+r.points+' pts</div>'+(r.created_by===myId()||own?'<button class="btn link" data-dr="'+r.id+'" style="padding-left:0">Delete round</button>':'')+'</div>').join(''):'<div class="empty"><p>Rounds you log will be listed here, newest first.</p></div>'}
+
+function copyCode(){const L=curLeague();if(!L)return;
+ if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(L.invite_code).then(()=>toast('Invite code copied.'),()=>toast('Invite code: '+L.invite_code));else toast('Invite code: '+L.invite_code)}
+function shareCode(){const L=curLeague();if(!L)return;
+ window.open('https://wa.me/?text='+encodeURIComponent('Join our golf league "'+L.name+'" on The Hundred: '+redirect()+' Sign up, then enter invite code '+L.invite_code),'_blank','noopener')}
 
 function setMsg(id,m,inp){$(id).textContent=m||'';if(inp)inp.setAttribute('aria-invalid',m?'true':'false')}
-function chkName(){const n=$('pn').value.trim();if(!n)return 'Type the golfer\'s name first.';const ex=LG.players.find(p=>p.toLowerCase()===n.toLowerCase());if(ex)return ex+' is already in the group. Add an initial to tell them apart.';return ''}
-$('pn').addEventListener('blur',()=>{if($('pn').value)setMsg('pmsg',chkName(),$('pn'))});
-$('pn').addEventListener('input',()=>{if($('pmsg').textContent&&!chkName())setMsg('pmsg','',$('pn'))});
-$('pf').addEventListener('submit',e=>{e.preventDefault();const m=chkName();setMsg('pmsg',m,$('pn'));if(m)return;LG.players.push($('pn').value.trim());$('pn').value='';if(saveLG())toast('Golfer added.');renderLeague()});
+const chkField=(el,kind)=>{if(el.value==='')return '';const v=+el.value;if(kind==='g'&&(v<30||v>200))return 'Gross looks off. Enter total strokes for the round, between 30 and 200.';if(kind==='s'&&(v<0||v>80))return 'Points look off. Stableford points for a round are usually between 0 and 60.';return ''};
 $('rd').value=new Date().toISOString().slice(0,10);
 $('cl').innerHTML=D.map(c=>'<option value="'+esc(c.name)+'">').join('');
-const chkField=(el,kind)=>{if(el.value==='')return '';const v=+el.value;if(kind==='g'&&(v<30||v>200))return 'Gross looks off. Enter total strokes for the round, between 30 and 200.';if(kind==='s'&&(v<0||v>80))return 'Points look off. Stableford points for a round are usually between 0 and 60.';return ''};
-$('rt').addEventListener('focusout',e=>{const el=e.target;if(el.dataset.k)setMsg('smsg',chkField(el,el.dataset.k),el)});
-$('rt').addEventListener('input',e=>{const el=e.target;if(el.dataset.k&&$('smsg').textContent&&!chkField(el,el.dataset.k))setMsg('smsg','',el)});
+['rg','rs'].forEach(id=>{$(id).addEventListener('blur',e=>setMsg('smsg',chkField(e.target,e.target.dataset.k),e.target));$(id).addEventListener('input',e=>{if($('smsg').textContent&&!chkField(e.target,e.target.dataset.k))setMsg('smsg','',e.target)})});
 $('rcc').addEventListener('input',()=>setMsg('cmsg','',$('rcc')));
-$('saveR').onclick=()=>{
- if(!LG.players.length){setMsg('smsg','Add at least one golfer before you log a round.');return}
+$('saveR').onclick=async()=>{
+ if(!sb||!curL)return;
  const name=$('rcc').value.trim();if(!name){setMsg('cmsg','Pick or type the course you played.',$('rcc'));return}
- const scores={};let bad='';
- LG.players.forEach((p,i)=>{const g=$('g'+i),s=$('s'+i);const m=chkField(g,'g')||chkField(s,'s');if(m&&!bad){bad=m;setMsg('smsg',m)}if(g.value!==''||s.value!=='')scores[p]={gross:g.value===''?null:+g.value,pts:s.value===''?null:+s.value}});
- if(bad)return;
- if(!Object.keys(scores).length){setMsg('smsg','Enter a score for at least one golfer.');return}
+ const g=$('rg'),s=$('rs');const m=chkField(g,'g')||chkField(s,'s');if(m){setMsg('smsg',m);return}
+ if(g.value===''||s.value===''){setMsg('smsg','Enter both gross strokes and Stableford points.');return}
+ const uid=iOwn()?($('rfor').value||myId()):myId(),date=$('rd').value;
+ if(!date){setMsg('smsg','Pick the date you played.');return}
  const c=D.find(x=>x.name.toLowerCase()===name.toLowerCase());
- LG.rounds.push({id:String(Date.now()),date:$('rd').value,course:c?c.name:name,rank:c?c.rank:null,scores});
- if(c){played.add(c.rank);saveP()}
- setMsg('smsg','');setMsg('cmsg','');$('rcc').value='';
- if(saveLG())toast('Round saved'+(c?' and '+c.name+' ticked as played.':'.'));
- renderLeague();render()};
-$('exb').onclick=()=>{$('ex').value=JSON.stringify(LG)};
-$('imp').onclick=()=>{
- let s;try{s=JSON.parse($('ex').value);if(!s||!Array.isArray(s.players)||!Array.isArray(s.rounds))throw 0}catch(e){$('ibox').innerHTML='<div class="banner err" role="alert">That text is not league data. Copy the full text from the other phone and try again.</div>';return}
- $('ibox').innerHTML='<div class="banner">Found '+s.players.length+' golfer'+(s.players.length===1?'':'s')+' and '+s.rounds.length+' round'+(s.rounds.length===1?'':'s')+'. Importing replaces the league on this device.</div><button class="btn primary" id="impgo">Replace league on this device</button>';
- $('impgo').onclick=()=>{const prev=JSON.stringify(LG);LG=s;saveLG();$('ibox').innerHTML='';renderLeague();toast('League imported.','Undo',()=>{LG=JSON.parse(prev);saveLG();renderLeague()})}};
-render();renderLeague();
-if(!storeOK)storeWarn();
+ if(rounds.some(r=>r.user_id===uid&&r.played_on===date&&r.course_name.toLowerCase()===name.toLowerCase())){setMsg('smsg',nameOf(uid)+' already has a round at that course on that date. Delete the old one first if it was a mistake.');return}
+ const btn=$('saveR');btn.disabled=true;
+ const res=await sb.from('rounds').insert({league_id:curL,user_id:uid,played_on:date,course_rank:c?c.rank:null,course_name:c?c.name:name,gross:+g.value,points:+s.value,created_by:myId()});
+ btn.disabled=false;
+ if(res.error){setMsg('smsg',SAVEFAIL);return}
+ let extra='';
+ if(c&&uid===myId()&&!played.has(c.rank)){const pr=await sb.from('played').upsert({user_id:myId(),course_rank:c.rank,played_on:date},{onConflict:'user_id,course_rank',ignoreDuplicates:true});if(!pr.error){played.add(c.rank);playedOn[c.rank]=date;extra=' and '+c.name+' ticked as played'}}
+ setMsg('smsg','');setMsg('cmsg','');$('rcc').value='';g.value='';s.value='';
+ await loadLeague();renderLeague();render();toast('Round saved'+extra+'.')};
+async function deleteRound(id){
+ const r=rounds.find(x=>x.id===id);if(!r)return;
+ const res=await sb.from('rounds').delete().eq('id',id);
+ if(res.error){toast(SAVEFAIL);return}
+ await loadLeague();renderLeague();
+ toast('Round deleted.','Undo',async()=>{const row={league_id:r.league_id,user_id:r.user_id,played_on:r.played_on,course_rank:r.course_rank,course_name:r.course_name,gross:r.gross,points:r.points,created_by:myId()};const x=await sb.from('rounds').insert(row);if(x.error)toast(SAVEFAIL);else{await loadLeague();renderLeague()}})}
+
+$('jgo').onclick=async()=>{
+ const code=$('jc').value.trim();if(!code){setMsg('jmsg','Type the invite code your organiser sent you.',$('jc'));return}
+ $('jgo').disabled=true;const r=await sb.rpc('join_league',{code});$('jgo').disabled=false;
+ if(r.error){setMsg('jmsg',/invalid/i.test(r.error.message||'')?'That code does not match a league. Check it with the person who invited you.':SAVEFAIL,$('jc'));return}
+ setMsg('jmsg','',$('jc'));$('jc').value='';curL=r.data;try{localStorage.setItem('hundredLeague',curL)}catch(e){}
+ await loadMine();curL=r.data;await loadLeague();renderLeague();toast('You have joined the league.')};
+$('cgo').onclick=async()=>{
+ const nm=$('cn').value.trim();if(!nm){setMsg('cmsg2','Give your league a name.',$('cn'));return}
+ $('cgo').disabled=true;const r=await sb.rpc('create_league',{league_name:nm});$('cgo').disabled=false;
+ if(r.error){setMsg('cmsg2',SAVEFAIL,$('cn'));return}
+ setMsg('cmsg2','',$('cn'));$('cn').value='';try{localStorage.setItem('hundredLeague',r.data)}catch(e){}
+ await loadMine();curL=r.data;await loadLeague();renderLeague();toast('League created. Share the invite code.')};
+$('logout').onclick=async()=>{if(sb)await sb.auth.signOut()};
+
+let lastFocus=null;
+async function openProfile(uid){
+ lastFocus=document.activeElement;const sh=$('sheet');sh.hidden=false;
+ $('shName').textContent=nameOf(uid);$('shBody').innerHTML='<p class="about">Loading...</p>';$('shClose').focus();
+ const r=await sb.from('played').select('course_rank,played_on').eq('user_id',uid);
+ if(r.error){$('shBody').innerHTML='<div class="banner err" role="alert">Could not load this profile. Check your signal and try again.</div>';return}
+ const rows=(r.data||[]).filter(x=>D[x.course_rank-1]).sort((a,b)=>a.course_rank-b.course_rank),a=stats()[uid]||{n:0,tot:0,best:0,wins:0,low:null},L=curLeague();
+ $('shBody').innerHTML=(L?'<p class="about" style="margin:0 0 12px">'+(uid===myId()?'Your profile':'Member of '+esc(L.name))+'</p>':'')+
+  '<div class="sgrid"><div><b>'+rows.length+'</b><span>of 100 played</span></div><div><b>'+a.n+'</b><span>rounds</span></div><div><b>'+a.tot+'</b><span>points</span></div><div><b>'+(a.n?(a.tot/a.n).toFixed(1):'-')+'</b><span>average</span></div><div><b>'+a.wins+'</b><span>wins</span></div><div><b>'+(a.low==null?'-':a.low)+'</b><span>low gross</span></div></div>'+
+  '<div class="prog" aria-hidden="true" style="margin:12px 0"><i style="width:'+rows.length+'%"></i></div>'+
+  (rows.length?'<table class="ltable">'+rows.map(x=>{const c=D[x.course_rank-1];return '<tr><td class="r">'+c.rank+'</td><td class="nm"><b>'+esc(c.name)+'</b><span class="s">'+esc(c.town)+', '+c.province+(x.played_on?' &middot; '+dmy(x.played_on):'')+'</span></td></tr>'}).join('')+'</table>':'<div class="empty"><p>No courses ticked yet.</p></div>')+
+  '<p class="about">Self-reported by the golfer.</p>'}
+function closeProfile(){$('sheet').hidden=true;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('sheet').hidden)closeProfile()});
+
+$('aForm').addEventListener('submit',e=>{e.preventDefault();authSubmit()});
+$('aPass').addEventListener('input',()=>{const n=$('aPass').value.length;$('aHint').textContent=n>=8&&!passMsg()?'Good. That password works.':'At least 8 characters ('+Math.min(n,8)+'/8). Avoid your name or email.';$('aPass').removeAttribute('aria-invalid')});
+$('aPass').addEventListener('blur',()=>{if((authMode==='up'||authMode==='reset')&&$('aPass').value){const m=passMsg();if(m)fieldErr('aPass',m)}});
+$('aEmail').addEventListener('blur',()=>{const v=$('aEmail').value.trim();if(v&&!emailOK(v)&&authMode!=='reset')fieldErr('aEmail','That email address does not look right. Check it and try again.')});
+$('aEmail').addEventListener('input',()=>{$('aEmail').removeAttribute('aria-invalid')});
+
+async function boot(){
+ sb=window.__SB_MOCK||null;
+ if(!sb&&window.supabase&&CFG.supabaseUrl&&CFG.supabaseKey&&!/PASTE/.test(CFG.supabaseKey))sb=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseKey);
+ if(!sb){authMode='in';showAuth(true);renderAuth();authInfo('Sign-in is not available right now. Check your signal and reopen the app.','err');return}
+ sb.auth.onAuthStateChange((ev)=>{
+  if(ev==='PASSWORD_RECOVERY'){authMode='reset';showAuth(true);renderAuth()}
+  else if(ev==='SIGNED_OUT'){me=null;resetData();authMode='in';showAuth(true);renderAuth()}});
+ const s=await sb.auth.getSession();
+ if(s.data&&s.data.session&&authMode!=='reset')await enter(s.data.session.user);
+ else if(authMode!=='reset'){showAuth(true);renderAuth()}}
+
+render();renderLeague();boot();
 
 (function(){
 var N=392,GA=Math.PI*(3-Math.sqrt(5)),pts=[],scat=[],seed=7;
