@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en-ZA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Hundred</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{
+--bone:#f7f4ec;--sand:#efeadd;--cream:#fbf9f3;
+--ink:#1a1812;--ink2:#3a362d;--muted:#6b6657;
+--line:rgb(26 24 18 / .12);--line2:rgb(26 24 18 / .22);
+--amber:#c89a3a;--amber-p:#a8772a;
+--good:#5c7a4a;--warn:#b0553a;--crit:#8a2e1f;
+--r1:3px;--r2:4px;--r3:6px;--r4:8px;
+--ease:cubic-bezier(0.2,0.7,0.3,1);--t:150ms;
+--serif:'Instrument Serif',Georgia,'Times New Roman',serif;--sans:'Geist',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+--nav:64px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;max-width:100%;overflow-x:hidden}
+body{background:var(--bone);color:var(--ink);font:400 15px/1.45 var(--sans);min-height:100dvh;padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 16px)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;letter-spacing:.1px}
+button,input,select,textarea{font:inherit;color:var(--ink)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+header.top{padding:24px 0 12px}
+header.top h1{font-size:2rem;line-height:1.1}
+.sub{color:var(--muted);font-size:.9rem;margin-top:4px}
+.pane{display:none}.pane.on{display:block}
+.stick{position:sticky;top:0;z-index:5;background:var(--bone);padding:8px 0;border-bottom:1px solid var(--line)}
+input[type=search],input[type=text],input[type=number],input[type=date],select,textarea{width:100%;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
+textarea{min-height:96px;font-family:var(--mono);font-size:13px}
+input[aria-invalid=true]{border-color:var(--crit)}
+.btn{min-height:44px;min-width:44px;padding:8px 14px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);cursor:pointer;font-weight:500;transition:background var(--t) var(--ease),border-color var(--t) var(--ease)}
+.btn:hover{background:var(--sand)}
+.btn.primary{background:var(--amber);border-color:var(--amber);color:var(--ink);font-weight:600}.btn.primary:hover,.btn.primary:active{background:var(--amber-p);border-color:var(--amber-p)}
+.a-btn,a.btn{color:var(--ink);text-decoration:none}
+.btn.link{background:none;border-color:transparent;text-decoration:underline;text-underline-offset:3px;padding:8px 6px}
+.row{display:flex;gap:8px;align-items:center}.row.wrap2{flex-wrap:wrap}
+.row>input{flex:1;min-width:0}
+.scroll{display:flex;gap:8px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+.scroll.fl{-webkit-mask-image:linear-gradient(90deg,transparent,#000 15%);mask-image:linear-gradient(90deg,transparent,#000 15%)}
+.scroll.fr{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+.scroll.fl.fr{-webkit-mask-image:linear-gradient(90deg,transparent,#000 15% 85%,transparent);mask-image:linear-gradient(90deg,transparent,#000 15% 85%,transparent)}
+.chip{flex:0 0 auto;min-height:44px;padding:8px 14px;border-radius:var(--r4);border:1px solid var(--line2);background:var(--cream);cursor:pointer;font-weight:500;white-space:nowrap;transition:background var(--t) var(--ease)}
+.chip[aria-pressed=true]{background:var(--amber);border-color:var(--amber);font-weight:600}
+.chip .n{font-family:var(--mono);font-size:.8rem;color:var(--muted);margin-left:6px}.chip[aria-pressed=true] .n{color:var(--ink)}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 0 4px;min-height:48px}
+.meta .big{font-family:var(--mono);font-size:.85rem;color:var(--ink2)}
+.meta b{font-weight:600}
+.prog{height:4px;background:var(--sand);border-radius:var(--r1);overflow:hidden}.prog i{display:block;height:100%;width:0;background:var(--ink);transition:width var(--t) var(--ease)}
+.list{display:grid;gap:12px;padding:12px 0 8px}
+.card{position:relative;background:var(--cream);border:1px solid var(--line);border-radius:var(--r4);padding:16px;min-height:132px}
+.card.played{border-left:3px solid var(--good)}
+.card .rank{font-family:var(--serif);font-size:2.2rem;line-height:1}
+.card .nm{font-weight:600;font-size:1.05rem;margin-top:6px;padding-right:48px}
+.card .loc{color:var(--muted);font-size:.9rem}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:.78rem;padding:2px 8px;border-radius:var(--r1);background:var(--sand);color:var(--ink2)}
+.tag.good{color:var(--good);background:rgb(92 122 74 / .12);font-weight:600}
+.tag.top{background:var(--ink);color:var(--bone);font-weight:600;letter-spacing:.3px}
+.act{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.act .btn{border-radius:var(--r1)}
+.star{position:absolute;right:4px;top:4px;width:44px;height:44px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.star svg{width:24px;height:24px;fill:none;stroke:var(--ink2);stroke-width:1.5}.star[aria-pressed=true] svg{fill:var(--amber);stroke:var(--amber-p)}
+.ltable{width:100%;border-collapse:collapse}.ltable td{padding:10px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.ltable .r{font-family:var(--mono);width:44px;color:var(--muted)}.ltable .nm b{font-weight:600}.ltable .s{display:block;color:var(--muted);font-size:.85rem}
+.empty{padding:32px 8px;text-align:center;color:var(--ink2)}.empty p{margin:0 0 12px}
+.banner{border-radius:var(--r3);padding:12px 14px;font-size:.92rem;border:1px solid var(--line2);background:var(--sand);margin:8px 0}
+.banner.err{border-color:var(--crit);color:var(--crit);background:rgb(138 46 31 / .06)}
+.banner.ok{border-color:var(--good);color:var(--ink);background:rgb(92 122 74 / .1)}
+.fmsg{min-height:22px;font-size:.85rem;color:var(--crit);padding-top:4px}
+#map{height:60dvh;min-height:360px;border:1px solid var(--line2);border-radius:var(--r4);background:var(--sand)}
+.leaflet-container{font-family:var(--sans)}
+.pin{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.pin i{font:600 11px var(--mono);font-style:normal;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--ink);background:var(--sand);color:var(--ink)}
+.pin i.top{background:var(--ink);color:var(--bone)}.pin i.pl{background:var(--good);border-color:var(--good);color:#fff}
+.leaflet-popup-content{margin:12px 14px;color:var(--ink)}.pp .btn{margin-top:8px;min-height:44px}.pp a{color:var(--ink);display:inline-block;padding:12px 0;font-weight:500}
+.legend{display:flex;gap:16px;flex-wrap:wrap;color:var(--ink2);font-size:.85rem;padding:8px 0}
+.legend span:before{content:'';display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid var(--ink);margin-right:6px;vertical-align:-2px;background:var(--sand)}
+.legend .t:before{background:var(--ink)}.legend .p:before{background:var(--good);border-color:var(--good)}
+.panel{background:var(--cream);border:1px solid var(--line);border-radius:var(--r4);padding:16px;margin:12px 0}
+.panel h2{font-size:1.4rem;margin-bottom:8px}
+.lab{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.pgrid{display:grid;grid-template-columns:1fr 84px 84px;gap:8px;align-items:center;margin-top:6px}
+.pgrid .nmx{font-weight:500;overflow:hidden;text-overflow:ellipsis}
+.lb{display:grid;grid-template-columns:36px 1fr 52px 52px 44px;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.lb.h{border-bottom:1px solid var(--line2);padding:4px 0}.lb.h span{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.lb .pos{width:28px;height:28px;border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font:600 .85rem var(--mono);background:var(--sand)}
+.lb .pos.lead{background:var(--amber)}
+.lb .who b{font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis}.lb .who small{color:var(--muted);font-size:.8rem}
+.lb .num{font-family:var(--mono);text-align:right}.lb .num.k{font-weight:600}
+.rnd{padding:12px 0;border-bottom:1px solid var(--line)}.rnd .d{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+.rnd .c{font-weight:600}.rnd .ln{font-size:.9rem;color:var(--ink2)}
+details{margin:12px 0}details summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:500}
+.about{color:var(--muted);font-size:.85rem}
+nav.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--cream);border-top:1px solid var(--line2);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav.nav button{flex:1;min-height:var(--nav);background:none;border:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:.8rem;cursor:pointer;color:var(--ink2);border-top:3px solid transparent}
+nav.nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+nav.nav button[aria-current=page]{font-weight:600;color:var(--ink);border-top-color:var(--amber)}
+nav.nav button[aria-current=page] svg{stroke-width:2}
+#toast{position:fixed;left:16px;right:16px;bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 8px);z-index:30;background:var(--ink);color:var(--bone);border-radius:var(--r3);padding:4px 8px 4px 14px;display:none;align-items:center;justify-content:space-between;gap:8px;max-width:728px;margin:0 auto;min-height:48px}
+#toast.on{display:flex}#toast button{background:none;border:none;color:var(--amber);font-weight:600;min-height:44px;min-width:44px;cursor:pointer}
+@media(min-width:640px){.list{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+.brandrow{display:flex;align-items:center;gap:10px}.brandrow canvas{width:36px;height:36px;flex:none}
+#splash{position:fixed;inset:0;height:100dvh;z-index:100;background:var(--bone);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:opacity 300ms cubic-bezier(.2,.7,.3,1);touch-action:none}
+#splash.out{opacity:0;pointer-events:none}
+#splash canvas{width:min(78vw,340px);aspect-ratio:1/1}
+#splash .sn{font:400 2.6rem/1.05 'Instrument Serif',Georgia,serif;margin:0}
+#splash .st{font:600 .75rem 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);min-height:20px}
+#splash .sb{width:220px;height:4px;background:var(--sand);border-radius:3px;overflow:hidden;margin-top:10px}#splash .sb i{display:block;height:100%;width:0;background:var(--ink)}
+#splash .sk{position:absolute;bottom:calc(24px + env(safe-area-inset-bottom));font-size:.8rem;color:var(--muted)}
+</style></head><body>
+<div id="splash" role="img" aria-label="The Hundred is loading"><canvas id="sc"></canvas><p class="sn">The Hundred</p><div class="st" id="sp">0%</div><div class="sb"><i id="sbar"></i></div><div class="sk">Tap to skip</div></div>
+<header class="top"><div class="wrap"><h1 class="brandrow"><canvas id="mark" width="72" height="72" aria-hidden="true"></canvas><span>The Hundred</span></h1>
+<div class="sub">SA Top 100 golf courses &middot; Golf Digest 2026</div></div></header>
+
+<main class="wrap">
+<section id="pC" class="pane on">
+ <div class="stick">
+  <input id="q" type="search" placeholder="Search course, town or region" aria-label="Search courses" autocomplete="off">
+  <div class="scroll" id="fl1" role="group" aria-label="Show"></div>
+  <div class="scroll" id="fl2" role="group" aria-label="Province"></div>
+ </div>
+ <div class="meta"><span class="big"><b id="cnt">100</b> shown &middot; played <b id="pc">0</b>/100</span>
+  <span class="row"><select id="sort" aria-label="Sort" style="width:auto"><option value="rank">Rank</option><option value="name">Name A-Z</option><option value="town">Town A-Z</option></select>
+  <button class="btn" id="bView" aria-pressed="false">List</button></span></div>
+ <div class="prog" aria-hidden="true"><i id="pbar"></i></div>
+ <div id="out"></div>
+</section>
+
+<section id="pM" class="pane">
+ <div class="meta" style="padding-top:16px"><span class="big">On map: <b id="mcnt">100</b> of 100</span><button class="btn link" id="mclr">Clear filters</button></div>
+ <div class="legend"><span class="t">Top 10</span><span class="p">Played</span><span>Other</span></div>
+ <div id="mbanner"></div>
+ <div id="map" aria-label="Map of courses"></div>
+ <p class="about">Pins sit at town level, not at the clubhouse. Courses in the same town are fanned out so each can be tapped.</p>
+</section>
+
+<section id="pL" class="pane">
+ <div class="panel"><h2>Your group</h2>
+  <form id="pf" class="row" novalidate><input id="pn" type="text" placeholder="Golfer's name" aria-label="Golfer's name" maxlength="24" autocomplete="off"><button class="btn" type="submit">Add</button></form>
+  <div class="fmsg" id="pmsg" role="alert"></div>
+  <div class="scroll" id="plist" style="padding-top:0"></div>
+ </div>
+ <div class="panel" id="rpanel"><h2>Log a round</h2>
+  <div class="lab">Date</div><input type="date" id="rd" aria-label="Date of round">
+  <div class="lab" style="margin-top:12px">Course</div>
+  <input type="text" id="rcc" list="cl" placeholder="Start typing a course" aria-label="Course" autocomplete="off"><datalist id="cl"></datalist>
+  <div class="scroll" id="recent" style="padding-bottom:0"></div>
+  <div class="fmsg" id="cmsg" role="alert"></div>
+  <div id="rt"></div>
+  <div class="fmsg" id="smsg" role="alert"></div>
+  <button class="btn primary" id="saveR" style="width:100%">Save round</button>
+  <p class="about" style="margin:8px 0 0">Gross is total strokes. Points are Stableford points. Leave a golfer blank if they did not play.</p>
+ </div>
+ <div class="panel"><h2>Leaderboard</h2>
+  <div class="scroll" id="lsort" role="group" aria-label="Rank by"></div>
+  <div id="lb"></div></div>
+ <div class="panel"><h2>Rounds</h2><div id="hist"></div></div>
+ <details class="panel"><summary>Share or back up</summary>
+  <p class="about">League data is saved on this device only. Copy this text to the other golfers' phones and use Import there.</p>
+  <textarea id="ex" aria-label="League data" spellcheck="false"></textarea>
+  <div class="row wrap2" style="margin-top:8px"><button class="btn" id="exb">Refresh</button><button class="btn" id="imp">Import</button></div>
+  <div id="ibox"></div>
+ </details>
+</section>
+
+<details class="about"><summary>About this data</summary>
+<p>Ranking and locations: satop100courses.com (Golf Digest South Africa Top 100, 2026 list). Garden Route courses are shown as Western Cape (inferred, as George, Knysna, Mossel Bay, Plettenberg Bay and Herold's Bay are in that province). Map coordinates are approximate, town level (inferred). Played, Wish list and League data are stored in this browser only.</p></details>
+</main>
+
+<div id="toast" role="status"><span id="tmsg"></span><button id="tact"></button></div>
+<nav class="nav" aria-label="Sections">
+<button id="tC" aria-current="page"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Courses</button>
+<button id="tM"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Map</button>
+<button id="tL"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0V4zM8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 13v4M8 20h8"/></svg>League</button>
+</nav>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const D=[{"rank":1,"name":"The Links at Fancourt","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.963,"lng":22.461},{"rank":2,"name":"Blair Atholl","town":"Lanseria","region":"","province":"Gauteng","inferred":false,"lat":-25.94,"lng":27.93},{"rank":3,"name":"Pearl Valley","town":"Near Paarl","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.73,"lng":18.97},{"rank":4,"name":"Durban Country Club","town":"Durban","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.85,"lng":31.02},{"rank":5,"name":"Leopard Creek","town":"Malelane","region":"","province":"Mpumalanga","inferred":false,"lat":-25.49,"lng":31.51},{"rank":6,"name":"Arabella","town":"Near Kleinmond","region":"","province":"Western Cape","inferred":false,"lat":-34.34,"lng":19.03},{"rank":7,"name":"St Francis Links","town":"St Francis Bay","region":"","province":"Eastern Cape","inferred":false,"lat":-34.17,"lng":24.83},{"rank":8,"name":"Glendower","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2,"lng":28.04},{"rank":9,"name":"Sishen","town":"Kathu","region":"","province":"Northern Cape","inferred":false,"lat":-27.7,"lng":23.05},{"rank":10,"name":"Gary Player CC","town":"Sun City","region":"","province":"North West","inferred":false,"lat":-25.34,"lng":27.09},{"rank":11,"name":"Elements","town":"Near Bela Bela","region":"","province":"Limpopo","inferred":false,"lat":-24.88,"lng":28.29},{"rank":12,"name":"Royal Johannesburg (East)","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2199,"lng":28.0417},{"rank":13,"name":"Pezula","town":"Knysna","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.04,"lng":23.05},{"rank":14,"name":"Fancourt Montagu","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.9829,"lng":22.4627},{"rank":15,"name":"Pinnacle Point","town":"Mossel Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.18,"lng":22.14},{"rank":16,"name":"The Club at Steyn City","town":"Fourways","region":"","province":"Gauteng","inferred":false,"lat":-26.01,"lng":28.01},{"rank":17,"name":"East London","town":"East London","region":"","province":"Eastern Cape","inferred":false,"lat":-33.02,"lng":27.91},{"rank":18,"name":"Zimbali","town":"Ballito","region":"KZN North Coast","province":"KwaZulu-Natal","inferred":false,"lat":-29.54,"lng":31.21},{"rank":19,"name":"Humewood","town":"Port Elizabeth","region":"","province":"Eastern Cape","inferred":false,"lat":-33.96,"lng":25.6},{"rank":20,"name":"Champagne Sports Resort","town":"Central Drakensberg","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.03,"lng":29.38},{"rank":21,"name":"Highland Gate","town":"Near Dullstroom","region":"","province":"Mpumalanga","inferred":false,"lat":-25.42,"lng":30.11},{"rank":22,"name":"Pretoria Country Club","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.75,"lng":28.19},{"rank":23,"name":"Simola","town":"Knysna","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.0599,"lng":23.0517},{"rank":24,"name":"Erinvale","town":"Somerset West","region":"","province":"Western Cape","inferred":false,"lat":-34.08,"lng":18.84},{"rank":25,"name":"Royal Johannesburg (West)","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.181,"lng":28.0546},{"rank":26,"name":"Fancourt Outeniqua","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.944,"lng":22.4756},{"rank":27,"name":"CCJ Woodmead","town":"Sandton","region":"","province":"Gauteng","inferred":false,"lat":-26.11,"lng":28.06},{"rank":28,"name":"Houghton","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2049,"lng":28.0124},{"rank":29,"name":"George Golf Club","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.9679,"lng":22.4334},{"rank":30,"name":"Parkview","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2172,"lng":28.067},{"rank":31,"name":"Prince's Grant","town":"KwaDukuza","region":"KZN North Coast","province":"KwaZulu-Natal","inferred":false,"lat":-29.33,"lng":31.29},{"rank":32,"name":"De Zalze","town":"Stellenbosch","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.93,"lng":18.86},{"rank":33,"name":"Victoria","town":"Pietermaritzburg","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.6,"lng":30.38},{"rank":34,"name":"CCJ Rocklands","town":"Sandton","region":"","province":"Gauteng","inferred":false,"lat":-26.1299,"lng":28.0617},{"rank":35,"name":"Hermanus – East Course","town":"Hermanus","region":"","province":"Western Cape","inferred":false,"lat":-34.42,"lng":19.24},{"rank":36,"name":"Kyalami","town":"Midrand","region":"","province":"Gauteng","inferred":false,"lat":-25.99,"lng":28.13},{"rank":37,"name":"Eye of Africa","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1652,"lng":28.0306},{"rank":38,"name":"Pecanwood","town":"Hartbeespoort Dam","region":"","province":"North West","inferred":false,"lat":-25.73,"lng":27.9},{"rank":39,"name":"Maccauvlei","town":"Vereeniging","region":"","province":"Free State","inferred":false,"lat":-26.67,"lng":27.93},{"rank":40,"name":"Ebotse Links","town":"Benoni","region":"","province":"Gauteng","inferred":false,"lat":-26.19,"lng":28.32},{"rank":41,"name":"Serengeti (Signature)","town":"Kempton Park","region":"","province":"Gauteng","inferred":false,"lat":-26.1,"lng":28.23},{"rank":42,"name":"Modderfontein","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2355,"lng":28.0216},{"rank":43,"name":"Woodhill","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.7699,"lng":28.1917},{"rank":44,"name":"Randpark Firethorn","town":"Randburg","region":"","province":"Gauteng","inferred":false,"lat":-26.09,"lng":28},{"rank":45,"name":"Cotswold Downs","town":"Hillcrest","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.78,"lng":30.76},{"rank":46,"name":"Royal Cape","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.93,"lng":18.42},{"rank":47,"name":"Bryanston","town":"Sandton","region":"","province":"Gauteng","inferred":false,"lat":-26.091,"lng":28.0746},{"rank":48,"name":"Steenberg","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.9499,"lng":18.4217},{"rank":49,"name":"Killarney","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1849,"lng":28.0813},{"rank":50,"name":"San Lameer","town":"Near Southbroom","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.91,"lng":30.3},{"rank":51,"name":"Plettenberg Bay CC","town":"Plettenberg Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.05,"lng":23.37},{"rank":52,"name":"Wild Coast","town":"Near Port Edward","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-31.05,"lng":30.22},{"rank":53,"name":"Wingate Park","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.731,"lng":28.2046},{"rank":54,"name":"The Woods at Mount Edgecombe","town":"Umhlanga","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.73,"lng":31.08},{"rank":55,"name":"Clovelly","town":"Fish Hoek","region":"","province":"Western Cape","inferred":false,"lat":-34.14,"lng":18.43},{"rank":56,"name":"Gowrie Farm","town":"Nottingham Road","region":"KZN Midlands","province":"KwaZulu-Natal","inferred":false,"lat":-29.35,"lng":29.99},{"rank":57,"name":"Stellenbosch","town":"Stellenbosch","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.9499,"lng":18.8617},{"rank":58,"name":"Atlantic Beach Links","town":"Melkbosstrand","region":"","province":"Western Cape","inferred":false,"lat":-33.73,"lng":18.45},{"rank":59,"name":"Zebula","town":"Near Bela Bela","region":"","province":"Limpopo","inferred":false,"lat":-24.8999,"lng":28.2917},{"rank":60,"name":"Wanderers","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1817,"lng":27.9956},{"rank":61,"name":"Dainfern","town":"Fourways","region":"","province":"Gauteng","inferred":false,"lat":-26.0299,"lng":28.0117},{"rank":62,"name":"The Lakes at Mount Edgecombe","town":"Umhlanga","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.7499,"lng":31.0817},{"rank":63,"name":"Eagle Canyon","town":"Honeydew","region":"","province":"Gauteng","inferred":false,"lat":-26.08,"lng":27.92},{"rank":64,"name":"Goldfields West","town":"Carletonville","region":"","province":"Gauteng","inferred":false,"lat":-26.36,"lng":27.4},{"rank":65,"name":"Irene","town":"Centurion","region":"","province":"Gauteng","inferred":false,"lat":-25.86,"lng":28.19},{"rank":66,"name":"Krugersdorp","town":"Krugersdorp","region":"","province":"Gauteng","inferred":false,"lat":-26.1,"lng":27.77},{"rank":67,"name":"Ruimsig","town":"Roodepoort","region":"","province":"Gauteng","inferred":false,"lat":-26.16,"lng":27.87},{"rank":68,"name":"Waterkloof Golf Club","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.7549,"lng":28.1624},{"rank":69,"name":"Paarl (Old Course)","town":"Paarl","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.7499,"lng":18.9717},{"rank":70,"name":"Knysna Golf Club","town":"Knysna","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.021,"lng":23.0646},{"rank":71,"name":"Oubaai","town":"Herold's Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.04,"lng":22.4},{"rank":72,"name":"Reading Country Club","town":"Alberton","region":"","province":"Gauteng","inferred":false,"lat":-26.27,"lng":28.12},{"rank":73,"name":"Umhlali","town":"Ballito","region":"KZN North Coast","province":"KwaZulu-Natal","inferred":false,"lat":-29.5599,"lng":31.2117},{"rank":74,"name":"Mbombela","town":"Mbombela","region":"","province":"Mpumalanga","inferred":false,"lat":-25.47,"lng":30.97},{"rank":75,"name":"Glenvista","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2471,"lng":28.0621},{"rank":76,"name":"Parys","town":"Parys","region":"","province":"Free State","inferred":false,"lat":-26.9,"lng":27.46},{"rank":77,"name":"Lost City","town":"Sun City","region":"","province":"North West","inferred":false,"lat":-25.3599,"lng":27.0917},{"rank":78,"name":"Mossel Bay Golf Club","town":"Mossel Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.1999,"lng":22.1417},{"rank":79,"name":"Umdoni Park","town":"Pennington","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.38,"lng":30.69},{"rank":80,"name":"St Francis Bay","town":"St Francis Bay","region":"","province":"Eastern Cape","inferred":false,"lat":-34.1899,"lng":24.8317},{"rank":81,"name":"Goose Valley","town":"Plettenberg Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.0699,"lng":23.3717},{"rank":82,"name":"Centurion","town":"Centurion","region":"","province":"Gauteng","inferred":false,"lat":-25.8799,"lng":28.1917},{"rank":83,"name":"King David Mowbray","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.911,"lng":18.4346},{"rank":84,"name":"Royal Port Alfred","town":"Port Alfred","region":"","province":"Eastern Cape","inferred":false,"lat":-33.59,"lng":26.89},{"rank":85,"name":"Katberg","town":"Near Fort Beaufort","region":"","province":"Eastern Cape","inferred":false,"lat":-32.78,"lng":26.63},{"rank":86,"name":"Olivewood","town":"Chintsa East","region":"","province":"Eastern Cape","inferred":false,"lat":-32.84,"lng":28.12},{"rank":87,"name":"Selborne Park","town":"Pennington","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.3999,"lng":30.6917},{"rank":88,"name":"Benoni CC","town":"Benoni","region":"","province":"Gauteng","inferred":false,"lat":-26.2099,"lng":28.3217},{"rank":89,"name":"Kingswood","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.9802,"lng":22.488},{"rank":90,"name":"Kambaku","town":"Komatipoort","region":"","province":"Mpumalanga","inferred":false,"lat":-25.43,"lng":31.95},{"rank":91,"name":"Westlake","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.9349,"lng":18.3924},{"rank":92,"name":"Port Elizabeth Golf Club","town":"Port Elizabeth","region":"","province":"Eastern Cape","inferred":false,"lat":-33.9799,"lng":25.6017},{"rank":93,"name":"Jackal Creek","town":"Honeydew","region":"","province":"Gauteng","inferred":false,"lat":-26.0999,"lng":27.9217},{"rank":94,"name":"Wedgewood","town":"Port Elizabeth","region":"","province":"Eastern Cape","inferred":false,"lat":-33.941,"lng":25.6146},{"rank":95,"name":"Huddle Park","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1466,"lng":28.0567},{"rank":96,"name":"Bloemfontein","town":"Bloemfontein","region":"","province":"Free State","inferred":false,"lat":-29.12,"lng":26.21},{"rank":97,"name":"Bosch Hoek","town":"Near Howick","region":"KZN Midlands","province":"KwaZulu-Natal","inferred":false,"lat":-29.48,"lng":30.23},{"rank":98,"name":"Emfuleni","town":"Vanderbijlpark","region":"","province":"Gauteng","inferred":false,"lat":-26.71,"lng":27.84},{"rank":99,"name":"Southbroom","town":"Southbroom","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.9299,"lng":30.3017},{"rank":100,"name":"Somerset West CC","town":"Somerset West","region":"","province":"Western Cape","inferred":false,"lat":-34.0999,"lng":18.8417}];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+let storeOK=true;
+const rd=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){storeOK=false;return null}};
+const wr=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){storeOK=false;return false}};
+let played=new Set(rd('sa100played')||[]),fav=new Set(rd('sa100fav')||[]);
+let LG=rd('sa100league');if(!LG||!LG.players||!LG.rounds)LG={players:[],rounds:[]};
+const S={q:'',prov:'',show:'all',view:'cards',sort:'rank',lsort:'tot'};
+let map=null,layer=null,tileErr=0;
+const dmy=iso=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');return m?m[3]+'/'+m[2]+'/'+m[1]:(iso||'')};
+const maps=c=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(c.name+' golf course '+c.town+' South Africa');
+const STAR='<svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9 6.8 19.7l1-5.9L3.5 9.7l5.9-.8z"/></svg>';
+
+let tt=null;
+function toast(msg,label,fn){$('tmsg').textContent=msg;const b=$('tact');b.style.display=label?'':'none';b.textContent=label||'';b.onclick=()=>{$('toast').classList.remove('on');if(fn)fn()};$('toast').classList.add('on');clearTimeout(tt);tt=setTimeout(()=>$('toast').classList.remove('on'),label?9000:3500)}
+function saveP(){if(!wr('sa100played',[...played])|!wr('sa100fav',[...fav]))storeWarn()}
+function saveLG(){if(!wr('sa100league',LG)){storeWarn();return false}return true}
+function storeWarn(){toast('Could not save on this device. Open this file in Chrome or Safari so your ticks and scores are kept.')}
+
+function filtered(){
+ const q=S.q.trim().toLowerCase();
+ const r=D.filter(c=>(!S.prov||c.province===S.prov)&&(!q||(c.name+' '+c.town+' '+c.region+' '+c.province).toLowerCase().includes(q))&&(S.show==='all'||(S.show==='top'&&c.rank<=10)||(S.show==='wish'&&fav.has(c.rank))||(S.show==='played'&&played.has(c.rank))));
+ const k=S.sort;r.sort((a,b)=>k==='rank'?a.rank-b.rank:a[k].localeCompare(b[k])||a.rank-b.rank);return r}
+function chipRow(el,items,cur,attr){el.innerHTML=items.map(i=>'<button class="chip" '+attr+'="'+esc(i[0])+'" aria-pressed="'+(cur===i[0])+'">'+esc(i[1])+(i[2]!=null?'<span class="n">'+i[2]+'</span>':'')+'</button>').join('');edges(el)}
+function edges(el){const f=()=>{el.classList.toggle('fl',el.scrollLeft>8);el.classList.toggle('fr',el.scrollLeft+el.clientWidth<el.scrollWidth-8)};if(!el._e){el._e=1;el.addEventListener('scroll',f,{passive:true})}requestAnimationFrame(f)}
+const provs=[...new Set(D.map(c=>c.province))].sort((a,b)=>D.filter(c=>c.province===b).length-D.filter(c=>c.province===a).length);
+function card(c){const pl=played.has(c.rank),fv=fav.has(c.rank);
+ return '<article class="card'+(pl?' played':'')+'"><button class="star" data-f="'+c.rank+'" aria-pressed="'+fv+'" aria-label="'+(fv?'Remove from':'Add to')+' wish list: '+esc(c.name)+'">'+STAR+'</button><div class="rank">'+c.rank+'</div><div class="nm">'+esc(c.name)+'</div><div class="loc">'+esc(c.town)+(c.region?', '+esc(c.region):'')+'</div><div class="tags"><span class="tag">'+c.province+(c.inferred?' (inferred)':'')+'</span>'+(c.rank<=10?'<span class="tag top">TOP 10</span>':'')+(pl?'<span class="tag good">Played</span>':'')+'</div><div class="act"><button class="btn" data-p="'+c.rank+'" aria-pressed="'+pl+'">'+(pl?'Undo played':'Mark played')+'</button><button class="btn" data-m="'+c.rank+'">On map</button><a class="btn" style="display:inline-flex;align-items:center" target="_blank" rel="noopener" href="'+maps(c)+'">Directions</a></div></article>'}
+function render(){
+ const r=filtered();
+ $('cnt').textContent=r.length;$('pc').textContent=played.size;$('pbar').style.width=played.size+'%';
+ chipRow($('fl1'),[['all','All'],['top','Top 10'],['wish','Wish list',fav.size],['played','Played',played.size]],S.show,'data-show');
+ chipRow($('fl2'),[['','All provinces']].concat(provs.map(p=>[p,p,D.filter(c=>c.province===p).length])),S.prov,'data-prov');
+ $('bView').textContent=S.view==='cards'?'List':'Cards';
+ if(!r.length){
+  const msg=S.show==='wish'&&!S.q&&!S.prov?'Nothing on your wish list yet. Tap the star on any course to add it.':S.show==='played'&&!S.q&&!S.prov?'No courses ticked as played yet. Tap Mark played on a course you have walked.':'No courses match these filters.';
+  $('out').innerHTML='<div class="empty"><p>'+msg+'</p><button class="btn" data-clear="1">Show all 100 courses</button></div>';
+ }else if(S.view==='cards')$('out').innerHTML='<div class="list">'+r.map(card).join('')+'</div>';
+ else $('out').innerHTML='<table class="ltable">'+r.map(c=>'<tr><td class="r">'+c.rank+'</td><td class="nm"><b>'+esc(c.name)+'</b><span class="s">'+esc(c.town)+', '+c.province+'</span></td><td style="text-align:right"><button class="btn" data-p="'+c.rank+'" aria-pressed="'+played.has(c.rank)+'">'+(played.has(c.rank)?'Played':'Mark')+'</button></td></tr>').join('')+'</table>';
+ if(map)drawMap()}
+function icon(c){const k=played.has(c.rank)?'pl':c.rank<=10?'top':'';return L.divIcon({className:'',html:'<div class="pin"><i class="'+k+'">'+c.rank+'</i></div>',iconSize:[44,44],iconAnchor:[22,22]})}
+function drawMap(){
+ layer.clearLayers();const r=filtered();$('mcnt').textContent=r.length;
+ r.forEach(c=>L.marker([c.lat,c.lng],{icon:icon(c),title:c.name}).addTo(layer).bindPopup('<div class="pp"><b>'+c.rank+'. '+esc(c.name)+'</b><br>'+esc(c.town)+', '+c.province+'<br><button class="btn" data-p="'+c.rank+'">'+(played.has(c.rank)?'Undo played':'Mark played')+'</button><br><a href="'+maps(c)+'" target="_blank" rel="noopener">Directions</a></div>'));
+ if(r.length)map.fitBounds(L.latLngBounds(r.map(c=>[c.lat,c.lng])).pad(0.15),{maxZoom:10,animate:!reduce})}
+function initMap(){
+ if(map)return;
+ if(typeof L==='undefined'){$('mbanner').innerHTML='<div class="banner err" role="alert">The map could not load. Check your signal and reopen. The course list still works.</div>';return}
+ map=L.map('map',{zoomAnimation:!reduce,fadeAnimation:!reduce,markerZoomAnimation:!reduce}).setView([-29,25],5);
+ const t=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+ t.on('tileerror',()=>{if(++tileErr===4)$('mbanner').innerHTML='<div class="banner err" role="alert">Some map tiles did not load. Check your signal. Pins still work.</div>'});
+ t.on('tileload',()=>{if(tileErr>=4){tileErr=0;$('mbanner').innerHTML=''}});
+ layer=L.layerGroup().addTo(map);drawMap()}
+function showTab(t){['C','M','L'].forEach(k=>{$('p'+k).classList.toggle('on',k===t);const b=$('t'+k);if(k===t)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+ window.scrollTo(0,0);
+ if(t==='M'){initMap();if(map)setTimeout(()=>{map.invalidateSize();drawMap()},60)}
+ if(t==='L')renderLeague()}
+['C','M','L'].forEach(k=>$('t'+k).onclick=()=>showTab(k));
+
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+ if(d.f){const n=+d.f;fav.has(n)?fav.delete(n):fav.add(n);saveP();render()}
+ else if(d.p){const n=+d.p;const was=played.has(n);was?played.delete(n):played.add(n);saveP();render();if(map)map.closePopup();toast((was?'Removed ':'Ticked ')+D[n-1].name+(was?' from played.':' as played.'),'Undo',()=>{was?played.add(n):played.delete(n);saveP();render()})}
+ else if(d.m){const c=D[+d.m-1];showTab('M');if(map)map.setView([c.lat,c.lng],12,{animate:!reduce})}
+ else if(d.show!==undefined){S.show=d.show;render()}
+ else if(d.prov!==undefined){S.prov=d.prov;render()}
+ else if(d.clear){S.q='';$('q').value='';S.prov='';S.show='all';render()}
+ else if(d.ls){S.lsort=d.ls;renderLeague()}
+ else if(d.rc){$('rcc').value=d.rc;$('cmsg').textContent=''}
+ else if(d.dr){const r=LG.rounds.find(x=>x.id===d.dr);LG.rounds=LG.rounds.filter(x=>x.id!==d.dr);saveLG();renderLeague();toast('Round deleted.','Undo',()=>{LG.rounds.push(r);saveLG();renderLeague()})}
+ else if(d.dp){const n=d.dp,snap=JSON.stringify(LG);LG.players=LG.players.filter(x=>x!==n);LG.rounds.forEach(r=>delete r.scores[n]);saveLG();renderLeague();toast(n+' removed from the group.','Undo',()=>{LG=JSON.parse(snap);saveLG();renderLeague()})}});
+$('q').addEventListener('input',e=>{S.q=e.target.value;render()});
+$('sort').addEventListener('change',e=>{S.sort=e.target.value;render()});
+$('bView').onclick=()=>{S.view=S.view==='cards'?'list':'cards';render()};
+$('mclr').onclick=()=>{S.q='';$('q').value='';S.prov='';S.show='all';render()};
+
+function renderLeague(){
+ $('plist').innerHTML=LG.players.length?LG.players.map(p=>'<span class="chip" style="cursor:default;display:inline-flex;align-items:center;gap:4px">'+esc(p)+'<button class="btn link" data-dp="'+esc(p)+'" aria-label="Remove '+esc(p)+'" style="padding:0 4px;min-height:44px">Remove</button></span>').join(''):'';
+ if(!LG.players.length)$('plist').innerHTML='<span class="about" style="padding:4px 0">Add the first golfer above to start the league.</span>';
+ edges($('plist'));
+ const keep={};LG.players.forEach((p,i)=>{const g=$('g'+i),s=$('s'+i);if(g)keep[p]=[g.value,s.value]});
+ $('rt').innerHTML=LG.players.length?'<div class="pgrid lab"><span>Golfer</span><span>Gross</span><span>Points</span></div>'+LG.players.map((p,i)=>'<div class="pgrid"><span class="nmx">'+esc(p)+'</span><input type="number" inputmode="numeric" id="g'+i+'" data-k="g" aria-label="'+esc(p)+' gross strokes"><input type="number" inputmode="numeric" id="s'+i+'" data-k="s" aria-label="'+esc(p)+' Stableford points"></div>').join(''):'<p class="about">Your golfers will appear here once added.</p>';
+ LG.players.forEach((p,i)=>{if(keep[p]){$('g'+i).value=keep[p][0];$('s'+i).value=keep[p][1]}});
+ const rc=[];[...LG.rounds].sort((a,b)=>b.id.localeCompare(a.id)).forEach(r=>{if(!rc.includes(r.course))rc.push(r.course)});
+ $('recent').innerHTML=rc.slice(0,4).map(c=>'<button class="chip" data-rc="'+esc(c)+'">'+esc(c)+'</button>').join('');edges($('recent'));
+ const st={};LG.players.forEach(p=>st[p]={n:0,tot:0,best:0,wins:0,low:null});
+ LG.rounds.forEach(r=>{let top=-1;Object.values(r.scores).forEach(s=>{if(s.pts!=null&&s.pts>top)top=s.pts});
+  Object.entries(r.scores).forEach(([p,s])=>{const a=st[p];if(!a)return;a.n++;if(s.pts!=null){a.tot+=s.pts;a.best=Math.max(a.best,s.pts);if(s.pts===top&&top>0)a.wins++}if(s.gross!=null&&(a.low==null||s.gross<a.low))a.low=s.gross})});
+ chipRow($('lsort'),[['tot','Total points'],['avg','Average'],['wins','Wins'],['best','Best round'],['low','Lowest gross']],S.lsort,'data-ls');
+ const k=S.lsort;const rows=Object.entries(st).map(([p,a])=>({p,n:a.n,tot:a.tot,avg:a.n?a.tot/a.n:0,best:a.best,wins:a.wins,low:a.low}));
+ rows.sort((x,y)=>k==='low'?((x.low==null)-(y.low==null)||x.low-y.low):(y[k]-x[k]||y.tot-x.tot));
+ if(!rows.length)$('lb').innerHTML='<div class="empty"><p>No golfers yet. Add your group above, then log the first round.</p></div>';
+ else if(!LG.rounds.length)$('lb').innerHTML='<div class="empty"><p>No rounds logged yet. Log the first round above and the table fills in.</p></div>';
+ else $('lb').innerHTML='<div class="lb h"><span>#</span><span>Golfer</span><span style="text-align:right">Pts</span><span style="text-align:right">Avg</span><span style="text-align:right">Wins</span></div>'+rows.map((x,i)=>'<div class="lb"><span class="pos'+(i===0?' lead':'')+'">'+(i+1)+'</span><span class="who"><b>'+esc(x.p)+'</b><small>'+x.n+' rd'+(x.n===1?'':'s')+' &middot; best '+x.best+' &middot; low '+(x.low==null?'-':x.low)+'</small></span><span class="num'+(k==='tot'?' k':'')+'">'+x.tot+'</span><span class="num'+(k==='avg'?' k':'')+'">'+x.avg.toFixed(1)+'</span><span class="num'+(k==='wins'?' k':'')+'">'+x.wins+'</span></div>').join('');
+ const rs=[...LG.rounds].sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));
+ $('hist').innerHTML=rs.length?rs.map(r=>'<div class="rnd"><div class="d">'+dmy(r.date)+'</div><div class="c">'+esc(r.course)+'</div>'+Object.entries(r.scores).map(([p,s])=>'<div class="ln">'+esc(p)+': '+(s.gross==null?'-':s.gross)+' gross, '+(s.pts==null?'-':s.pts)+' pts</div>').join('')+'<button class="btn link" data-dr="'+r.id+'" style="padding-left:0">Delete round</button></div>').join(''):'<div class="empty"><p>Rounds you log will be listed here, newest first.</p></div>';
+ $('ex').value=JSON.stringify(LG)}
+
+function setMsg(id,m,inp){$(id).textContent=m||'';if(inp)inp.setAttribute('aria-invalid',m?'true':'false')}
+function chkName(){const n=$('pn').value.trim();if(!n)return 'Type the golfer\'s name first.';const ex=LG.players.find(p=>p.toLowerCase()===n.toLowerCase());if(ex)return ex+' is already in the group. Add an initial to tell them apart.';return ''}
+$('pn').addEventListener('blur',()=>{if($('pn').value)setMsg('pmsg',chkName(),$('pn'))});
+$('pn').addEventListener('input',()=>{if($('pmsg').textContent&&!chkName())setMsg('pmsg','',$('pn'))});
+$('pf').addEventListener('submit',e=>{e.preventDefault();const m=chkName();setMsg('pmsg',m,$('pn'));if(m)return;LG.players.push($('pn').value.trim());$('pn').value='';if(saveLG())toast('Golfer added.');renderLeague()});
+$('rd').value=new Date().toISOString().slice(0,10);
+$('cl').innerHTML=D.map(c=>'<option value="'+esc(c.name)+'">').join('');
+const chkField=(el,kind)=>{if(el.value==='')return '';const v=+el.value;if(kind==='g'&&(v<30||v>200))return 'Gross looks off. Enter total strokes for the round, between 30 and 200.';if(kind==='s'&&(v<0||v>80))return 'Points look off. Stableford points for a round are usually between 0 and 60.';return ''};
+$('rt').addEventListener('focusout',e=>{const el=e.target;if(el.dataset.k)setMsg('smsg',chkField(el,el.dataset.k),el)});
+$('rt').addEventListener('input',e=>{const el=e.target;if(el.dataset.k&&$('smsg').textContent&&!chkField(el,el.dataset.k))setMsg('smsg','',el)});
+$('rcc').addEventListener('input',()=>setMsg('cmsg','',$('rcc')));
+$('saveR').onclick=()=>{
+ if(!LG.players.length){setMsg('smsg','Add at least one golfer before you log a round.');return}
+ const name=$('rcc').value.trim();if(!name){setMsg('cmsg','Pick or type the course you played.',$('rcc'));return}
+ const scores={};let bad='';
+ LG.players.forEach((p,i)=>{const g=$('g'+i),s=$('s'+i);const m=chkField(g,'g')||chkField(s,'s');if(m&&!bad){bad=m;setMsg('smsg',m)}if(g.value!==''||s.value!=='')scores[p]={gross:g.value===''?null:+g.value,pts:s.value===''?null:+s.value}});
+ if(bad)return;
+ if(!Object.keys(scores).length){setMsg('smsg','Enter a score for at least one golfer.');return}
+ const c=D.find(x=>x.name.toLowerCase()===name.toLowerCase());
+ LG.rounds.push({id:String(Date.now()),date:$('rd').value,course:c?c.name:name,rank:c?c.rank:null,scores});
+ if(c){played.add(c.rank);saveP()}
+ setMsg('smsg','');setMsg('cmsg','');$('rcc').value='';
+ if(saveLG())toast('Round saved'+(c?' and '+c.name+' ticked as played.':'.'));
+ renderLeague();render()};
+$('exb').onclick=()=>{$('ex').value=JSON.stringify(LG)};
+$('imp').onclick=()=>{
+ let s;try{s=JSON.parse($('ex').value);if(!s||!Array.isArray(s.players)||!Array.isArray(s.rounds))throw 0}catch(e){$('ibox').innerHTML='<div class="banner err" role="alert">That text is not league data. Copy the full text from the other phone and try again.</div>';return}
+ $('ibox').innerHTML='<div class="banner">Found '+s.players.length+' golfer'+(s.players.length===1?'':'s')+' and '+s.rounds.length+' round'+(s.rounds.length===1?'':'s')+'. Importing replaces the league on this device.</div><button class="btn primary" id="impgo">Replace league on this device</button>';
+ $('impgo').onclick=()=>{const prev=JSON.stringify(LG);LG=s;saveLG();$('ibox').innerHTML='';renderLeague();toast('League imported.','Undo',()=>{LG=JSON.parse(prev);saveLG();renderLeague()})}};
+render();renderLeague();
+if(!storeOK)storeWarn();
+
+(function(){
+var N=392,GA=Math.PI*(3-Math.sqrt(5)),pts=[],scat=[],seed=7;
+function rnd(){seed=(seed*16807)%2147483647;return(seed-1)/2147483646}
+for(var i=0;i<N;i++){var y=1-2*(i+.5)/N,r=Math.sqrt(1-y*y),a=GA*i;pts.push([Math.cos(a)*r,y,Math.sin(a)*r]);
+ var th=rnd()*6.283,ph=Math.acos(2*rnd()-1),d=2.2+rnd()*2.2;scat.push([Math.sin(ph)*Math.cos(th)*d,Math.sin(ph)*Math.sin(th)*d*.8,Math.cos(ph)*d])}
+var AMB=Math.floor(N*.37),ease=function(x){return x<0?0:x>1?1:1-Math.pow(1-x,3)};
+var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function render(cv,P,yaw,pit,shell){
+ var dpr=Math.min(window.devicePixelRatio||1,2),W=cv.clientWidth||cv.width;if(!W)return;
+ if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=cv.width}
+ var ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,W);
+ var R=W*.34,cx=W/2,cy=W/2,c=Math.cos(yaw),s=Math.sin(yaw),cp=Math.cos(pit),sp=Math.sin(pit),it=[];
+ if(shell>0){ctx.globalAlpha=shell*.22;ctx.fillStyle='#1a1812';ctx.beginPath();ctx.ellipse(cx,cy+R*1.12,R*.8,R*.12,0,0,6.283);ctx.fill();ctx.globalAlpha=shell;
+  var g=ctx.createRadialGradient(cx-R*.35,cy-R*.4,R*.1,cx,cy,R);g.addColorStop(0,'#fffdf7');g.addColorStop(.7,'#ebe5d3');g.addColorStop(1,'#cfc7b0');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,R,0,6.283);ctx.fill();ctx.strokeStyle='rgba(26,24,18,.25)';ctx.lineWidth=1;ctx.stroke();ctx.globalAlpha=1}
+ for(var i=0;i<N;i++){var p=pts[i];
+  if(P<1){var k=ease(P*1.5-(i/N)*.5);p=[scat[i][0]+(p[0]-scat[i][0])*k,scat[i][1]+(p[1]-scat[i][1])*k,scat[i][2]+(p[2]-scat[i][2])*k]}
+  var x=p[0]*c+p[2]*s,z1=-p[0]*s+p[2]*c,yy=p[1]*cp-z1*sp,z=p[1]*sp+z1*cp;it.push([i,x,yy,z])}
+ it.sort(function(a,b){return a[3]-b[3]});
+ var dotAmt=1-shell;
+ for(var j=0;j<it.length;j++){var q=it[j],i2=q[0],x2=cx+R*q[1],y2=cy-R*q[2],z2=q[3],amb=i2===AMB,len=Math.hypot(q[1],q[2],q[3]),on=len<1.02;
+  if(dotAmt>0){var fr=z2>=0,rad=R*.052*(.55+.45*Math.max(z2,0))+(fr?0:-.4),al=(fr?.25+.75*Math.max(z2,0):.1)*dotAmt*(on?1:Math.max(.35,1/(1+Math.max(0,len-1)*.6)));
+   ctx.globalAlpha=Math.min(1,al);ctx.fillStyle=amb?'#c89a3a':'#1a1812';ctx.beginPath();ctx.arc(x2,y2,Math.max(1,rad*(amb?1.25:1)),0,6.283);ctx.fill()}
+  if(shell>0&&z2>0&&on){var rr=R*.072,ang=Math.atan2(-q[2],q[1]);ctx.save();ctx.translate(x2,y2);ctx.rotate(ang);ctx.globalAlpha=shell;
+   var rx=rr*Math.max(z2,.1);ctx.fillStyle=amb?'rgba(200,154,58,.85)':'rgba(26,24,18,'+(.10+.08*z2)+')';ctx.beginPath();ctx.ellipse(0,0,rx,rr,0,0,6.283);ctx.fill();
+   ctx.strokeStyle='rgba(255,255,255,.75)';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(rx*.12,rr*.1,rx*.9,rr*.9,0,-.2,1.9);ctx.stroke();ctx.restore()}}
+ ctx.globalAlpha=1}
+var mk=document.getElementById('mark');
+if(mk){mk.width=72;mk.height=72;var cx=mk.getContext('2d');
+ (function(){var W=36,R=W*.46,dpr=2,ctx=cx;ctx.setTransform(dpr,0,0,dpr,0,0);var yaw=.6,pit=-.35,c=Math.cos(yaw),s=Math.sin(yaw),cp=Math.cos(pit),sp=Math.sin(pit),it=[];
+  for(var i=0;i<N;i+=2){var p=pts[i],x=p[0]*c+p[2]*s,z1=-p[0]*s+p[2]*c,y=p[1]*cp-z1*sp,z=p[1]*sp+z1*cp;it.push([i,x,y,z])}
+  it.sort(function(a,b){return a[3]-b[3]});
+  it.forEach(function(q){var amb=Math.abs(q[0]-AMB)<2;ctx.globalAlpha=q[3]>=0?.3+.7*q[3]:.1;ctx.fillStyle=amb?'#c89a3a':'#1a1812';ctx.beginPath();ctx.arc(W/2+R*q[1],W/2-R*q[2],Math.max(.8,R*.085*(.55+.45*Math.max(q[3],0))),0,6.283);ctx.fill()});ctx.globalAlpha=1})()}
+var sp=document.getElementById('splash'),sc=document.getElementById('sc');
+if(!sp)return;
+var seen=false;try{seen=sessionStorage.getItem('hundredSplash')==='1'}catch(e){}
+function done(){if(sp.classList.contains('out'))return;sp.classList.add('out');try{sessionStorage.setItem('hundredSplash','1')}catch(e){}setTimeout(function(){sp.style.display='none'},350)}
+if(seen||rm){sp.style.display='none';if(!seen)try{sessionStorage.setItem('hundredSplash','1')}catch(e){}return}
+var t0=performance.now(),yaw=.6,drag=false,lx=0,vy=.006,DUR=3000;
+sp.addEventListener('click',done);
+(function loop(now){
+ if(sp.classList.contains('out'))return;
+ var P=Math.min(1,(now-t0)/DUR);yaw+=vy;
+ render(sc,P,yaw,-.35,ease((P-.82)/.18));
+ document.getElementById('sp').textContent=P<1?Math.round(P*100)+'%':'Ready';document.getElementById('sbar').style.width=Math.round(P*100)+'%';
+ if(P>=1&&now-t0>DUR+500){done();return}
+ requestAnimationFrame(loop)})(t0);
+})();
+</script></body></html>
