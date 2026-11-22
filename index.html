@@ -162,7 +162,7 @@ input[type=time]{width:100%;min-height:44px;padding:10px 12px;background:var(--c
 input[type=file]{width:100%;min-height:44px;padding:8px 0;font-size:16px}
 .bk{padding:12px 0;border-bottom:1px solid var(--line)}.bk:last-child{border:0}.bk .d{font:600 .95rem var(--mono)}.bk .c{font-weight:600;margin-top:2px}.bk .ln{font-size:.85rem;color:var(--muted);margin-top:2px}
 .bk.hl{background:var(--sand);box-shadow:0 0 0 6px var(--sand);border-radius:var(--r3)}
-.bdg{font-size:.75rem;font-weight:600;background:var(--good);color:#fff;border-radius:var(--r4);padding:4px 10px}.bdg.off{background:var(--muted)}
+.bdg{font-size:.75rem;font-weight:600;background:var(--good);color:#fff;border-radius:var(--r4);padding:4px 10px}.bdg.off{background:var(--muted)}.bdg.new{background:var(--amber);color:var(--ink);margin-left:6px}nav.nav button{position:relative}nav.nav .nb{position:absolute;top:6px;left:calc(50% + 8px);min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--crit);color:#fff;font-size:.7rem;font-weight:700;line-height:18px;text-align:center}nav.nav .nb[hidden]{display:none}
 .wrap2{flex-wrap:wrap}.chips{display:flex;gap:8px;flex-wrap:wrap}
 .ck{display:flex;align-items:center;gap:10px;min-height:44px;margin-top:12px;cursor:pointer}.ck input{width:22px;height:22px;min-height:0;flex:0 0 auto}
 .pgrid2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
@@ -193,11 +193,8 @@ input[type=file]{width:100%;min-height:44px;padding:8px 0;font-size:16px}
  <p class="about">Pins sit at town level, not at the clubhouse. Courses in the same town are fanned out so each can be tapped.</p>
 </section>
 
-<section id="pL" class="pane">
- <div class="acct"><span id="acct"></span><button class="btn" id="logout">Log out</button></div>
- <div class="panel" id="hpanel"><div class="lab">Your handicap index</div><div class="row"><input id="hcp" type="number" step="0.1" inputmode="decimal" placeholder="e.g. 14.2" aria-label="Your handicap index"><button class="btn" id="hsave">Save</button></div><div class="fmsg" id="hmsg" role="alert"></div><p class="about" style="margin:0">Optional. It shows next to your name and is saved with each round you log. League members can see it. Stableford points already account for it, so it does not change the rankings.</p></div>
- <div id="lMain">
-  <div class="panel" id="lhead"></div>
+<section id="pH" class="pane">
+ <div id="hMain">
   <div class="panel" id="upc"><h2>The 19th Hole</h2><p class="about" style="margin:0 0 8px">Your league's notice board. Pin a round, leave a photo.</p><div class="chips" id="bfilter"></div><div id="blist"></div></div>
   <details class="panel" id="bpanel"><summary>Pin a round</summary>
    <div class="lab" style="margin-top:12px">Date</div><input type="date" id="bd" aria-label="Date of round">
@@ -216,6 +213,14 @@ input[type=file]{width:100%;min-height:44px;padding:8px 0;font-size:16px}
    <div class="lab" style="margin-top:12px">Caption (optional)</div><input type="text" id="pcap" maxlength="140" placeholder="e.g. Andy finds the water again" aria-label="Caption">
    <div class="fmsg" id="pmsg" role="alert"></div><button class="btn primary" id="savePh" style="margin-top:12px">Pin photo</button>
   </details>
+</div>
+ <div class="panel" id="hNone" style="display:none"><h2>The 19th Hole</h2><p class="about">The notice board belongs to a league. Join or start one first, then pin rounds and photos here.</p><button class="btn primary" id="hgo">Go to League</button></div>
+</section>
+<section id="pL" class="pane">
+ <div class="acct"><span id="acct"></span><button class="btn" id="logout">Log out</button></div>
+ <div class="panel" id="hpanel"><div class="lab">Your handicap index</div><div class="row"><input id="hcp" type="number" step="0.1" inputmode="decimal" placeholder="e.g. 14.2" aria-label="Your handicap index"><button class="btn" id="hsave">Save</button></div><div class="fmsg" id="hmsg" role="alert"></div><p class="about" style="margin:0">Optional. It shows next to your name and is saved with each round you log. League members can see it. Stableford points already account for it, so it does not change the rankings.</p></div>
+ <div id="lMain">
+  <div class="panel" id="lhead"></div>
   <div class="panel" id="rpanel"><h2>Log a round</h2>
    <div id="rforW" style="display:none"><div class="lab">Golfer</div><select id="rfor" aria-label="Golfer"></select></div>
    <div class="lab" style="margin-top:12px">Date</div><input type="date" id="rd" aria-label="Date of round">
@@ -280,6 +285,7 @@ input[type=file]{width:100%;min-height:44px;padding:8px 0;font-size:16px}
 <nav class="nav" aria-label="Sections">
 <button id="tC" aria-current="page"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Courses</button>
 <button id="tM"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Map</button>
+<button id="tH"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1"/><path d="M12 5V3M8 10h8M8 14h5"/></svg>19th Hole</button>
 <button id="tL"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0V4zM8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 13v4M8 20h8"/></svg>League</button>
 </nav>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -535,7 +541,7 @@ function renderMatchForm(){
  updateMres()}
 function renderLeague(){
  const has=myLeagues.length>0;
- $('lMain').style.display=has?'':'none';$('lJoin').open=!has;
+ $('lMain').style.display=has?'':'none';$('hMain').style.display=has?'':'none';$('hNone').style.display=has?'none':'';$('lJoin').open=!has;
  if(me&&document.activeElement!==$('hcp'))$('hcp').value=prof&&prof.handicap!=null?prof.handicap:'';
  $('acct').innerHTML=me?'Signed in as <b>'+esc(prof?prof.display_name:'')+'</b> ('+esc(me.email||'')+')':'';
  if(!has)return;
@@ -682,9 +688,19 @@ const bIds=b=>bplayers.filter(p=>p.booking_id===b.id).map(p=>p.user_id);
 const bLink=id=>redirect()+'?b='+id;
 let bpick=new Set(),pendingB=null,bconf=null;
 try{pendingB=new URLSearchParams(location.search).get('b');if(pendingB){localStorage.setItem('hundredPendingB',pendingB);history.replaceState(null,'',location.pathname+location.hash)}else pendingB=localStorage.getItem('hundredPendingB')}catch(e){}
+let bSeenK='',bSeenAt='';
+const seenKey=()=>'hundredSeenB:'+myId()+':'+curL;
+function seenAt(){const k=seenKey();if(bSeenK!==k){bSeenK=k;try{bSeenAt=localStorage.getItem(k)||''}catch(e){bSeenAt=''}}return bSeenAt}
+const dotAt=()=>{try{return localStorage.getItem(seenKey())||''}catch(e){return ''}};
+const isNewB=(b,at)=>b.play_on>=todayStr()&&b.owner_id!==myId()&&b.created_at>(at===undefined?seenAt():at)&&!bIds(b).includes(myId());
+function markBSeen(){if(!curL||!me)return;const top=bookings.reduce((m,b)=>b.created_at>m?b.created_at:m,'');if(top&&top>dotAt())try{localStorage.setItem(seenKey(),top)}catch(e){}}
+function navDot(){const t=$('tH');if(!t)return;let s=t.querySelector('.nb');if(!s){s=document.createElement('span');s.className='nb';s.setAttribute('aria-hidden','true');t.appendChild(s)}
+ const n=$('pH').classList.contains('on')||!me?0:bookings.filter(x=>isNewB(x,dotAt())).length;s.textContent=n>9?'9+':n;s.hidden=!n;t.setAttribute('aria-label',n?'19th Hole, '+n+' new round'+(n===1?'':'s'):'19th Hole')}
+const _showTab=showTab;showTab=function(t){_showTab(t);const on=t==='H';$('pH').classList.toggle('on',on);if(on)$('tH').setAttribute('aria-current','page');else $('tH').removeAttribute('aria-current');if(on){renderBookings();markBSeen()}navDot()};
+$('tH').onclick=()=>showTab('H');$('hgo').onclick=()=>showTab('L');
 const upcoming=()=>{const t=todayStr();return bookings.filter(b=>b.play_on>=t).sort((x,y)=>(x.play_on+x.tee_time).localeCompare(y.play_on+y.tee_time))};
 function bookingCard(b){
- const past=b.play_on<todayStr();
+ const past=b.play_on<todayStr(),fresh=isNewB(b);
  const ids=bIds(b),left=b.spots-ids.length,mine=ids.includes(myId()),owner=b.owner_id===myId();
  const badge=past?'Played':left<=0?'Full':!b.is_open?'Invite only':left+' spot'+(left===1?'':'s')+' left';
  const names=ids.map(id=>esc(nameOf(id))+(id===b.owner_id?' (organiser)':'')).join(', ');
@@ -697,13 +713,13 @@ function bookingCard(b){
   if(!past)act+='<button class="btn" data-bo="'+b.id+'">'+(b.is_open?'Close joining':'Open joining')+'</button>';
   if(!past)act+=ids.filter(id=>id!==b.owner_id).map(id=>'<button class="btn link" data-brm="'+b.id+'|'+id+'">Remove '+esc(nameOf(id))+'</button>').join('');
   act+='<button class="btn link" data-bx="'+b.id+'">'+(bconf===b.id?'Tap again to cancel for everyone':(past?'Delete round':'Cancel round'))+'</button>'}
- return '<div class="bk npin'+(past?' past':'')+'" id="bk-'+b.id+'"><div class="row" style="justify-content:space-between"><div class="d">'+esc(wdate(b.play_on))+' &middot; '+hhmm(b.tee_time)+'</div><span class="bdg'+(left<=0||!b.is_open?' off':'')+'">'+badge+'</span></div><div class="c">'+esc(b.course_name)+'</div><div class="ln">'+ids.length+' of '+b.spots+' booked: '+names+'</div>'+(b.note?'<div class="ln">'+esc(b.note)+'</div>':'')+(act?'<div class="row wrap2" style="margin-top:8px">'+act+'</div>':'')+'</div>'}
+ return '<div class="bk npin'+(past?' past':'')+'" id="bk-'+b.id+'"><div class="row" style="justify-content:space-between"><div class="d">'+esc(wdate(b.play_on))+' &middot; '+hhmm(b.tee_time)+(fresh?' <span class="bdg new">New</span>':'')+'</div><span class="bdg'+(left<=0||!b.is_open?' off':'')+'">'+badge+'</span></div><div class="c">'+esc(b.course_name)+'</div><div class="ln">'+ids.length+' of '+b.spots+' booked: '+names+'</div>'+(b.note?'<div class="ln">'+esc(b.note)+'</div>':'')+(act?'<div class="row wrap2" style="margin-top:8px">'+act+'</div>':'')+'</div>'}
 function renderBookings(){
  renderBoard();
  const f=$('bpanel'),sig=members.map(m=>m.user_id).join(',');
  if(f.dataset.sig!==sig){bpick=new Set();f.dataset.sig=sig}
  const others=members.filter(m=>m.user_id!==myId());
- $('bpick').innerHTML=others.length?others.map(m=>'<button class="chip" data-bp="'+m.user_id+'" aria-pressed="'+bpick.has(m.user_id)+'">'+esc(nameOf(m.user_id))+'</button>').join(''):'<p class="about" style="margin:0">Invite golfers to the league to add them here.</p>';edges($('bpick'))}
+ $('bpick').innerHTML=others.length?others.map(m=>'<button class="chip" data-bp="'+m.user_id+'" aria-pressed="'+bpick.has(m.user_id)+'">'+esc(nameOf(m.user_id))+'</button>').join(''):'<p class="about" style="margin:0">Invite golfers to the league to add them here.</p>';edges($('bpick'));navDot()}
 function bookErr(e){const t=(e&&e.message||'').toLowerCase();return /full/.test(t)?'Sorry, that round just filled up.':/closed/.test(t)?'The organiser has closed joining for this round.':/past/.test(t)?'That round has already been played.':/not found/.test(t)?'That round is no longer available.':SAVEFAIL}
 const bAfter=async m=>{await loadLeague();renderLeague();if(m)toast(m)};
 $('bd').value=(()=>{const d=new Date(Date.now()+864e5);return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())})();
@@ -741,7 +757,7 @@ async function openPendingBooking(){
   if(r.data&&r.data.league_id!==curL){curL=r.data.league_id;try{localStorage.setItem('hundredLeague',curL)}catch(e){}await loadLeague();renderLeague();b=bookings.find(x=>x.id===pendingB)}}
  try{localStorage.removeItem('hundredPendingB')}catch(e){}
  if(!b){toast('That round is not available to you. If it is in a league you have not joined, join with the invite code from the organiser and the link will open here.');return}
- pendingB=null;showTab('L');
+ pendingB=null;showTab('H');
  const el=$('bk-'+b.id);if(el){el.classList.add('hl');el.scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'})}}
 
 let bfilter='all',bmax=24,purls={},purlsAt=0,pconf=null,bmore=false,lbFocus=null;
