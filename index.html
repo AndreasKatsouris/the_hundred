@@ -140,7 +140,26 @@ button.lb:hover{background:var(--sand)}
 .lb.m{grid-template-columns:36px 1fr 44px 74px 28px}
 .row select{flex:1;min-width:0}
 input[type=time]{width:100%;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
-#bpanel summary{font-family:var(--serif);font-size:1.4rem;font-weight:400}
+#bpanel summary,#ppanel summary{font-family:var(--serif);font-size:1.4rem;font-weight:400}
+.npins{display:flex;flex-direction:column;gap:14px;padding:8px 0}
+.npin{position:relative;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);padding:16px 12px 12px;box-shadow:0 2px 0 var(--line)}
+.npin::before{content:'';position:absolute;top:-6px;left:50%;margin-left:-6px;width:12px;height:12px;border-radius:50%;background:var(--amber);box-shadow:0 1px 0 rgb(0 0 0 / .25)}
+.npin.ph::before{background:var(--crit)}
+.npins .npin:nth-child(odd){transform:rotate(-.4deg)}.npins .npin:nth-child(even){transform:rotate(.4deg)}
+.npin.past{opacity:.85}
+.bk.npin{padding:16px 12px 12px;border-bottom:1px solid var(--line2)}
+.pgal{display:grid;grid-template-columns:1fr 1fr;gap:14px 10px;padding:8px 0;align-items:start}
+.pgal .npin{margin:0;padding:12px 6px 8px}
+.pimg{display:block;width:100%;aspect-ratio:4/3;padding:0;border:0;background:var(--sand);border-radius:var(--r2,6px);overflow:hidden;cursor:pointer}
+.pimg img{width:100%;height:100%;object-fit:cover;display:block}
+.pimg.miss{display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--muted);cursor:default}
+.npin figcaption{padding:6px 4px 0}.npin figcaption .c{font-weight:600;font-size:.9rem}.npin figcaption .ln{font-size:.78rem;color:var(--muted);margin-top:2px}.npin figcaption .btn{min-height:44px;padding:8px 4px}
+#lbx{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px}
+#lbx[hidden]{display:none}
+#lbx .shbk{position:absolute;inset:0;background:rgb(26 24 18 / .88);border:0;padding:0;cursor:pointer}
+#lbx figure{position:relative;margin:0;max-width:100%;text-align:center}#lbx img{max-width:100%;max-height:72dvh;border-radius:var(--r3);display:block;margin:0 auto}
+#lbx figcaption{color:var(--bone);margin-top:8px;font-size:.9rem}#lbx .btn{position:relative}
+input[type=file]{width:100%;min-height:44px;padding:8px 0;font-size:16px}
 .bk{padding:12px 0;border-bottom:1px solid var(--line)}.bk:last-child{border:0}.bk .d{font:600 .95rem var(--mono)}.bk .c{font-weight:600;margin-top:2px}.bk .ln{font-size:.85rem;color:var(--muted);margin-top:2px}
 .bk.hl{background:var(--sand);box-shadow:0 0 0 6px var(--sand);border-radius:var(--r3)}
 .bdg{font-size:.75rem;font-weight:600;background:var(--good);color:#fff;border-radius:var(--r4);padding:4px 10px}.bdg.off{background:var(--muted)}
@@ -179,8 +198,8 @@ input[type=time]{width:100%;min-height:44px;padding:10px 12px;background:var(--c
  <div class="panel" id="hpanel"><div class="lab">Your handicap index</div><div class="row"><input id="hcp" type="number" step="0.1" inputmode="decimal" placeholder="e.g. 14.2" aria-label="Your handicap index"><button class="btn" id="hsave">Save</button></div><div class="fmsg" id="hmsg" role="alert"></div><p class="about" style="margin:0">Optional. It shows next to your name and is saved with each round you log. League members can see it. Stableford points already account for it, so it does not change the rankings.</p></div>
  <div id="lMain">
   <div class="panel" id="lhead"></div>
-  <div class="panel" id="upc"><h2>Upcoming rounds</h2><div id="blist"></div></div>
-  <details class="panel" id="bpanel"><summary>Book a round</summary>
+  <div class="panel" id="upc"><h2>The 19th Hole</h2><p class="about" style="margin:0 0 8px">Your league's notice board. Pin a round, leave a photo.</p><div class="chips" id="bfilter"></div><div id="blist"></div></div>
+  <details class="panel" id="bpanel"><summary>Pin a round</summary>
    <div class="lab" style="margin-top:12px">Date</div><input type="date" id="bd" aria-label="Date of round">
    <div class="lab" style="margin-top:12px">Tee time</div><input type="time" id="bt" value="07:30" aria-label="Tee time">
    <div class="lab" style="margin-top:12px">Course</div><input type="text" id="bc" list="cl" placeholder="Start typing a course" aria-label="Course" autocomplete="off">
@@ -188,7 +207,14 @@ input[type=time]{width:100%;min-height:44px;padding:10px 12px;background:var(--c
    <div class="lab" style="margin-top:12px">Already in with you</div><div class="chips" id="bpick"></div>
    <label class="ck"><input type="checkbox" id="bopen" checked> Let other league members join the free spots</label>
    <div class="lab" style="margin-top:12px">Note (optional)</div><input type="text" id="bnote" maxlength="140" placeholder="e.g. Meet at the halfway house" aria-label="Note">
-   <div class="fmsg" id="bmsg" role="alert"></div><button class="btn primary" id="saveB" style="margin-top:12px">Book round</button>
+   <div class="fmsg" id="bmsg" role="alert"></div><button class="btn primary" id="saveB" style="margin-top:12px">Pin round</button>
+  </details>
+  <details class="panel" id="ppanel"><summary>Pin a photo</summary>
+   <div class="lab" style="margin-top:12px">Photos (up to 4)</div><input type="file" id="pf" accept="image/*" multiple aria-label="Choose photos">
+   <div class="lab" style="margin-top:12px">Course (optional)</div><input type="text" id="pcourse" list="cl" placeholder="Start typing a course" aria-label="Course" autocomplete="off">
+   <div class="lab" style="margin-top:12px">When was this?</div><input type="date" id="pdt" aria-label="Date of round">
+   <div class="lab" style="margin-top:12px">Caption (optional)</div><input type="text" id="pcap" maxlength="140" placeholder="e.g. Andy finds the water again" aria-label="Caption">
+   <div class="fmsg" id="pmsg" role="alert"></div><button class="btn primary" id="savePh" style="margin-top:12px">Pin photo</button>
   </details>
   <div class="panel" id="rpanel"><h2>Log a round</h2>
    <div id="rforW" style="display:none"><div class="lab">Golfer</div><select id="rfor" aria-label="Golfer"></select></div>
@@ -248,6 +274,7 @@ input[type=time]{width:100%;min-height:44px;padding:10px 12px;background:var(--c
  </form>
  <div style="display:flex;justify-content:center"><button type="button" class="btn link" id="aForgot" data-am="forgot">Forgot your password?</button><button type="button" class="btn link" id="aBack" data-am="in" style="display:none">Back to log in</button></div>
 </div></div>
+<div id="lbx" role="dialog" aria-modal="true" aria-label="Photo" hidden><button class="shbk" data-lbc="" aria-label="Close photo"></button><figure><img id="lbimg" alt=""><figcaption id="lbcap"></figcaption></figure><button class="btn" id="lbclose" data-lbc="">Close</button></div>
 <div id="sheet" role="dialog" aria-modal="true" aria-labelledby="shName" hidden><button class="shbk" data-close="" aria-label="Close profile"></button><div class="shp"><div class="shh"><h2 id="shName"></h2><button class="btn" id="shClose" data-close="">Close</button></div><div id="shBody"></div></div></div>
 <div id="toast" role="status"><span id="tmsg"></span><button id="tact"></button></div>
 <nav class="nav" aria-label="Sections">
@@ -266,7 +293,7 @@ const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').m
 let storeOK=true;
 const CFG=window.HUNDRED_CONFIG||{};
 let played=new Set(),fav=new Set(),playedOn={};
-let sb=null,me=null,prof=null,myLeagues=[],curL=null,members=[],profs={},rounds=[],matches=[],bookings=[],bplayers=[];
+let sb=null,me=null,prof=null,myLeagues=[],curL=null,members=[],profs={},rounds=[],matches=[],bookings=[],bplayers=[],photos=[];
 const S={q:'',prov:'',show:'all',view:'cards',sort:'rank',lsort:'avg',board:'ind',season:String(new Date().getFullYear()),mres:''};
 let map=null,layer=null,tileErr=0;
 const dmy=iso=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');return m?m[3]+'/'+m[2]+'/'+m[1]:(iso||'')};
@@ -333,6 +360,12 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  else if(d.mr){S.mres=d.mr;updateMres()}
  else if(d.gp){openProfile(d.gp)}
  else if(d.sl){curL=d.sl;try{localStorage.setItem('hundredLeague',curL)}catch(e){}refreshLeague()}
+ else if(d.bf){bfilter=d.bf;renderBoard()}
+ else if(d.pm){bmax+=24;loadLeague().then(renderLeague)}
+ else if(d.pv){openPhoto(d.pv)}
+ else if(d.pd){deletePhoto(d.pd)}
+ else if(d.ph){const q=d.ph.split('|');openPhotoForm(q[0],q[1])}
+ else if(d.lbc!==undefined){closePhoto()}
  else if(d.bj){joinBooking(d.bj)}
  else if(d.bl){leaveBooking(d.bl)}
  else if(d.bo){toggleBooking(d.bo)}
@@ -418,7 +451,7 @@ async function authSubmit(){
   return authInfo(t.includes('confirm')?'Confirm your email first. Tap the link we sent you, then log in.':'Email or password is not right. Try again or reset your password.','err')}
  await enter(r.data.user)}
 
-function resetData(){played=new Set();fav=new Set();playedOn={};prof=null;myLeagues=[];curL=null;members=[];profs={};rounds=[];matches=[];bookings=[];bplayers=[];render();renderLeague()}
+function resetData(){played=new Set();fav=new Set();playedOn={};prof=null;myLeagues=[];curL=null;members=[];profs={};rounds=[];matches=[];bookings=[];bplayers=[];photos=[];render();renderLeague()}
 async function enter(user){
  me=user;
  let p=await sb.from('profiles').select('*').eq('id',me.id).maybeSingle();
@@ -438,12 +471,13 @@ async function loadMine(){
  curL=myLeagues.some(l=>l.id===saved)?saved:(myLeagues[0]?myLeagues[0].id:null);
  await loadLeague()}
 async function loadLeague(){
- if(!curL){members=[];rounds=[];matches=[];bookings=[];bplayers=[];return}
+ if(!curL){members=[];rounds=[];matches=[];bookings=[];bplayers=[];photos=[];return}
  const [ms,rs,mt]=await Promise.all([sb.from('league_members').select('user_id,role').eq('league_id',curL),sb.from('rounds').select('*').eq('league_id',curL).order('played_on',{ascending:false}),sb.from('matches').select('*').eq('league_id',curL).order('played_on',{ascending:false})]);
  members=ms.data||[];rounds=rs.data||[];matches=mt.error?[]:(mt.data||[]);
  const bk=await sb.from('bookings').select('*').eq('league_id',curL).order('play_on',{ascending:true});bookings=bk.error?[]:(bk.data||[]);bplayers=[];
  if(bookings.length){const bp=await sb.from('booking_players').select('booking_id,user_id').in('booking_id',bookings.map(b=>b.id));bplayers=bp.error?[]:(bp.data||[])}
- const ids=[...new Set(members.map(m=>m.user_id).concat(rounds.map(r=>r.user_id),bplayers.map(p=>p.user_id)))];
+ await loadPhotos();
+ const ids=[...new Set(members.map(m=>m.user_id).concat(rounds.map(r=>r.user_id),bplayers.map(p=>p.user_id),photos.map(p=>p.user_id)))];
  if(ids.length){const ps=await sb.from('profiles').select('*').in('id',ids);profs={};(ps.data||[]).forEach(p=>profs[p.id]=p)}}
 async function refreshLeague(){if(!me)return;await loadLeague();renderLeague()}
 
@@ -650,21 +684,22 @@ let bpick=new Set(),pendingB=null,bconf=null;
 try{pendingB=new URLSearchParams(location.search).get('b');if(pendingB){localStorage.setItem('hundredPendingB',pendingB);history.replaceState(null,'',location.pathname+location.hash)}else pendingB=localStorage.getItem('hundredPendingB')}catch(e){}
 const upcoming=()=>{const t=todayStr();return bookings.filter(b=>b.play_on>=t).sort((x,y)=>(x.play_on+x.tee_time).localeCompare(y.play_on+y.tee_time))};
 function bookingCard(b){
+ const past=b.play_on<todayStr();
  const ids=bIds(b),left=b.spots-ids.length,mine=ids.includes(myId()),owner=b.owner_id===myId();
- const badge=left<=0?'Full':!b.is_open?'Invite only':left+' spot'+(left===1?'':'s')+' left';
+ const badge=past?'Played':left<=0?'Full':!b.is_open?'Invite only':left+' spot'+(left===1?'':'s')+' left';
  const names=ids.map(id=>esc(nameOf(id))+(id===b.owner_id?' (organiser)':'')).join(', ');
  let act='';
- if(!mine&&left>0&&b.is_open)act+='<button class="btn primary" data-bj="'+b.id+'">Join this round</button>';
- if(mine&&!owner)act+='<button class="btn" data-bl="'+b.id+'">Leave round</button>';
+ if(past&&mine)act+='<button class="btn primary" data-ph="'+esc(b.course_name)+'|'+b.play_on+'">Add photos</button>';
+ if(!past&&!mine&&left>0&&b.is_open)act+='<button class="btn primary" data-bj="'+b.id+'">Join this round</button>';
+ if(!past&&mine&&!owner)act+='<button class="btn" data-bl="'+b.id+'">Leave round</button>';
  if(owner){
-  if(left>0&&b.is_open)act+='<button class="btn" data-bs="'+b.id+'">Share on WhatsApp</button><button class="btn" data-bc="'+b.id+'">Copy link</button>';
-  act+='<button class="btn" data-bo="'+b.id+'">'+(b.is_open?'Close joining':'Open joining')+'</button>';
-  act+=ids.filter(id=>id!==b.owner_id).map(id=>'<button class="btn link" data-brm="'+b.id+'|'+id+'">Remove '+esc(nameOf(id))+'</button>').join('');
-  act+='<button class="btn link" data-bx="'+b.id+'">'+(bconf===b.id?'Tap again to cancel for everyone':'Cancel round')+'</button>'}
- return '<div class="bk" id="bk-'+b.id+'"><div class="row" style="justify-content:space-between"><div class="d">'+esc(wdate(b.play_on))+' &middot; '+hhmm(b.tee_time)+'</div><span class="bdg'+(left<=0||!b.is_open?' off':'')+'">'+badge+'</span></div><div class="c">'+esc(b.course_name)+'</div><div class="ln">'+ids.length+' of '+b.spots+' booked: '+names+'</div>'+(b.note?'<div class="ln">'+esc(b.note)+'</div>':'')+(act?'<div class="row wrap2" style="margin-top:8px">'+act+'</div>':'')+'</div>'}
+  if(!past&&left>0&&b.is_open)act+='<button class="btn" data-bs="'+b.id+'">Share on WhatsApp</button><button class="btn" data-bc="'+b.id+'">Copy link</button>';
+  if(!past)act+='<button class="btn" data-bo="'+b.id+'">'+(b.is_open?'Close joining':'Open joining')+'</button>';
+  if(!past)act+=ids.filter(id=>id!==b.owner_id).map(id=>'<button class="btn link" data-brm="'+b.id+'|'+id+'">Remove '+esc(nameOf(id))+'</button>').join('');
+  act+='<button class="btn link" data-bx="'+b.id+'">'+(bconf===b.id?'Tap again to cancel for everyone':(past?'Delete round':'Cancel round'))+'</button>'}
+ return '<div class="bk npin'+(past?' past':'')+'" id="bk-'+b.id+'"><div class="row" style="justify-content:space-between"><div class="d">'+esc(wdate(b.play_on))+' &middot; '+hhmm(b.tee_time)+'</div><span class="bdg'+(left<=0||!b.is_open?' off':'')+'">'+badge+'</span></div><div class="c">'+esc(b.course_name)+'</div><div class="ln">'+ids.length+' of '+b.spots+' booked: '+names+'</div>'+(b.note?'<div class="ln">'+esc(b.note)+'</div>':'')+(act?'<div class="row wrap2" style="margin-top:8px">'+act+'</div>':'')+'</div>'}
 function renderBookings(){
- const u=upcoming();
- $('blist').innerHTML=u.length?u.map(bookingCard).join(''):'<div class="empty"><p>No rounds booked. Book one below, then share it with the group.</p></div>';
+ renderBoard();
  const f=$('bpanel'),sig=members.map(m=>m.user_id).join(',');
  if(f.dataset.sig!==sig){bpick=new Set();f.dataset.sig=sig}
  const others=members.filter(m=>m.user_id!==myId());
@@ -686,8 +721,8 @@ $('saveB').onclick=async()=>{
  $('saveB').disabled=false;
  if(r.error)return setMsg('bmsg',SAVEFAIL);
  setMsg('bmsg','');$('bc').value='';$('bnote').value='';bpick=new Set();$('bpanel').open=false;
- await bAfter('Round booked.');
- const b=bookings.find(x=>x.id===r.data);if(b&&b.is_open&&b.spots>bIds(b).length)toast('Round booked. Share it with the group.','Share',()=>shareBooking(b.id))};
+ await bAfter('Round pinned.');
+ const b=bookings.find(x=>x.id===r.data);if(b&&b.is_open&&b.spots>bIds(b).length)toast('Round pinned. Share it with the group.','Share',()=>shareBooking(b.id))};
 $('bc').addEventListener('input',()=>setMsg('bmsg',''));
 async function joinBooking(id){const r=await sb.rpc('join_booking',{p_booking:id});if(r.error){await bAfter();toast(bookErr(r.error));return}await bAfter('You have joined this round.')}
 async function leaveBooking(id){const r=await sb.from('booking_players').delete().eq('booking_id',id).eq('user_id',myId());if(r.error)return toast(SAVEFAIL);await bAfter('You have left the round.')}
@@ -708,6 +743,77 @@ async function openPendingBooking(){
  if(!b){toast('That round is not available to you. If it is in a league you have not joined, join with the invite code from the organiser and the link will open here.');return}
  pendingB=null;showTab('L');
  const el=$('bk-'+b.id);if(el){el.classList.add('hl');el.scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'})}}
+
+let bfilter='all',bmax=24,purls={},purlsAt=0,pconf=null,bmore=false,lbFocus=null;
+const rand=()=>(window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2,10);
+async function loadPhotos(){
+ if(!curL){photos=[];bmore=false;return}
+ const r=await sb.from('board_photos').select('*').eq('league_id',curL).order('created_at',{ascending:false}).limit(bmax+1);
+ const rows=r.error?[]:(r.data||[]);bmore=rows.length>bmax;photos=rows.slice(0,bmax);
+ if(Date.now()-purlsAt>36e5*4){purls={};purlsAt=Date.now()}
+ const need=photos.map(p=>p.path).filter(p=>!purls[p]);
+ if(need.length){const s=await sb.storage.from('board').createSignedUrls(need,21600);(s.data||[]).forEach(x=>{if(x.signedUrl)purls[x.path]=x.signedUrl})}}
+const daysAgo=d=>Math.round((new Date(todayStr()+'T12:00:00')-new Date(d+'T12:00:00'))/864e5);
+const recentPast=()=>bookings.filter(b=>b.play_on<todayStr()&&daysAgo(b.play_on)<=14).sort((x,y)=>y.play_on.localeCompare(x.play_on));
+function photoPin(p){
+ const mine=p.user_id===myId(),can=mine||iOwn(),url=purls[p.path];
+ const meta=[esc(nameOf(p.user_id)),p.play_on?dmy(p.play_on):dmy(String(p.created_at).slice(0,10))].join(' &middot; ');
+ return '<figure class="npin ph">'+(url?'<button class="pimg" data-pv="'+p.id+'" aria-label="Open photo'+(p.course_name?' from '+esc(p.course_name):'')+'"><img src="'+esc(url)+'" alt="'+esc(p.caption||p.course_name||'Round photo')+'" loading="lazy"></button>':'<div class="pimg miss">Photo unavailable</div>')+
+ '<figcaption>'+(p.course_name?'<div class="c">'+esc(p.course_name)+'</div>':'')+(p.caption?'<div class="ln">'+esc(p.caption)+'</div>':'')+'<div class="ln">'+meta+'</div>'+
+ (can?'<button class="btn link" data-pd="'+p.id+'">'+(pconf===p.id?'Tap again to remove':'Remove photo')+'</button>':'')+'</figcaption></figure>'}
+function renderBoard(){
+ chipRow($('bfilter'),[['all','Everything'],['rounds','Rounds'],['photos','Photos']],bfilter,'data-bf');
+ const up=upcoming(),past=recentPast(),showR=bfilter!=='photos',showP=bfilter!=='rounds';
+ let h='';
+ if(showR){const rs=up.concat(past);h+=rs.length?'<div class="npins">'+rs.map(bookingCard).join('')+'</div>':(bfilter==='rounds'?'<div class="empty"><p>No rounds pinned. Pin one below and share it with the group.</p></div>':'')}
+ if(showP){h+=photos.length?'<div class="pgal">'+photos.map(photoPin).join('')+'</div>'+(bmore?'<button class="btn" data-pm="1" style="width:100%;margin-top:8px">Show older photos</button>':''):(bfilter==='photos'?'<div class="empty"><p>No photos yet. Pin the first one from your last round.</p></div>':'')}
+ if(!h)h='<div class="empty"><p>The board is empty. Pin a round or a photo from your last game.</p></div>';
+ $('blist').innerHTML=h}
+function openPhotoForm(course,date){const f=$('ppanel');f.open=true;if(course)$('pcourse').value=course;if(date)$('pdt').value=date;f.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
+async function shrink(file){
+ let bm;try{bm=await createImageBitmap(file,{imageOrientation:'from-image'})}catch(e){bm=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=URL.createObjectURL(file)})}
+ const w=bm.width||bm.naturalWidth,h=bm.height||bm.naturalHeight,k=Math.min(1,1280/Math.max(w,h));
+ const c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*k));c.height=Math.max(1,Math.round(h*k));c.getContext('2d').drawImage(bm,0,0,c.width,c.height);
+ return new Promise((ok,no)=>c.toBlob(b=>b?ok(b):no(new Error('blob')),'image/jpeg',.82))}
+async function uploadPhotos(files){
+ if(!sb||!curL)return;
+ files=[].slice.call(files||[]);
+ if(!files.length)return setMsg('pmsg','Choose at least one photo.');
+ if(files.length>4)return setMsg('pmsg','Pin up to 4 photos at a time.');
+ const course=$('pcourse').value.trim(),cap=$('pcap').value.trim(),on=$('pdt').value||null;
+ const c=course?D.find(x=>x.name.toLowerCase()===course.toLowerCase()):null;
+ $('savePh').disabled=true;setMsg('pmsg','Pinning '+files.length+' photo'+(files.length===1?'':'s')+'...');
+ let ok=0,bad=0;
+ for(const f of files){
+  try{
+   const blob=await shrink(f);
+   if(blob.size>5242880){bad++;continue}
+   const path=curL+'/'+myId()+'/'+rand()+'.jpg';
+   const up=await sb.storage.from('board').upload(path,blob,{contentType:'image/jpeg'});
+   if(up.error){bad++;continue}
+   const ins=await sb.from('board_photos').insert({league_id:curL,user_id:myId(),course_name:c?c.name:(course||null),caption:cap||null,play_on:on,path});
+   if(ins.error){await sb.storage.from('board').remove([path]);bad++;continue}
+   ok++}catch(e){bad++}}
+ $('savePh').disabled=false;
+ if(!ok){setMsg('pmsg','Those photos could not be read or saved. Try JPEG or PNG and check your signal.');return}
+ setMsg('pmsg','');$('pf').value='';$('pcap').value='';$('pcourse').value='';$('ppanel').open=false;
+ await loadLeague();renderLeague();toast(ok+' photo'+(ok===1?'':'s')+' pinned'+(bad?' ('+bad+' failed)':'')+'.')}
+$('savePh').onclick=()=>uploadPhotos($('pf').files);
+$('pf').onchange=()=>{const n=$('pf').files.length;setMsg('pmsg',n>4?'Pin up to 4 photos at a time.':'')};
+$('pdt').value=todayStr();
+async function deletePhoto(id){
+ if(pconf!==id){pconf=id;renderBoard();return}
+ pconf=null;const p=photos.find(x=>x.id===id);if(!p)return;
+ const r=await sb.from('board_photos').delete().eq('id',id);if(r.error)return toast(SAVEFAIL);
+ await sb.storage.from('board').remove([p.path]);delete purls[p.path];
+ await loadLeague();renderLeague();toast('Photo removed.')}
+function openPhoto(id){
+ const p=photos.find(x=>x.id===id);if(!p||!purls[p.path])return;
+ lbFocus=document.activeElement;$('lbimg').src=purls[p.path];$('lbimg').alt=p.caption||p.course_name||'Round photo';
+ $('lbcap').textContent=[p.course_name,p.caption,nameOf(p.user_id)].filter(Boolean).join(' - ');
+ $('lbx').hidden=false;$('lbclose').focus()}
+function closePhoto(){$('lbx').hidden=true;$('lbimg').removeAttribute('src');if(lbFocus&&lbFocus.focus)lbFocus.focus()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('lbx').hidden)closePhoto()});
 
 render();renderLeague();boot();
 
