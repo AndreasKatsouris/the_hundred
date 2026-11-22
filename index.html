@@ -137,7 +137,7 @@ button.lb:hover{background:var(--sand)}
 .sgrid div{background:var(--cream);border:1px solid var(--line);border-radius:var(--r3);padding:10px;text-align:center}
 .sgrid b{display:block;font:600 1.3rem var(--mono)}.sgrid span{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
 .acct{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:16px 0 0;color:var(--ink2);font-size:.9rem}
-.pgrid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.pgrid2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
 </style></head><body class="gate">
 <div id="splash" role="img" aria-label="The Hundred is loading"><canvas id="sc"></canvas><p class="sn">The Hundred</p><div class="st" id="sp">0%</div><div class="sb"><i id="sbar"></i></div><div class="sk">Tap to skip</div></div>
 <header class="top"><div class="wrap"><h1 class="brandrow"><canvas id="mark" width="72" height="72" aria-hidden="true"></canvas><span>The Hundred</span></h1>
@@ -167,6 +167,7 @@ button.lb:hover{background:var(--sand)}
 
 <section id="pL" class="pane">
  <div class="acct"><span id="acct"></span><button class="btn" id="logout">Log out</button></div>
+ <div class="panel" id="hpanel"><div class="lab">Your handicap index</div><div class="row"><input id="hcp" type="number" step="0.1" inputmode="decimal" placeholder="e.g. 14.2" aria-label="Your handicap index"><button class="btn" id="hsave">Save</button></div><div class="fmsg" id="hmsg" role="alert"></div><p class="about" style="margin:0">Optional. It pre-fills when you log a round and is saved with that round. League members can see it.</p></div>
  <div id="lMain">
   <div class="panel" id="lhead"></div>
   <div class="panel" id="rpanel"><h2>Log a round</h2>
@@ -176,10 +177,10 @@ button.lb:hover{background:var(--sand)}
    <input type="text" id="rcc" list="cl" placeholder="Start typing a course" aria-label="Course" autocomplete="off"><datalist id="cl"></datalist>
    <div class="scroll" id="recent" style="padding-bottom:0"></div>
    <div class="fmsg" id="cmsg" role="alert"></div>
-   <div class="pgrid2"><div><div class="lab">Gross</div><input type="number" inputmode="numeric" id="rg" data-k="g" aria-label="Gross strokes"></div><div><div class="lab">Points</div><input type="number" inputmode="numeric" id="rs" data-k="s" aria-label="Stableford points"></div></div>
+   <div class="pgrid2"><div><div class="lab">Gross</div><input type="number" inputmode="numeric" id="rg" data-k="g" aria-label="Gross strokes"></div><div><div class="lab">Points</div><input type="number" inputmode="numeric" id="rs" data-k="s" aria-label="Stableford points"></div><div><div class="lab">Handicap</div><input type="number" step="0.1" inputmode="decimal" id="rh" data-k="h" aria-label="Handicap used for this round (optional)"></div></div>
    <div class="fmsg" id="smsg" role="alert"></div>
    <button class="btn primary" id="saveR" style="width:100%">Save round</button>
-   <p class="about" style="margin:8px 0 0">Gross is total strokes. Points are Stableford points. Everyone logs their own round; the league owner can log for others.</p>
+   <p class="about" style="margin:8px 0 0">Gross is total strokes. Points are Stableford points. Handicap is optional and powers the Net ranking (gross minus handicap). Everyone logs their own round; the league owner can log for others.</p>
   </div>
   <div class="panel"><h2>Leaderboard</h2>
    <div class="scroll" id="lsort" role="group" aria-label="Rank by"></div>
@@ -396,18 +397,19 @@ async function loadLeague(){
  const [ms,rs]=await Promise.all([sb.from('league_members').select('user_id,role').eq('league_id',curL),sb.from('rounds').select('*').eq('league_id',curL).order('played_on',{ascending:false})]);
  members=ms.data||[];rounds=rs.data||[];
  const ids=[...new Set(members.map(m=>m.user_id).concat(rounds.map(r=>r.user_id)))];
- if(ids.length){const ps=await sb.from('profiles').select('id,display_name').in('id',ids);profs={};(ps.data||[]).forEach(p=>profs[p.id]=p)}}
+ if(ids.length){const ps=await sb.from('profiles').select('*').in('id',ids);profs={};(ps.data||[]).forEach(p=>profs[p.id]=p)}}
 async function refreshLeague(){if(!me)return;await loadLeague();renderLeague()}
 
 function stats(){
- const st={};members.forEach(m=>st[m.user_id]={n:0,tot:0,best:0,wins:0,low:null});
+ const st={};members.forEach(m=>st[m.user_id]={n:0,tot:0,best:0,wins:0,low:null,nn:0,nt:0});
  const g={};rounds.forEach(r=>{const k=r.played_on+'|'+r.course_name.toLowerCase();(g[k]=g[k]||[]).push(r)});
- rounds.forEach(r=>{const a=st[r.user_id];if(!a)return;a.n++;a.tot+=r.points;a.best=Math.max(a.best,r.points);if(a.low==null||r.gross<a.low)a.low=r.gross;
+ rounds.forEach(r=>{const a=st[r.user_id];if(!a)return;a.n++;a.tot+=r.points;a.best=Math.max(a.best,r.points);if(a.low==null||r.gross<a.low)a.low=r.gross;if(r.handicap!=null){a.nn++;a.nt+=r.gross-r.handicap}
   const grp=g[r.played_on+'|'+r.course_name.toLowerCase()],top=Math.max.apply(null,grp.map(x=>x.points));if(grp.length>1&&r.points===top&&top>0)a.wins++});
  return st}
 function renderLeague(){
  const has=myLeagues.length>0;
  $('lMain').style.display=has?'':'none';$('lJoin').open=!has;
+ if(me&&document.activeElement!==$('hcp'))$('hcp').value=prof&&prof.handicap!=null?prof.handicap:'';
  $('acct').innerHTML=me?'Signed in as <b>'+esc(prof?prof.display_name:'')+'</b> ('+esc(me.email||'')+')':'';
  if(!has)return;
  const L=curLeague();if(!L)return;
@@ -417,15 +419,16 @@ function renderLeague(){
  const lsel=$('lsel');if(lsel)edges(lsel);edges($('mlist'));
  const own=iOwn();$('rforW').style.display=own?'':'none';
  if(own){const cur=$('rfor').value||myId();$('rfor').innerHTML=members.map(m=>'<option value="'+m.user_id+'">'+esc(nameOf(m.user_id))+'</option>').join('');$('rfor').value=members.some(m=>m.user_id===cur)?cur:myId()}
+ if(!$('rh').value&&document.activeElement!==$('rh'))fillHcp();
  const rc=[];rounds.forEach(r=>{if(!rc.includes(r.course_name))rc.push(r.course_name)});
  $('recent').innerHTML=rc.slice(0,4).map(c=>'<button class="chip" data-rc="'+esc(c)+'">'+esc(c)+'</button>').join('');edges($('recent'));
- chipRow($('lsort'),[['tot','Total points'],['avg','Average'],['wins','Wins'],['best','Best round'],['low','Lowest gross']],S.lsort,'data-ls');
+ chipRow($('lsort'),[['tot','Total points'],['avg','Average'],['wins','Wins'],['best','Best round'],['low','Lowest gross'],['net','Net average']],S.lsort,'data-ls');
  const st=stats(),k=S.lsort;
- const rows=Object.entries(st).map(([id,a])=>({id,n:a.n,tot:a.tot,avg:a.n?a.tot/a.n:0,best:a.best,wins:a.wins,low:a.low}));
- rows.sort((x,y)=>k==='low'?((x.low==null)-(y.low==null)||x.low-y.low):(y[k]-x[k]||y.tot-x.tot));
+ const rows=Object.entries(st).map(([id,a])=>({id,n:a.n,tot:a.tot,avg:a.n?a.tot/a.n:0,best:a.best,wins:a.wins,low:a.low,net:a.nn?a.nt/a.nn:null}));
+ rows.sort((x,y)=>k==='low'||k==='net'?((x[k]==null)-(y[k]==null)||x[k]-y[k]||y.tot-x.tot):(y[k]-x[k]||y.tot-x.tot));
  if(!rounds.length)$('lb').innerHTML='<div class="empty"><p>No rounds yet. Log the first round above and the table fills in. Share the invite code so your group can join.</p></div>';
- else $('lb').innerHTML='<div class="lb h"><span>#</span><span>Golfer</span><span style="text-align:right">Pts</span><span style="text-align:right">Avg</span><span style="text-align:right">Wins</span></div>'+rows.map((x,i)=>'<button class="lb" data-gp="'+x.id+'" aria-label="View '+esc(nameOf(x.id))+' profile"><span class="pos'+(i===0&&x.n?' lead':'')+'">'+(i+1)+'</span><span class="who"><b>'+esc(nameOf(x.id))+'</b><small>'+x.n+' rd'+(x.n===1?'':'s')+' &middot; best '+x.best+' &middot; low '+(x.low==null?'-':x.low)+'</small></span><span class="num'+(k==='tot'?' k':'')+'">'+x.tot+'</span><span class="num'+(k==='avg'?' k':'')+'">'+x.avg.toFixed(1)+'</span><span class="num'+(k==='wins'?' k':'')+'">'+x.wins+'</span></button>').join('');
- $('hist').innerHTML=rounds.length?rounds.map(r=>'<div class="rnd"><div class="d">'+dmy(r.played_on)+'</div><div class="c">'+esc(r.course_name)+'</div><div class="ln">'+esc(nameOf(r.user_id))+': '+r.gross+' gross, '+r.points+' pts</div>'+(r.created_by===myId()||own?'<button class="btn link" data-dr="'+r.id+'" style="padding-left:0">Delete round</button>':'')+'</div>').join(''):'<div class="empty"><p>Rounds you log will be listed here, newest first.</p></div>'}
+ else $('lb').innerHTML='<div class="lb h"><span>#</span><span>Golfer</span><span style="text-align:right">Pts</span><span style="text-align:right">Avg</span><span style="text-align:right">'+(k==='net'?'Net':'Wins')+'</span></div>'+rows.map((x,i)=>'<button class="lb" data-gp="'+x.id+'" aria-label="View '+esc(nameOf(x.id))+' profile"><span class="pos'+(i===0&&x.n?' lead':'')+'">'+(i+1)+'</span><span class="who"><b>'+esc(nameOf(x.id))+'</b><small>'+x.n+' rd'+(x.n===1?'':'s')+' &middot; best '+x.best+' &middot; low '+(x.low==null?'-':x.low)+(x.net!=null&&k!=='net'?' &middot; net '+x.net.toFixed(1):'')+'</small></span><span class="num'+(k==='tot'?' k':'')+'">'+x.tot+'</span><span class="num'+(k==='avg'?' k':'')+'">'+x.avg.toFixed(1)+'</span><span class="num'+(k==='wins'||k==='net'?' k':'')+'">'+(k==='net'?(x.net==null?'-':x.net.toFixed(1)):x.wins)+'</span></button>').join('');
+ $('hist').innerHTML=rounds.length?rounds.map(r=>'<div class="rnd"><div class="d">'+dmy(r.played_on)+'</div><div class="c">'+esc(r.course_name)+'</div><div class="ln">'+esc(nameOf(r.user_id))+': '+r.gross+' gross'+(r.handicap!=null?' (net '+(r.gross-r.handicap)+', hcp '+r.handicap+')':'')+', '+r.points+' pts</div>'+(r.created_by===myId()||own?'<button class="btn link" data-dr="'+r.id+'" style="padding-left:0">Delete round</button>':'')+'</div>').join(''):'<div class="empty"><p>Rounds you log will be listed here, newest first.</p></div>'}
 
 function copyCode(){const L=curLeague();if(!L)return;
  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(L.invite_code).then(()=>toast('Invite code copied.'),()=>toast('Invite code: '+L.invite_code));else toast('Invite code: '+L.invite_code)}
@@ -433,34 +436,44 @@ function shareCode(){const L=curLeague();if(!L)return;
  window.open('https://wa.me/?text='+encodeURIComponent('Join our golf league "'+L.name+'" on The Hundred: '+redirect()+' Sign up, then enter invite code '+L.invite_code),'_blank','noopener')}
 
 function setMsg(id,m,inp){$(id).textContent=m||'';if(inp)inp.setAttribute('aria-invalid',m?'true':'false')}
-const chkField=(el,kind)=>{if(el.value==='')return '';const v=+el.value;if(kind==='g'&&(v<30||v>200))return 'Gross looks off. Enter total strokes for the round, between 30 and 200.';if(kind==='s'&&(v<0||v>80))return 'Points look off. Stableford points for a round are usually between 0 and 60.';return ''};
+const chkField=(el,kind)=>{if(el.value==='')return '';const v=+el.value;if(kind==='g'&&(v<30||v>200))return 'Gross looks off. Enter total strokes for the round, between 30 and 200.';if(kind==='s'&&(v<0||v>80))return 'Points look off. Stableford points for a round are usually between 0 and 60.';if(kind==='h'&&(v<-10||v>54))return 'Handicap looks off. Use your handicap index, between -10 and 54.';return ''};
 $('rd').value=new Date().toISOString().slice(0,10);
 $('cl').innerHTML=D.map(c=>'<option value="'+esc(c.name)+'">').join('');
-['rg','rs'].forEach(id=>{$(id).addEventListener('blur',e=>setMsg('smsg',chkField(e.target,e.target.dataset.k),e.target));$(id).addEventListener('input',e=>{if($('smsg').textContent&&!chkField(e.target,e.target.dataset.k))setMsg('smsg','',e.target)})});
+['rg','rs','rh'].forEach(id=>{$(id).addEventListener('blur',e=>setMsg('smsg',chkField(e.target,e.target.dataset.k),e.target));$(id).addEventListener('input',e=>{if($('smsg').textContent&&!chkField(e.target,e.target.dataset.k))setMsg('smsg','',e.target)})});
 $('rcc').addEventListener('input',()=>setMsg('cmsg','',$('rcc')));
+function hcpOf(uid){const p=uid===myId()?prof:profs[uid];return p&&p.handicap!=null?p.handicap:null}
+function fillHcp(){const uid=iOwn()?($('rfor').value||myId()):myId(),h=hcpOf(uid);$('rh').value=h==null?'':h}
+$('rfor').addEventListener('change',fillHcp);
+$('hsave').onclick=async()=>{
+ if(!sb||!me)return;const el=$('hcp'),m=chkField(el,'h');if(m){setMsg('hmsg',m,el);return}
+ const v=el.value===''?null:+el.value;$('hsave').disabled=true;const r=await sb.from('profiles').update({handicap:v}).eq('id',me.id);$('hsave').disabled=false;
+ if(r.error){setMsg('hmsg',SAVEFAIL,el);return}
+ setMsg('hmsg','',el);prof.handicap=v;if(profs[me.id])profs[me.id].handicap=v;fillHcp();toast(v==null?'Handicap cleared.':'Handicap saved.')};
+$('hcp').addEventListener('input',()=>{if($('hmsg').textContent&&!chkField($('hcp'),'h'))setMsg('hmsg','',$('hcp'))});
 $('saveR').onclick=async()=>{
  if(!sb||!curL)return;
  const name=$('rcc').value.trim();if(!name){setMsg('cmsg','Pick or type the course you played.',$('rcc'));return}
- const g=$('rg'),s=$('rs');const m=chkField(g,'g')||chkField(s,'s');if(m){setMsg('smsg',m);return}
+ const g=$('rg'),s=$('rs'),hh=$('rh');const m=chkField(g,'g')||chkField(s,'s')||chkField(hh,'h');if(m){setMsg('smsg',m);return}
  if(g.value===''||s.value===''){setMsg('smsg','Enter both gross strokes and Stableford points.');return}
  const uid=iOwn()?($('rfor').value||myId()):myId(),date=$('rd').value;
  if(!date){setMsg('smsg','Pick the date you played.');return}
  const c=D.find(x=>x.name.toLowerCase()===name.toLowerCase());
  if(rounds.some(r=>r.user_id===uid&&r.played_on===date&&r.course_name.toLowerCase()===name.toLowerCase())){setMsg('smsg',nameOf(uid)+' already has a round at that course on that date. Delete the old one first if it was a mistake.');return}
  const btn=$('saveR');btn.disabled=true;
- const res=await sb.from('rounds').insert({league_id:curL,user_id:uid,played_on:date,course_rank:c?c.rank:null,course_name:c?c.name:name,gross:+g.value,points:+s.value,created_by:myId()});
+ const row={league_id:curL,user_id:uid,played_on:date,course_rank:c?c.rank:null,course_name:c?c.name:name,gross:+g.value,points:+s.value,created_by:myId()};if(hh.value!=='')row.handicap=+hh.value;
+ const res=await sb.from('rounds').insert(row);
  btn.disabled=false;
  if(res.error){setMsg('smsg',SAVEFAIL);return}
  let extra='';
  if(c&&uid===myId()&&!played.has(c.rank)){const pr=await sb.from('played').upsert({user_id:myId(),course_rank:c.rank,played_on:date},{onConflict:'user_id,course_rank',ignoreDuplicates:true});if(!pr.error){played.add(c.rank);playedOn[c.rank]=date;extra=' and '+c.name+' ticked as played'}}
  setMsg('smsg','');setMsg('cmsg','');$('rcc').value='';g.value='';s.value='';
- await loadLeague();renderLeague();render();toast('Round saved'+extra+'.')};
+ await loadLeague();renderLeague();fillHcp();render();toast('Round saved'+extra+'.')};
 async function deleteRound(id){
  const r=rounds.find(x=>x.id===id);if(!r)return;
  const res=await sb.from('rounds').delete().eq('id',id);
  if(res.error){toast(SAVEFAIL);return}
  await loadLeague();renderLeague();
- toast('Round deleted.','Undo',async()=>{const row={league_id:r.league_id,user_id:r.user_id,played_on:r.played_on,course_rank:r.course_rank,course_name:r.course_name,gross:r.gross,points:r.points,created_by:myId()};const x=await sb.from('rounds').insert(row);if(x.error)toast(SAVEFAIL);else{await loadLeague();renderLeague()}})}
+ toast('Round deleted.','Undo',async()=>{const row={league_id:r.league_id,user_id:r.user_id,played_on:r.played_on,course_rank:r.course_rank,course_name:r.course_name,gross:r.gross,points:r.points,created_by:myId()};if(r.handicap!=null)row.handicap=r.handicap;const x=await sb.from('rounds').insert(row);if(x.error)toast(SAVEFAIL);else{await loadLeague();renderLeague()}})}
 
 $('jgo').onclick=async()=>{
  const code=$('jc').value.trim();if(!code){setMsg('jmsg','Type the invite code your organiser sent you.',$('jc'));return}
@@ -484,7 +497,7 @@ async function openProfile(uid){
  if(r.error){$('shBody').innerHTML='<div class="banner err" role="alert">Could not load this profile. Check your signal and try again.</div>';return}
  const rows=(r.data||[]).filter(x=>D[x.course_rank-1]).sort((a,b)=>a.course_rank-b.course_rank),a=stats()[uid]||{n:0,tot:0,best:0,wins:0,low:null},L=curLeague();
  $('shBody').innerHTML=(L?'<p class="about" style="margin:0 0 12px">'+(uid===myId()?'Your profile':'Member of '+esc(L.name))+'</p>':'')+
-  '<div class="sgrid"><div><b>'+rows.length+'</b><span>of 100 played</span></div><div><b>'+a.n+'</b><span>rounds</span></div><div><b>'+a.tot+'</b><span>points</span></div><div><b>'+(a.n?(a.tot/a.n).toFixed(1):'-')+'</b><span>average</span></div><div><b>'+a.wins+'</b><span>wins</span></div><div><b>'+(a.low==null?'-':a.low)+'</b><span>low gross</span></div></div>'+
+  '<div class="sgrid"><div><b>'+rows.length+'</b><span>of 100 played</span></div><div><b>'+a.n+'</b><span>rounds</span></div><div><b>'+a.tot+'</b><span>points</span></div><div><b>'+(a.n?(a.tot/a.n).toFixed(1):'-')+'</b><span>average</span></div><div><b>'+a.wins+'</b><span>wins</span></div><div><b>'+(a.low==null?'-':a.low)+'</b><span>low gross</span></div><div><b>'+(hcpOf(uid)==null?'-':hcpOf(uid))+'</b><span>handicap</span></div><div><b>'+(a.nn?(a.nt/a.nn).toFixed(1):'-')+'</b><span>net average</span></div><div><b>'+a.best+'</b><span>best round</span></div></div>'+
   '<div class="prog" aria-hidden="true" style="margin:12px 0"><i style="width:'+rows.length+'%"></i></div>'+
   (rows.length?'<table class="ltable">'+rows.map(x=>{const c=D[x.course_rank-1];return '<tr><td class="r">'+c.rank+'</td><td class="nm"><b>'+esc(c.name)+'</b><span class="s">'+esc(c.town)+', '+c.province+(x.played_on?' &middot; '+dmy(x.played_on):'')+'</span></td></tr>'}).join('')+'</table>':'<div class="empty"><p>No courses ticked yet.</p></div>')+
   '<p class="about">Self-reported by the golfer.</p>'}
