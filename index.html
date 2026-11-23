@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en-ZA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="en-ZA"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-RnI0/3ixXZc3RP03MX+03FGLA6Y5X24qIVxMLUFW1Ok=' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://uqyseljsxwdeikmoapxu.supabase.co https://unpkg.com; connect-src 'self' https://uqyseljsxwdeikmoapxu.supabase.co wss://uqyseljsxwdeikmoapxu.supabase.co; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Hundred</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#1a1812"><link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
 :root{
 --bone:#f7f4ec;--sand:#efeadd;--cream:#fbf9f3;
@@ -123,7 +124,7 @@ body.gate main,body.gate nav.nav,body.gate header.top{visibility:hidden}
 #aTabs{display:flex;gap:8px;margin-top:16px}#aTabs .btn{flex:1;border-radius:var(--r3)}#aTabs .btn[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bone)}
 #aMsg:empty{display:none}
 #aHint{font-size:.8rem;color:var(--muted);margin:6px 0 0}
-input[type=email],input[type=password]{width:100%;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
+input[type=email],input[type=password],input[type=date]{width:100%;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
 input[aria-invalid=true]{border-color:var(--crit)}
 .code{font:600 1.3rem var(--mono);letter-spacing:3px;background:var(--sand);border:1px solid var(--line2);border-radius:var(--r3);padding:8px 14px}
 button.lb{width:100%;background:none;border:0;border-bottom:1px solid var(--line);text-align:left;cursor:pointer;min-height:44px;font:inherit}
@@ -140,7 +141,6 @@ button.lb:hover{background:var(--sand)}
 .lb.m{grid-template-columns:36px 1fr 44px 74px 28px}
 .row select{flex:1;min-width:0}
 input[type=time]{width:100%;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
-#bpanel summary,#ppanel summary{font-family:var(--serif);font-size:1.4rem;font-weight:400}
 .npins{display:flex;flex-direction:column;gap:14px;padding:8px 0}
 .npin{position:relative;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);padding:16px 12px 12px;box-shadow:0 2px 0 var(--line)}
 .npin::before{content:'';position:absolute;top:-6px;left:50%;margin-left:-6px;width:12px;height:12px;border-radius:50%;background:var(--amber);box-shadow:0 1px 0 rgb(0 0 0 / .25)}
@@ -166,6 +166,29 @@ input[type=file]{width:100%;min-height:44px;padding:8px 0;font-size:16px}
 .wrap2{flex-wrap:wrap}.chips{display:flex;gap:8px;flex-wrap:wrap}
 .ck{display:flex;align-items:center;gap:10px;min-height:44px;margin-top:12px;cursor:pointer}.ck input{width:22px;height:22px;min-height:0;flex:0 0 auto}
 .pgrid2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+:root{--good:#4a6339;--muted:#605b4d}
+label.lab{display:block}
+summary{font-family:var(--serif);font-size:1.4rem;font-weight:400}
+input[type=text],input[type=number],input[type=date]{max-width:100%}
+.dh{font-size:.8rem;color:var(--muted);margin-top:4px;min-height:1.2em}
+.about{overflow-wrap:anywhere}
+.bdgs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.bgx{background:var(--cream);border:1px solid var(--line);border-radius:var(--r3);padding:10px}
+.bgx b{display:block;font-size:.9rem}.bgx span{display:block;font:600 .8rem var(--mono);color:var(--muted);margin-top:2px}.bgx small{display:block;font-size:.75rem;color:var(--muted);margin-top:4px}
+.bgx.on{background:var(--sand);border-color:var(--good)}.bgx.on span{color:var(--good)}
+.cardimg{display:block;width:100%;height:auto;border:1px solid var(--line2);border-radius:var(--r3)}
+.cmc{font:400 1.5rem var(--serif);margin-top:6px}
+#shMine{border-bottom:1px solid var(--line2);margin-bottom:12px;padding-bottom:12px}
+#shMine details{margin:8px 0 0}#shMine summary{font-size:1.15rem;min-height:44px;display:flex;align-items:center}
+#shMine .set{margin-top:12px}
+#shMine input[type=text],#shMine input[type=number]{width:100%;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
+#auth input[type=text]{width:100%;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
+#aInvite{margin-top:12px}
+#aCode{letter-spacing:4px;font-family:var(--mono)}
+#auth .btn.link{width:auto;margin-top:8px}
+.rnd.redit{background:var(--sand);border-radius:var(--r3);padding:12px}
+.rnd.redit input[type=text],.rnd.redit input[type=number],.rnd.redit input[type=date]{width:100%;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
+.lbh{display:flex;align-items:center;justify-content:space-between;gap:8px}
 </style></head><body class="gate">
 <div id="splash" role="img" aria-label="The Hundred is loading"><canvas id="sc"></canvas><p class="sn">The Hundred</p><div class="st" id="sp">0%</div><div class="sb"><i id="sbar"></i></div><div class="sk">Tap to skip</div></div>
 <header class="top"><div class="wrap"><h1 class="brandrow"><canvas id="mark" width="72" height="72" aria-hidden="true"></canvas><span>The Hundred</span></h1>
@@ -195,68 +218,70 @@ input[type=file]{width:100%;min-height:44px;padding:8px 0;font-size:16px}
 
 <section id="pH" class="pane">
  <div id="hMain">
+  <div class="panel" id="cmpanel"></div>
   <div class="panel" id="upc"><h2>The 19th Hole</h2><p class="about" style="margin:0 0 8px">Your league's notice board. Pin a round, leave a photo.</p><div class="chips" id="bfilter"></div><div id="blist"></div></div>
   <details class="panel" id="bpanel"><summary>Pin a round</summary>
-   <div class="lab" style="margin-top:12px">Date</div><input type="date" id="bd" aria-label="Date of round">
-   <div class="lab" style="margin-top:12px">Tee time</div><input type="time" id="bt" value="07:30" aria-label="Tee time">
-   <div class="lab" style="margin-top:12px">Course</div><input type="text" id="bc" list="cl" placeholder="Start typing a course" aria-label="Course" autocomplete="off">
-   <div class="lab" style="margin-top:12px">Spots in the group</div><select id="bspots" aria-label="Spots in the group"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>
+   <label class="lab" for="bd" style="margin-top:12px">Date</label><input type="date" id="bd" data-dh="bdh"><div class="dh" id="bdh" aria-live="polite"></div>
+   <label class="lab" for="bt" style="margin-top:12px">Tee time</label><input type="time" id="bt" value="07:30">
+   <label class="lab" for="bc" style="margin-top:12px">Course</label><input type="text" id="bc" list="cl" placeholder="Start typing a course" autocomplete="off">
+   <label class="lab" for="bspots" style="margin-top:12px">Spots in the group</label><select id="bspots"><option>2</option><option>3</option><option>4</option><option selected>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>
    <div class="lab" style="margin-top:12px">Already in with you</div><div class="chips" id="bpick"></div>
    <label class="ck"><input type="checkbox" id="bopen" checked> Let other league members join the free spots</label>
-   <div class="lab" style="margin-top:12px">Note (optional)</div><input type="text" id="bnote" maxlength="140" placeholder="e.g. Meet at the halfway house" aria-label="Note">
+   <label class="lab" for="bnote" style="margin-top:12px">Note (optional)</label><input type="text" id="bnote" maxlength="140" placeholder="e.g. Meet at the halfway house">
    <div class="fmsg" id="bmsg" role="alert"></div><button class="btn primary" id="saveB" style="margin-top:12px">Pin round</button>
   </details>
   <details class="panel" id="ppanel"><summary>Pin a photo</summary>
-   <div class="lab" style="margin-top:12px">Photos (up to 4)</div><input type="file" id="pf" accept="image/*" multiple aria-label="Choose photos">
-   <div class="lab" style="margin-top:12px">Course (optional)</div><input type="text" id="pcourse" list="cl" placeholder="Start typing a course" aria-label="Course" autocomplete="off">
-   <div class="lab" style="margin-top:12px">When was this?</div><input type="date" id="pdt" aria-label="Date of round">
-   <div class="lab" style="margin-top:12px">Caption (optional)</div><input type="text" id="pcap" maxlength="140" placeholder="e.g. Andy finds the water again" aria-label="Caption">
+   <label class="lab" for="pf" style="margin-top:12px">Photos (up to 4)</label><input type="file" id="pf" accept="image/*" multiple>
+   <label class="lab" for="pcourse" style="margin-top:12px">Course (optional)</label><input type="text" id="pcourse" list="cl" placeholder="Start typing a course" autocomplete="off">
+   <label class="lab" for="pdt" style="margin-top:12px">When was this?</label><input type="date" id="pdt" data-dh="pdh"><div class="dh" id="pdh" aria-live="polite"></div>
+   <label class="lab" for="pcap" style="margin-top:12px">Caption (optional)</label><input type="text" id="pcap" maxlength="140" placeholder="e.g. Andy finds the water again">
    <div class="fmsg" id="pmsg" role="alert"></div><button class="btn primary" id="savePh" style="margin-top:12px">Pin photo</button>
   </details>
 </div>
  <div class="panel" id="hNone" style="display:none"><h2>The 19th Hole</h2><p class="about">The notice board belongs to a league. Join or start one first, then pin rounds and photos here.</p><button class="btn primary" id="hgo">Go to League</button></div>
 </section>
 <section id="pL" class="pane">
- <div class="acct"><span id="acct"></span><button class="btn" id="logout">Log out</button></div>
- <div class="panel" id="hpanel"><div class="lab">Your handicap index</div><div class="row"><input id="hcp" type="number" step="0.1" inputmode="decimal" placeholder="e.g. 14.2" aria-label="Your handicap index"><button class="btn" id="hsave">Save</button></div><div class="fmsg" id="hmsg" role="alert"></div><p class="about" style="margin:0">Optional. It shows next to your name and is saved with each round you log. League members can see it. Stableford points already account for it, so it does not change the rankings.</p></div>
+ <datalist id="cl"></datalist>
+ <div class="acct"><span id="acct"></span><button class="btn" id="meBtn" data-gp="x">Profile and settings</button></div>
+ <div id="pwa"></div>
  <div id="lMain">
   <div class="panel" id="lhead"></div>
-  <div class="panel" id="rpanel"><h2>Log a round</h2>
-   <div id="rforW" style="display:none"><div class="lab">Golfer</div><select id="rfor" aria-label="Golfer"></select></div>
-   <div class="lab" style="margin-top:12px">Date</div><input type="date" id="rd" aria-label="Date of round">
-   <div class="lab" style="margin-top:12px">Course</div>
-   <input type="text" id="rcc" list="cl" placeholder="Start typing a course" aria-label="Course" autocomplete="off"><datalist id="cl"></datalist>
-   <div class="scroll" id="recent" style="padding-bottom:0"></div>
-   <div class="fmsg" id="cmsg" role="alert"></div>
-   <div class="pgrid2"><div><div class="lab">Gross</div><input type="number" inputmode="numeric" id="rg" data-k="g" aria-label="Gross strokes"></div><div><div class="lab">Points</div><input type="number" inputmode="numeric" id="rs" data-k="s" aria-label="Stableford points"></div><div><div class="lab">Handicap</div><input type="number" step="0.1" inputmode="decimal" id="rh" data-k="h" aria-label="Handicap used for this round (optional)"></div></div>
-   <div class="fmsg" id="smsg" role="alert"></div>
-   <button class="btn primary" id="saveR" style="width:100%">Save round</button>
-   <p class="about" style="margin:8px 0 0">Gross is total strokes. Points are Stableford points. Handicap is optional and for the record only. Everyone logs their own round; the league owner can log for others.</p>
-  </div>
-  <div class="panel" id="mform"><h2>Log a match</h2>
-   <div class="lab">Date</div><input type="date" id="md" aria-label="Match date">
-   <div class="lab" style="margin-top:12px">Course (optional)</div><input type="text" id="mc" list="cl" placeholder="Start typing a course" aria-label="Match course (optional)" autocomplete="off">
-   <div class="lab" style="margin-top:12px">Side A</div><div class="row"><select id="ma1" aria-label="Side A golfer"></select><select id="ma2" aria-label="Side A partner (optional)"></select></div>
-   <div class="lab" style="margin-top:12px">Side B</div><div class="row"><select id="mb1" aria-label="Side B golfer"></select><select id="mb2" aria-label="Side B partner (optional)"></select></div>
-   <div class="lab" style="margin-top:12px">Result</div><div class="scroll" id="mres" role="group" aria-label="Result" style="padding-top:4px"></div>
-   <div class="fmsg" id="mmsg" role="alert"></div>
-   <button class="btn primary" id="saveM" style="width:100%">Save match</button>
-   <p class="about" style="margin:8px 0 0">Win is 3 points each for the winning side, halved is 1 point each, loss is 0. For a 1v1, leave both partner boxes empty.</p>
-  </div>
-  <div class="panel"><h2>Leaderboard</h2>
+  <div class="panel"><div class="lbh"><h2>Leaderboard</h2><button class="btn" id="lrefresh" data-rf="1">Refresh</button></div>
    <div class="scroll" id="lboard" role="group" aria-label="Leaderboard type"></div>
    <div class="scroll" id="lseason" role="group" aria-label="Season" style="padding-top:0"></div>
    <div class="scroll" id="lsort" role="group" aria-label="Rank by" style="padding-top:0"></div>
    <div id="lb"></div></div>
   <div class="panel"><h2>Rounds</h2><div id="hist"></div></div>
   <div class="panel"><h2>Matches</h2><div id="mhist"></div></div>
+  <details class="panel" id="rpanel"><summary>Log a round</summary>
+   <div id="rforW" style="display:none"><label class="lab" for="rfor" style="margin-top:12px">Golfer</label><select id="rfor"></select></div>
+   <label class="lab" for="rd" style="margin-top:12px">Date</label><input type="date" id="rd" data-dh="rdh"><div class="dh" id="rdh" aria-live="polite"></div>
+   <label class="lab" for="rcc" style="margin-top:12px">Course</label>
+   <input type="text" id="rcc" list="cl" placeholder="Start typing a course" autocomplete="off">
+   <div class="scroll" id="recent" style="padding-bottom:0"></div>
+   <div class="fmsg" id="cmsg" role="alert"></div>
+   <div class="pgrid2"><div><label class="lab" for="rg">Gross</label><input type="number" inputmode="numeric" id="rg" data-k="g"></div><div><label class="lab" for="rs">Points</label><input type="number" inputmode="numeric" id="rs" data-k="s"></div><div><label class="lab" for="rh">Handicap</label><input type="number" step="0.1" inputmode="decimal" id="rh" data-k="h"></div></div>
+   <div class="fmsg" id="smsg" role="alert"></div>
+   <button class="btn primary" id="saveR" style="width:100%">Save round</button>
+   <p class="about" style="margin:8px 0 0">Gross is total strokes. Points are Stableford points. Handicap is optional and for the record only. Everyone logs their own round; the league owner can log for others.</p>
+  </details>
+  <details class="panel" id="mpanel"><summary>Log a match</summary><div id="mform">
+   <label class="lab" for="md" style="margin-top:12px">Date</label><input type="date" id="md" data-dh="mdh"><div class="dh" id="mdh" aria-live="polite"></div>
+   <label class="lab" for="mc" style="margin-top:12px">Course (optional)</label><input type="text" id="mc" list="cl" placeholder="Start typing a course" autocomplete="off">
+   <label class="lab" for="ma1" style="margin-top:12px">Side A</label><div class="row"><select id="ma1" aria-label="Side A golfer"></select><select id="ma2" aria-label="Side A partner (optional)"></select></div>
+   <label class="lab" for="mb1" style="margin-top:12px">Side B</label><div class="row"><select id="mb1" aria-label="Side B golfer"></select><select id="mb2" aria-label="Side B partner (optional)"></select></div>
+   <div class="lab" style="margin-top:12px">Result</div><div class="scroll" id="mres" role="group" aria-label="Result" style="padding-top:4px"></div>
+   <div class="fmsg" id="mmsg" role="alert"></div>
+   <button class="btn primary" id="saveM" style="width:100%">Save match</button>
+   <p class="about" style="margin:8px 0 0">Win is 3 points each for the winning side, halved is 1 point each, loss is 0. For a 1v1, leave both partner boxes empty.</p>
+  </div></details>
  </div>
  <details class="panel" id="lJoin"><summary>Join or start a league</summary>
-  <div class="lab" style="margin-top:8px">Join with an invite code</div>
-  <div class="row"><input id="jc" type="text" placeholder="6-character code" aria-label="Invite code" maxlength="12" autocomplete="off" autocapitalize="characters"><button class="btn" id="jgo">Join</button></div>
+  <label class="lab" for="jc" style="margin-top:8px">Join with an invite code</label>
+  <div class="row"><input id="jc" type="text" placeholder="Invite code" maxlength="12" autocomplete="off" autocapitalize="characters"><button class="btn" id="jgo">Join</button></div>
   <div class="fmsg" id="jmsg" role="alert"></div>
-  <div class="lab" style="margin-top:8px">Or start a new league</div>
-  <div class="row"><input id="cn" type="text" placeholder="League name" aria-label="League name" maxlength="40" autocomplete="off"><button class="btn primary" id="cgo">Create</button></div>
+  <label class="lab" for="cn" style="margin-top:8px">Or start a new league</label>
+  <div class="row"><input id="cn" type="text" placeholder="League name" maxlength="40" autocomplete="off"><button class="btn primary" id="cgo">Create</button></div>
   <div class="fmsg" id="cmsg2" role="alert"></div>
   <p class="about">You become the owner and get an invite code to share with your group.</p>
  </details>
@@ -268,19 +293,21 @@ input[type=file]{width:100%;min-height:44px;padding:8px 0;font-size:16px}
 
 <div id="auth" role="dialog" aria-modal="true" aria-labelledby="aTitle"><div class="box">
  <div class="brandrow"><span style="font-family:var(--serif);font-size:1.6rem">The Hundred</span></div>
- <h2 id="aTitle">Welcome back</h2><p class="lead">Track the SA Top 100 with your golf group.</p>
- <div id="aTabs" role="group" aria-label="Account"><button type="button" class="btn" data-am="in" aria-pressed="true">Log in</button><button type="button" class="btn" data-am="up" aria-pressed="false">Create account</button></div>
+ <h2 id="aTitle">Sign in to The Hundred</h2><p class="lead" id="aLead">Track the SA Top 100 with your golf group.</p>
+ <div id="aInvite" class="panel" style="display:none"><p class="about" style="margin:0">You have been invited to a league. Sign in and you will be added automatically.</p></div>
+ <div id="aTabs" role="group" aria-label="Account"><button type="button" class="btn" data-am="in" aria-pressed="false">Log in</button><button type="button" class="btn" data-am="up" aria-pressed="false">Create account</button></div>
  <form id="aForm" novalidate>
-  <div id="aNameW" style="display:none"><label for="aName">Your name</label><input id="aName" type="text" maxlength="40" autocomplete="name" placeholder="As your group knows you"></div>
+  <div id="aNameW" style="display:none"><label for="aName" id="aNameL">Your name</label><input id="aName" type="text" maxlength="40" autocomplete="name" placeholder="As your group knows you"></div>
   <div id="aEmailW"><label for="aEmail">Email</label><input id="aEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false"></div>
   <div id="aPassW"><label for="aPass" id="aPassL">Password</label><input id="aPass" type="password" autocomplete="current-password"><p id="aHint" style="display:none">At least 8 characters (0/8). Avoid your name or email.</p></div>
   <div id="aMsg" role="status" style="margin-top:12px"></div>
-  <button type="submit" class="btn primary" id="aGo">Log in</button>
+  <button type="submit" class="btn primary" id="aGo">Email me a sign-in link</button>
  </form>
- <div style="display:flex;justify-content:center"><button type="button" class="btn link" id="aForgot" data-am="forgot">Forgot your password?</button><button type="button" class="btn link" id="aBack" data-am="in" style="display:none">Back to log in</button></div>
+ <div id="aCodeW" style="display:none"><label for="aCode">Code from the email</label><input id="aCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="Type the code"><button type="button" class="btn primary" id="aVerify">Sign in with code</button></div>
+ <div style="display:flex;justify-content:center;flex-wrap:wrap"><button type="button" class="btn link" id="aLink" data-am="link" style="display:none">Email me a sign-in link instead</button><button type="button" class="btn link" id="aPwd" data-am="in">Use a password instead</button><button type="button" class="btn link" id="aForgot" data-am="forgot" style="display:none">Forgot your password?</button><button type="button" class="btn link" id="aBack" data-am="in" style="display:none">Back to log in</button></div>
 </div></div>
 <div id="lbx" role="dialog" aria-modal="true" aria-label="Photo" hidden><button class="shbk" data-lbc="" aria-label="Close photo"></button><figure><img id="lbimg" alt=""><figcaption id="lbcap"></figcaption></figure><button class="btn" id="lbclose" data-lbc="">Close</button></div>
-<div id="sheet" role="dialog" aria-modal="true" aria-labelledby="shName" hidden><button class="shbk" data-close="" aria-label="Close profile"></button><div class="shp"><div class="shh"><h2 id="shName"></h2><button class="btn" id="shClose" data-close="">Close</button></div><div id="shBody"></div></div></div>
+<div id="sheet" role="dialog" aria-modal="true" aria-labelledby="shName" hidden><button class="shbk" data-close="" aria-label="Close profile"></button><div class="shp"><div class="shh"><h2 id="shName"></h2><button class="btn" id="shClose" data-close="">Close</button></div><div id="shMine" hidden><div id="shCard"></div><details class="set"><summary>Settings and account</summary><label class="lab" for="hcp" style="margin-top:12px">Your handicap index</label><div class="row"><input id="hcp" type="number" step="0.1" inputmode="decimal" placeholder="e.g. 14.2"><button class="btn" id="hsave">Save</button></div><div class="fmsg" id="hmsg" role="alert"></div><p class="about" style="margin:0">Optional. It shows next to your name and is saved with each round you log. League members can see it. Stableford points already account for it, so it does not change the rankings.</p><label class="lab" for="dn" style="margin-top:12px">Display name</label><div class="row"><input id="dn" type="text" maxlength="40" autocomplete="name"><button class="btn" id="dsave">Save</button></div><div class="fmsg" id="dmsg" role="alert"></div><div id="shLeague"></div><button class="btn" id="logout" style="margin-top:12px">Log out</button></details></div><div id="shBody"></div></div></div>
 <div id="toast" role="status"><span id="tmsg"></span><button id="tact"></button></div>
 <nav class="nav" aria-label="Sections">
 <button id="tC" aria-current="page"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Courses</button>
@@ -288,8 +315,8 @@ input[type=file]{width:100%;min-height:44px;padding:8px 0;font-size:16px}
 <button id="tH"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1"/><path d="M12 5V3M8 10h8M8 14h5"/></svg>19th Hole</button>
 <button id="tL"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0V4zM8 6H5v1a3 3 0 0 0 3 3M16 6h3v1a3 3 0 0 1-3 3M12 13v4M8 20h8"/></svg>League</button>
 </nav>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o" crossorigin="anonymous"></script>
 <script src="config.js"></script>
 <script>
 const D=[{"rank":1,"name":"The Links at Fancourt","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.963,"lng":22.461},{"rank":2,"name":"Blair Atholl","town":"Lanseria","region":"","province":"Gauteng","inferred":false,"lat":-25.94,"lng":27.93},{"rank":3,"name":"Pearl Valley","town":"Near Paarl","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.73,"lng":18.97},{"rank":4,"name":"Durban Country Club","town":"Durban","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.85,"lng":31.02},{"rank":5,"name":"Leopard Creek","town":"Malelane","region":"","province":"Mpumalanga","inferred":false,"lat":-25.49,"lng":31.51},{"rank":6,"name":"Arabella","town":"Near Kleinmond","region":"","province":"Western Cape","inferred":false,"lat":-34.34,"lng":19.03},{"rank":7,"name":"St Francis Links","town":"St Francis Bay","region":"","province":"Eastern Cape","inferred":false,"lat":-34.17,"lng":24.83},{"rank":8,"name":"Glendower","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2,"lng":28.04},{"rank":9,"name":"Sishen","town":"Kathu","region":"","province":"Northern Cape","inferred":false,"lat":-27.7,"lng":23.05},{"rank":10,"name":"Gary Player CC","town":"Sun City","region":"","province":"North West","inferred":false,"lat":-25.34,"lng":27.09},{"rank":11,"name":"Elements","town":"Near Bela Bela","region":"","province":"Limpopo","inferred":false,"lat":-24.88,"lng":28.29},{"rank":12,"name":"Royal Johannesburg (East)","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2199,"lng":28.0417},{"rank":13,"name":"Pezula","town":"Knysna","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.04,"lng":23.05},{"rank":14,"name":"Fancourt Montagu","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.9829,"lng":22.4627},{"rank":15,"name":"Pinnacle Point","town":"Mossel Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.18,"lng":22.14},{"rank":16,"name":"The Club at Steyn City","town":"Fourways","region":"","province":"Gauteng","inferred":false,"lat":-26.01,"lng":28.01},{"rank":17,"name":"East London","town":"East London","region":"","province":"Eastern Cape","inferred":false,"lat":-33.02,"lng":27.91},{"rank":18,"name":"Zimbali","town":"Ballito","region":"KZN North Coast","province":"KwaZulu-Natal","inferred":false,"lat":-29.54,"lng":31.21},{"rank":19,"name":"Humewood","town":"Port Elizabeth","region":"","province":"Eastern Cape","inferred":false,"lat":-33.96,"lng":25.6},{"rank":20,"name":"Champagne Sports Resort","town":"Central Drakensberg","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.03,"lng":29.38},{"rank":21,"name":"Highland Gate","town":"Near Dullstroom","region":"","province":"Mpumalanga","inferred":false,"lat":-25.42,"lng":30.11},{"rank":22,"name":"Pretoria Country Club","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.75,"lng":28.19},{"rank":23,"name":"Simola","town":"Knysna","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.0599,"lng":23.0517},{"rank":24,"name":"Erinvale","town":"Somerset West","region":"","province":"Western Cape","inferred":false,"lat":-34.08,"lng":18.84},{"rank":25,"name":"Royal Johannesburg (West)","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.181,"lng":28.0546},{"rank":26,"name":"Fancourt Outeniqua","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.944,"lng":22.4756},{"rank":27,"name":"CCJ Woodmead","town":"Sandton","region":"","province":"Gauteng","inferred":false,"lat":-26.11,"lng":28.06},{"rank":28,"name":"Houghton","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2049,"lng":28.0124},{"rank":29,"name":"George Golf Club","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.9679,"lng":22.4334},{"rank":30,"name":"Parkview","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2172,"lng":28.067},{"rank":31,"name":"Prince's Grant","town":"KwaDukuza","region":"KZN North Coast","province":"KwaZulu-Natal","inferred":false,"lat":-29.33,"lng":31.29},{"rank":32,"name":"De Zalze","town":"Stellenbosch","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.93,"lng":18.86},{"rank":33,"name":"Victoria","town":"Pietermaritzburg","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.6,"lng":30.38},{"rank":34,"name":"CCJ Rocklands","town":"Sandton","region":"","province":"Gauteng","inferred":false,"lat":-26.1299,"lng":28.0617},{"rank":35,"name":"Hermanus – East Course","town":"Hermanus","region":"","province":"Western Cape","inferred":false,"lat":-34.42,"lng":19.24},{"rank":36,"name":"Kyalami","town":"Midrand","region":"","province":"Gauteng","inferred":false,"lat":-25.99,"lng":28.13},{"rank":37,"name":"Eye of Africa","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1652,"lng":28.0306},{"rank":38,"name":"Pecanwood","town":"Hartbeespoort Dam","region":"","province":"North West","inferred":false,"lat":-25.73,"lng":27.9},{"rank":39,"name":"Maccauvlei","town":"Vereeniging","region":"","province":"Free State","inferred":false,"lat":-26.67,"lng":27.93},{"rank":40,"name":"Ebotse Links","town":"Benoni","region":"","province":"Gauteng","inferred":false,"lat":-26.19,"lng":28.32},{"rank":41,"name":"Serengeti (Signature)","town":"Kempton Park","region":"","province":"Gauteng","inferred":false,"lat":-26.1,"lng":28.23},{"rank":42,"name":"Modderfontein","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2355,"lng":28.0216},{"rank":43,"name":"Woodhill","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.7699,"lng":28.1917},{"rank":44,"name":"Randpark Firethorn","town":"Randburg","region":"","province":"Gauteng","inferred":false,"lat":-26.09,"lng":28},{"rank":45,"name":"Cotswold Downs","town":"Hillcrest","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.78,"lng":30.76},{"rank":46,"name":"Royal Cape","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.93,"lng":18.42},{"rank":47,"name":"Bryanston","town":"Sandton","region":"","province":"Gauteng","inferred":false,"lat":-26.091,"lng":28.0746},{"rank":48,"name":"Steenberg","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.9499,"lng":18.4217},{"rank":49,"name":"Killarney","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1849,"lng":28.0813},{"rank":50,"name":"San Lameer","town":"Near Southbroom","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.91,"lng":30.3},{"rank":51,"name":"Plettenberg Bay CC","town":"Plettenberg Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.05,"lng":23.37},{"rank":52,"name":"Wild Coast","town":"Near Port Edward","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-31.05,"lng":30.22},{"rank":53,"name":"Wingate Park","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.731,"lng":28.2046},{"rank":54,"name":"The Woods at Mount Edgecombe","town":"Umhlanga","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.73,"lng":31.08},{"rank":55,"name":"Clovelly","town":"Fish Hoek","region":"","province":"Western Cape","inferred":false,"lat":-34.14,"lng":18.43},{"rank":56,"name":"Gowrie Farm","town":"Nottingham Road","region":"KZN Midlands","province":"KwaZulu-Natal","inferred":false,"lat":-29.35,"lng":29.99},{"rank":57,"name":"Stellenbosch","town":"Stellenbosch","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.9499,"lng":18.8617},{"rank":58,"name":"Atlantic Beach Links","town":"Melkbosstrand","region":"","province":"Western Cape","inferred":false,"lat":-33.73,"lng":18.45},{"rank":59,"name":"Zebula","town":"Near Bela Bela","region":"","province":"Limpopo","inferred":false,"lat":-24.8999,"lng":28.2917},{"rank":60,"name":"Wanderers","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1817,"lng":27.9956},{"rank":61,"name":"Dainfern","town":"Fourways","region":"","province":"Gauteng","inferred":false,"lat":-26.0299,"lng":28.0117},{"rank":62,"name":"The Lakes at Mount Edgecombe","town":"Umhlanga","region":"","province":"KwaZulu-Natal","inferred":false,"lat":-29.7499,"lng":31.0817},{"rank":63,"name":"Eagle Canyon","town":"Honeydew","region":"","province":"Gauteng","inferred":false,"lat":-26.08,"lng":27.92},{"rank":64,"name":"Goldfields West","town":"Carletonville","region":"","province":"Gauteng","inferred":false,"lat":-26.36,"lng":27.4},{"rank":65,"name":"Irene","town":"Centurion","region":"","province":"Gauteng","inferred":false,"lat":-25.86,"lng":28.19},{"rank":66,"name":"Krugersdorp","town":"Krugersdorp","region":"","province":"Gauteng","inferred":false,"lat":-26.1,"lng":27.77},{"rank":67,"name":"Ruimsig","town":"Roodepoort","region":"","province":"Gauteng","inferred":false,"lat":-26.16,"lng":27.87},{"rank":68,"name":"Waterkloof Golf Club","town":"Pretoria","region":"","province":"Gauteng","inferred":false,"lat":-25.7549,"lng":28.1624},{"rank":69,"name":"Paarl (Old Course)","town":"Paarl","region":"Winelands","province":"Western Cape","inferred":false,"lat":-33.7499,"lng":18.9717},{"rank":70,"name":"Knysna Golf Club","town":"Knysna","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.021,"lng":23.0646},{"rank":71,"name":"Oubaai","town":"Herold's Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.04,"lng":22.4},{"rank":72,"name":"Reading Country Club","town":"Alberton","region":"","province":"Gauteng","inferred":false,"lat":-26.27,"lng":28.12},{"rank":73,"name":"Umhlali","town":"Ballito","region":"KZN North Coast","province":"KwaZulu-Natal","inferred":false,"lat":-29.5599,"lng":31.2117},{"rank":74,"name":"Mbombela","town":"Mbombela","region":"","province":"Mpumalanga","inferred":false,"lat":-25.47,"lng":30.97},{"rank":75,"name":"Glenvista","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.2471,"lng":28.0621},{"rank":76,"name":"Parys","town":"Parys","region":"","province":"Free State","inferred":false,"lat":-26.9,"lng":27.46},{"rank":77,"name":"Lost City","town":"Sun City","region":"","province":"North West","inferred":false,"lat":-25.3599,"lng":27.0917},{"rank":78,"name":"Mossel Bay Golf Club","town":"Mossel Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.1999,"lng":22.1417},{"rank":79,"name":"Umdoni Park","town":"Pennington","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.38,"lng":30.69},{"rank":80,"name":"St Francis Bay","town":"St Francis Bay","region":"","province":"Eastern Cape","inferred":false,"lat":-34.1899,"lng":24.8317},{"rank":81,"name":"Goose Valley","town":"Plettenberg Bay","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-34.0699,"lng":23.3717},{"rank":82,"name":"Centurion","town":"Centurion","region":"","province":"Gauteng","inferred":false,"lat":-25.8799,"lng":28.1917},{"rank":83,"name":"King David Mowbray","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.911,"lng":18.4346},{"rank":84,"name":"Royal Port Alfred","town":"Port Alfred","region":"","province":"Eastern Cape","inferred":false,"lat":-33.59,"lng":26.89},{"rank":85,"name":"Katberg","town":"Near Fort Beaufort","region":"","province":"Eastern Cape","inferred":false,"lat":-32.78,"lng":26.63},{"rank":86,"name":"Olivewood","town":"Chintsa East","region":"","province":"Eastern Cape","inferred":false,"lat":-32.84,"lng":28.12},{"rank":87,"name":"Selborne Park","town":"Pennington","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.3999,"lng":30.6917},{"rank":88,"name":"Benoni CC","town":"Benoni","region":"","province":"Gauteng","inferred":false,"lat":-26.2099,"lng":28.3217},{"rank":89,"name":"Kingswood","town":"George","region":"Garden Route","province":"Western Cape","inferred":true,"lat":-33.9802,"lng":22.488},{"rank":90,"name":"Kambaku","town":"Komatipoort","region":"","province":"Mpumalanga","inferred":false,"lat":-25.43,"lng":31.95},{"rank":91,"name":"Westlake","town":"Cape Town","region":"","province":"Western Cape","inferred":false,"lat":-33.9349,"lng":18.3924},{"rank":92,"name":"Port Elizabeth Golf Club","town":"Port Elizabeth","region":"","province":"Eastern Cape","inferred":false,"lat":-33.9799,"lng":25.6017},{"rank":93,"name":"Jackal Creek","town":"Honeydew","region":"","province":"Gauteng","inferred":false,"lat":-26.0999,"lng":27.9217},{"rank":94,"name":"Wedgewood","town":"Port Elizabeth","region":"","province":"Eastern Cape","inferred":false,"lat":-33.941,"lng":25.6146},{"rank":95,"name":"Huddle Park","town":"Johannesburg","region":"","province":"Gauteng","inferred":false,"lat":-26.1466,"lng":28.0567},{"rank":96,"name":"Bloemfontein","town":"Bloemfontein","region":"","province":"Free State","inferred":false,"lat":-29.12,"lng":26.21},{"rank":97,"name":"Bosch Hoek","town":"Near Howick","region":"KZN Midlands","province":"KwaZulu-Natal","inferred":false,"lat":-29.48,"lng":30.23},{"rank":98,"name":"Emfuleni","town":"Vanderbijlpark","region":"","province":"Gauteng","inferred":false,"lat":-26.71,"lng":27.84},{"rank":99,"name":"Southbroom","town":"Southbroom","region":"KZN South Coast","province":"KwaZulu-Natal","inferred":false,"lat":-30.9299,"lng":30.3017},{"rank":100,"name":"Somerset West CC","town":"Somerset West","region":"","province":"Western Cape","inferred":false,"lat":-34.0999,"lng":18.8417}];
@@ -298,8 +325,11 @@ const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 let storeOK=true;
 const CFG=window.HUNDRED_CONFIG||{};
+const pad2=n=>String(n).padStart(2,'0');
+const todayStr=()=>{const d=new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())};
 let played=new Set(),fav=new Set(),playedOn={};
 let sb=null,me=null,prof=null,myLeagues=[],curL=null,members=[],profs={},rounds=[],matches=[],bookings=[],bplayers=[],photos=[];
+const longDate=d=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(d||''))return '';const x=new Date(d+'T12:00:00');return isNaN(x)?'':x.toLocaleDateString('en-ZA',{weekday:'long',day:'numeric',month:'long',year:'numeric'})};
 const S={q:'',prov:'',show:'all',view:'cards',sort:'rank',lsort:'avg',board:'ind',season:String(new Date().getFullYear()),mres:''};
 let map=null,layer=null,tileErr=0;
 const dmy=iso=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');return m?m[3]+'/'+m[2]+'/'+m[1]:(iso||'')};
@@ -383,7 +413,23 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  else if(d.bx){cancelBooking(d.bx)}
  else if(d.brm){const q=d.brm.split('|');removeFromBooking(q[0],q[1])}
  else if(d.bp){bpick.has(d.bp)?bpick.delete(d.bp):bpick.add(d.bp);renderBookings()}
- else if(d.am){authMode=d.am;renderAuth()}
+ else if(d.am){authMode=d.am;linkSent=false;renderAuth()}
+ else if(d.re){startRoundEdit(d.re)}
+ else if(d.res){saveRoundEdit(d.res)}
+ else if(d.rec){stopRoundEdit()}
+ else if(d.rsh){const r=rounds.find(x=>x.id===d.rsh);if(r)shareRecap(r)}
+ else if(d.lv){leaveLeague()}
+ else if(d.rr){regenerateCode()}
+ else if(d.gc){makeCard()}
+ else if(d.gs){shareCard()}
+ else if(d.gd){saveCard()}
+ else if(d.gw){shareCardText()}
+ else if(d.cm){pinAt(+d.cm)}
+ else if(d.cl){logAt(+d.cl)}
+ else if(d.lr){openLog()}
+ else if(d.rf){manualRefresh()}
+ else if(d.pi){installApp()}
+ else if(d.px){dismissNudge()}
  else if(d.cp){copyCode()}
  else if(d.sh){shareCode()}
  else if(d.close!==undefined){closeProfile()}
@@ -398,19 +444,35 @@ const nameOf=id=>id===myId()?(prof?prof.display_name:'You'):(profs[id]?profs[id]
 const curLeague=()=>myLeagues.find(l=>l.id===curL)||null;
 const iOwn=()=>members.some(m=>m.user_id===myId()&&m.role==='owner');
 const SAVEFAIL='That did not save. Check your signal and try again.';
+function errMsg(e){
+ if(!e)return SAVEFAIL;
+ const c=String(e.code||''),t=String(e.message||'').toLowerCase();
+ if(/too many attempts/.test(t))return 'Too many wrong codes. Wait an hour, then try again.';
+ if(/not signed in|jwt|session/.test(t))return 'Your session has expired. Log in again.';
+ if(c==='42501'||/row-level security|permission denied|not the owner|not owner/.test(t))return 'You do not have permission to do that. If you only just joined this league, close and reopen the app, then try again.';
+ if(c==='42P01'||c==='42883'||c==='PGRST202'||c==='PGRST205'||/schema cache|does not exist|could not find the function/.test(t))return 'That feature is not switched on yet. The latest database update still needs to run.';
+ if(c==='23505'||/duplicate key/.test(t))return 'That is already saved.';
+ if(c==='23514'||c==='22003'||/check constraint|out of range/.test(t))return 'A number is outside the allowed range. Check gross, points and handicap.';
+ if(!c&&/fetch|network|load failed|timeout/.test(t))return SAVEFAIL;
+ return 'That did not save. Try again, and tell the organiser if it keeps failing.'}
+const cleanCode=v=>String(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12);
+let pendingJ=null;
+try{const q=new URLSearchParams(location.search),j=q.get('join');
+ if(j){pendingJ=cleanCode(j);if(pendingJ)localStorage.setItem('hundredPendingJoin',pendingJ);q.delete('join');const rest=q.toString();history.replaceState(null,'',location.pathname+(rest?'?'+rest:'')+location.hash)}
+ else pendingJ=localStorage.getItem('hundredPendingJoin')||null}catch(e){}
 
 function apply(kind,n,on){const s=kind==='p'?played:fav;on?s.add(n):s.delete(n);render();if(map)map.closePopup()}
 async function togglePlayedOrFav(kind,n){
  if(!sb||!me)return;
- const tbl=kind==='p'?'played':'wishlist',was=(kind==='p'?played:fav).has(n);
+ const tbl=kind==='p'?'played':'wishlist',was=(kind==='p'?played:fav).has(n),before=new Set(played);
  apply(kind,n,!was);
  const res=was?await sb.from(tbl).delete().eq('user_id',me.id).eq('course_rank',n):await sb.from(tbl).upsert({user_id:me.id,course_rank:n},{onConflict:'user_id,course_rank',ignoreDuplicates:true});
- if(res.error){apply(kind,n,was);toast(SAVEFAIL);return}
- if(kind==='p'){if(was)delete playedOn[n];toast((was?'Removed ':'Ticked ')+D[n-1].name+(was?' from played.':' as played.'),'Undo',()=>togglePlayedOrFav('p',n))}
+ if(res.error){apply(kind,n,was);toast(errMsg(res.error));return}
+ if(kind==='p'){if(was)delete playedOn[n];const bg=!was?badgeGain(before,played):'';toast((was?'Removed ':'Ticked ')+D[n-1].name+(was?' from played.':' as played.')+(bg?' Milestone unlocked: '+bg+'.':''),'Undo',()=>togglePlayedOrFav('p',n))}
 }
 
 function showAuth(on){$('auth').style.display=on?'flex':'none';document.body.classList.toggle('gate',on||!me)}
-let authMode='in';
+let authMode='link',linkSent=false;
 const COMMON=['password','password1','12345678','123456789','qwertyui','qwerty123','iloveyou','golfgolf','letmein1','welcome1'];
 const emailOK=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
 function passMsg(){
@@ -422,18 +484,30 @@ function passMsg(){
  return ''}
 function authInfo(m,kind){$('aMsg').className=kind==='ok'?'banner ok':kind==='err'?'banner err':'';$('aMsg').textContent=m||'';if(kind==='err')$('aMsg').setAttribute('role','alert');else $('aMsg').setAttribute('role','status')}
 function renderAuth(){
- const reset=authMode==='reset',up=authMode==='up',forgot=authMode==='forgot';
- $('aTabs').style.display=reset||forgot?'none':'flex';
+ const reset=authMode==='reset',up=authMode==='up',forgot=authMode==='forgot',link=authMode==='link',pw=authMode==='in'||up;
+ $('aTabs').style.display=reset||forgot||link?'none':'flex';
  document.querySelectorAll('#aTabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.am===authMode));
- $('aNameW').style.display=up?'':'none';$('aEmailW').style.display=reset?'none':'';$('aPassW').style.display=forgot?'none':'';
+ $('aNameW').style.display=up||link?'':'none';$('aNameL').textContent=link?'Your name (first time only)':'Your name';
+ $('aEmailW').style.display=reset?'none':'';$('aPassW').style.display=forgot||link?'none':'';
  $('aHint').style.display=up||reset?'':'none';$('aForgot').style.display=authMode==='in'?'':'none';$('aBack').style.display=forgot?'':'none';
+ $('aLink').style.display=pw?'':'none';$('aPwd').style.display=link?'':'none';
+ $('aCodeW').style.display=link&&linkSent?'':'none';
+ $('aInvite').style.display=pendingJ&&!reset?'':'none';
  $('aPassL').textContent=reset?'New password':'Password';
- $('aGo').textContent=reset?'Save new password':up?'Create account':forgot?'Email me a reset link':'Log in';
+ $('aGo').textContent=reset?'Save new password':up?'Create account':forgot?'Email me a reset link':link?(linkSent?'Send a new link':'Email me a sign-in link'):'Log in';
  $('aPass').autocomplete=up||reset?'new-password':'current-password';
- $('aTitle').textContent=reset?'Choose a new password':forgot?'Reset your password':up?'Create your account':'Welcome back';
- authInfo('');['aName','aEmail','aPass'].forEach(i=>$(i).removeAttribute('aria-invalid'))}
+ $('aTitle').textContent=reset?'Choose a new password':forgot?'Reset your password':up?'Create your account':link?(pendingJ?'Join your league':'Sign in to The Hundred'):'Welcome back';
+ $('aLead').textContent=link?'No password needed. We email you a sign-in link and a code. New here? This creates your account.':'Track the SA Top 100 with your golf group.';
+ authInfo('');['aName','aEmail','aPass','aCode'].forEach(i=>$(i).removeAttribute('aria-invalid'))}
 function fieldErr(id,msg){authInfo(msg,'err');const el=$(id);el.setAttribute('aria-invalid','true');el.focus()}
 const redirect=()=>location.href.split('#')[0].split('?')[0];
+async function verifyCode(){
+ if(!sb)return;const email=$('aEmail').value.trim(),tok=$('aCode').value.replace(/\D/g,'');
+ if(!emailOK(email))return fieldErr('aEmail','Enter the email address the code was sent to.');
+ if(tok.length<6)return fieldErr('aCode','Type the code from the email. It is at least 6 digits.');
+ const b=$('aVerify');b.disabled=true;const r=await sb.auth.verifyOtp({email,token:tok,type:'email'});b.disabled=false;
+ if(r.error||!r.data||!r.data.user)return fieldErr('aCode','That code is not right or has expired. Use the newest email, or send a new link.');
+ $('aCode').value='';linkSent=false;await enter(r.data.user)}
 async function authSubmit(){
  if(!sb){authInfo('Sign-in is not available right now. Check your signal and reopen the app.','err');return}
  const email=$('aEmail').value.trim(),pass=$('aPass').value,name=$('aName').value.trim();
@@ -443,6 +517,12 @@ async function authSubmit(){
   if(r.error)return authInfo('Could not save the new password. Open the reset link in your email again and retry.','err');
   authMode='in';$('aPass').value='';const s=await sb.auth.getSession();if(s.data&&s.data.session)await enter(s.data.session.user);else renderAuth();toast('Password updated.');return}
  if(!emailOK(email))return fieldErr('aEmail','That email address does not look right. Check it and try again.');
+ if(authMode==='link'){
+  const tok=$('aCode').value.replace(/\D/g,'');if(linkSent&&tok.length>=6)return verifyCode();
+  const opt={shouldCreateUser:true,emailRedirectTo:redirect()+(pendingJ?'?join='+encodeURIComponent(pendingJ):'')};if(name)opt.data={display_name:name};
+  go.disabled=true;const r=await sb.auth.signInWithOtp({email,options:opt});go.disabled=false;
+  if(r.error){const t=(r.error.message||'').toLowerCase();return authInfo(t.includes('rate')||t.includes('seconds')?'Too many emails sent just now. Wait a minute and try again.':'Could not send the email. Check the address and your signal, then try again.','err')}
+  linkSent=true;renderAuth();authInfo('Check your inbox. Tap the link in the email, or type the code from it below.','ok');$('aCode').focus();return}
  if(authMode==='forgot'){go.disabled=true;await sb.auth.resetPasswordForEmail(email,{redirectTo:redirect()});go.disabled=false;
   return authInfo('If that email has an account, a reset link is on its way. Check your inbox.','ok')}
  if(authMode==='up'){
@@ -460,7 +540,7 @@ async function authSubmit(){
   return authInfo(t.includes('confirm')?'Confirm your email first. Tap the link we sent you, then log in.':'Email or password is not right. Try again or reset your password.','err')}
  await enter(r.data.user)}
 
-function resetData(){played=new Set();fav=new Set();playedOn={};prof=null;myLeagues=[];curL=null;members=[];profs={};rounds=[];matches=[];bookings=[];bplayers=[];photos=[];render();renderLeague()}
+function resetData(){unsubRT();lconf=null;redit=null;rdraft=null;played=new Set();fav=new Set();playedOn={};prof=null;myLeagues=[];curL=null;members=[];profs={};rounds=[];matches=[];bookings=[];bplayers=[];photos=[];render();renderLeague()}
 async function enter(user){
  me=user;
  let p=await sb.from('profiles').select('*').eq('id',me.id).maybeSingle();
@@ -469,7 +549,7 @@ async function enter(user){
  prof=p.data;
  await loadMine();
  showAuth(false);document.body.classList.remove('gate');
- render();renderLeague();await openPendingBooking()}
+ linkSent=false;$('aCode').value='';render();renderLeague();await consumePendingJoin();await openPendingBooking()}
 async function loadMine(){
  const [pl,wl,ms]=await Promise.all([sb.from('played').select('course_rank,played_on').eq('user_id',me.id),sb.from('wishlist').select('course_rank').eq('user_id',me.id),sb.from('league_members').select('league_id,role').eq('user_id',me.id)]);
  played=new Set((pl.data||[]).map(r=>r.course_rank));playedOn={};(pl.data||[]).forEach(r=>{if(r.played_on)playedOn[r.course_rank]=r.played_on});
@@ -480,15 +560,15 @@ async function loadMine(){
  curL=myLeagues.some(l=>l.id===saved)?saved:(myLeagues[0]?myLeagues[0].id:null);
  await loadLeague()}
 async function loadLeague(){
- if(!curL){members=[];rounds=[];matches=[];bookings=[];bplayers=[];photos=[];return}
+ if(!curL){members=[];rounds=[];matches=[];bookings=[];bplayers=[];photos=[];syncRT();return}
  const [ms,rs,mt]=await Promise.all([sb.from('league_members').select('user_id,role').eq('league_id',curL),sb.from('rounds').select('*').eq('league_id',curL).order('played_on',{ascending:false}),sb.from('matches').select('*').eq('league_id',curL).order('played_on',{ascending:false})]);
  members=ms.data||[];rounds=rs.data||[];matches=mt.error?[]:(mt.data||[]);
  const bk=await sb.from('bookings').select('*').eq('league_id',curL).order('play_on',{ascending:true});bookings=bk.error?[]:(bk.data||[]);bplayers=[];
  if(bookings.length){const bp=await sb.from('booking_players').select('booking_id,user_id').in('booking_id',bookings.map(b=>b.id));bplayers=bp.error?[]:(bp.data||[])}
  await loadPhotos();
  const ids=[...new Set(members.map(m=>m.user_id).concat(rounds.map(r=>r.user_id),bplayers.map(p=>p.user_id),photos.map(p=>p.user_id)))];
- if(ids.length){const ps=await sb.from('profiles').select('*').in('id',ids);profs={};(ps.data||[]).forEach(p=>profs[p.id]=p)}}
-async function refreshLeague(){if(!me)return;await loadLeague();renderLeague()}
+ if(ids.length){const ps=await sb.from('profiles').select('*').in('id',ids);profs={};(ps.data||[]).forEach(p=>profs[p.id]=p)}
+ lastRef=Date.now();syncRT()}
 
 const MINR=3;
 const yr=d=>String(d).slice(0,4);
@@ -511,13 +591,23 @@ function pairs(){
   [['a',m.side_a],['b',m.side_b]].forEach(([sd,ids])=>{const k=ids.slice().sort();const a=p[k.join('|')]=p[k.join('|')]||{ids:k,n:0,w:0,h:0,l:0,pts:0};tally(a,sd,m.result)})});
  return Object.values(p)}
 const hcpTxt=uid=>{const h=hcpOf(uid);return h==null?'':' &middot; hcp '+h};
-function indBoard(){
- const k=S.lsort,st=stats();
- const rows=Object.entries(st).map(([id,a])=>({id,n:a.n,tot:a.tot,avg:a.n?a.tot/a.n:0,best:a.best,wins:a.wins,low:a.low,q:k!=='avg'||a.n>=MINR}));
- if(!rows.some(x=>x.n))return '<div class="empty"><p>No rounds '+(S.season==='all'?'yet':'in '+S.season+' yet')+'. Log a round above and the table fills in. Share the invite code so your group can join.</p></div>';
+function indRows(k0){
+ k0=k0||S.lsort;const st=stats();
+ const rows=Object.entries(st).map(([id,a])=>({id,n:a.n,tot:a.tot,avg:a.n?a.tot/a.n:0,best:a.best,wins:a.wins,low:a.low}));
+ const fb=k0==='avg'&&!rows.some(x=>x.n>=MINR),k=fb?'tot':k0;
+ rows.forEach(x=>{x.q=k!=='avg'||x.n>=MINR});
  rows.sort((x,y)=>(y.q-x.q)||(k==='low'?((x.low==null)-(y.low==null)||x.low-y.low||y.tot-x.tot):(y[k]-x[k]||y.tot-x.tot)));
+ return {rows,k,fb}}
+function rankInfo(uid,season){
+ const s0=S.season;S.season=season||String(new Date().getFullYear());let r;try{r=indRows('avg').rows}finally{S.season=s0}if(!r.some(x=>x.n))return null;
+ let pos=0,mine=null;r.forEach(x=>{if(x.q)pos++;if(x.id===uid&&x.q&&x.n)mine=pos});
+ return {pos:mine,of:r.filter(x=>x.q&&x.n).length}}
+function indBoard(){
+ const {rows,k,fb}=indRows(),k0=S.lsort;
+ if(!rows.some(x=>x.n))return '<div class="empty"><p>No rounds '+(S.season==='all'?'yet':'in '+S.season+' yet')+'. Log the first one and the table fills in. Invite your group so there is someone to beat.</p><button class="btn primary" data-lr="1">Log a round</button></div>';
  let pos=0;
- return '<p class="about" style="margin:0 0 8px">'+seasonLabel()+(k==='avg'?'. Ranked by average Stableford points. You need '+MINR+' rounds to be ranked.':'')+'</p><div class="lb h"><span>#</span><span>Golfer</span><span style="text-align:right">Avg</span><span style="text-align:right">Pts</span><span style="text-align:right">Wins</span></div>'+rows.map(x=>{
+ const note=k0==='avg'?(fb?'. Ranked by total points until someone has '+MINR+' rounds, then by average.':'. Ranked by average Stableford points. You need '+MINR+' rounds to be ranked.'):'';
+ return '<p class="about" style="margin:0 0 8px">'+seasonLabel()+note+'</p><div class="lb h"><span>#</span><span>Golfer</span><span style="text-align:right">Avg</span><span style="text-align:right">Pts</span><span style="text-align:right">Wins</span></div>'+rows.map(x=>{
   const p=x.q?++pos:null,need=MINR-x.n;
   return '<button class="lb" data-gp="'+x.id+'" aria-label="View '+esc(nameOf(x.id))+' profile"><span class="pos'+(p===1&&x.n?' lead':'')+'">'+(p==null?'-':p)+'</span><span class="who"><b>'+esc(nameOf(x.id))+'</b><small>'+(x.q?x.n+' rd'+(x.n===1?'':'s')+' &middot; best '+x.best+' &middot; low '+(x.low==null?'-':x.low)+hcpTxt(x.id):x.n+' of '+MINR+' rounds &middot; '+need+' more to rank')+'</small></span><span class="num'+(k==='avg'?' k':'')+'">'+(x.n?x.avg.toFixed(1):'-')+'</span><span class="num'+(k==='tot'?' k':'')+'">'+x.tot+'</span><span class="num'+(k==='wins'?' k':'')+'">'+x.wins+'</span></button>'}).join('')}
 const whl=a=>a.w+'-'+a.h+'-'+a.l;
@@ -544,13 +634,16 @@ function renderMatchForm(){
  updateMres()}
 function renderLeague(){
  const has=myLeagues.length>0;
- $('lMain').style.display=has?'':'none';$('hMain').style.display=has?'':'none';$('hNone').style.display=has?'none':'';$('lJoin').open=!has;
+ $('lMain').style.display=has?'':'none';$('hMain').style.display=has?'':'none';$('hNone').style.display=has?'none':'';if(!has)$('lJoin').open=true;
  if(me&&document.activeElement!==$('hcp'))$('hcp').value=prof&&prof.handicap!=null?prof.handicap:'';
- $('acct').innerHTML=me?'Signed in as <b>'+esc(prof?prof.display_name:'')+'</b> ('+esc(me.email||'')+')':'';
+ $('acct').innerHTML=me?'Signed in as <b>'+esc(prof?prof.display_name:'')+'</b>':'';
+ const mb=$('meBtn');mb.style.display=me?'':'none';if(me)mb.dataset.gp=myId();
+ $('pwa').innerHTML=pwaHtml();dhAll();
  if(!has)return;
+ $('cmpanel').innerHTML=cotmHtml();
  const L=curLeague();if(!L)return;
  $('lhead').innerHTML='<h2>'+esc(L.name)+'</h2>'+(myLeagues.length>1?'<div class="scroll" id="lsel" role="group" aria-label="Your leagues">'+myLeagues.map(l=>'<button class="chip" data-sl="'+l.id+'" aria-pressed="'+(l.id===curL)+'">'+esc(l.name)+'</button>').join('')+'</div>':'')+
-  '<div class="lab" style="margin-top:8px">Invite code</div><div class="row wrap2"><span class="code">'+esc(L.invite_code)+'</span><button class="btn" data-cp="1">Copy</button><button class="btn" data-sh="1">Share on WhatsApp</button></div>'+
+  '<div class="lab" style="margin-top:8px">Invite code</div><div class="row wrap2"><span class="code">'+esc(L.invite_code)+'</span><button class="btn" data-cp="1">Copy link</button><button class="btn" data-sh="1">Share on WhatsApp</button></div>'+
   '<div class="lab" style="margin-top:12px">Golfers ('+members.length+')</div><div class="scroll" id="mlist" style="padding-top:4px">'+members.map(m=>'<button class="chip" data-gp="'+m.user_id+'">'+esc(nameOf(m.user_id))+(m.role==='owner'?'<span class="n">owner</span>':'')+'</button>').join('')+'</div><p class="about" style="margin:4px 0 0">Tap a golfer to see the courses they have played.</p>';
  const lsel=$('lsel');if(lsel)edges(lsel);edges($('mlist'));
  const own=iOwn();$('rforW').style.display=own?'':'none';
@@ -566,17 +659,57 @@ function renderLeague(){
  else $('lb').innerHTML=mpBoard();
  renderMatchForm();renderBookings();
  const rs=rounds.filter(r=>inSeason(r.played_on)),ms=matches.filter(m=>inSeason(m.played_on));
- $('hist').innerHTML=rs.length?rs.map(r=>'<div class="rnd"><div class="d">'+dmy(r.played_on)+'</div><div class="c">'+esc(r.course_name)+'</div><div class="ln">'+esc(nameOf(r.user_id))+': '+r.gross+' gross, '+r.points+' pts'+(r.handicap!=null?' (hcp '+r.handicap+')':'')+'</div>'+(r.created_by===myId()||own?'<button class="btn link" data-dr="'+r.id+'" style="padding-left:0">Delete round</button>':'')+'</div>').join(''):'<div class="empty"><p>Rounds you log will be listed here, newest first.</p></div>';
+ $('hist').innerHTML=rs.length?rs.map(r=>{
+  if(redit===r.id)return '<div class="rnd redit">'+editRoundForm(r)+'</div>';
+  const can=r.created_by===myId()||own;
+  return '<div class="rnd"><div class="d">'+dmy(r.played_on)+'</div><div class="c">'+esc(r.course_name)+'</div><div class="ln">'+esc(nameOf(r.user_id))+': '+r.gross+' gross, '+r.points+' pts'+(r.handicap!=null?' (hcp '+r.handicap+')':'')+'</div><div class="row wrap2" style="gap:0 16px">'+(r.user_id===myId()?'<button class="btn link" data-rsh="'+r.id+'" style="padding-left:0">Share</button>':'')+(can?'<button class="btn link" data-re="'+r.id+'" style="padding-left:0">Edit</button><button class="btn link" data-dr="'+r.id+'" style="padding-left:0">Delete round</button>':'')+'</div></div>'}).join(''):'<div class="empty"><p>Rounds you log will be listed here, newest first.</p></div>';
  $('mhist').innerHTML=ms.length?ms.map(m=>'<div class="rnd"><div class="d">'+dmy(m.played_on)+'</div>'+(m.course_name?'<div class="c">'+esc(m.course_name)+'</div>':'')+'<div class="ln">'+esc(matchLine(m))+'</div>'+(m.created_by===myId()||own?'<button class="btn link" data-dm="'+m.id+'" style="padding-left:0">Delete match</button>':'')+'</div>').join(''):'<div class="empty"><p>Matches you log will be listed here, newest first.</p></div>'}
 
-function copyCode(){const L=curLeague();if(!L)return;
- if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(L.invite_code).then(()=>toast('Invite code copied.'),()=>toast('Invite code: '+L.invite_code));else toast('Invite code: '+L.invite_code)}
+const inviteLink=L=>redirect()+'?join='+L.invite_code;
+function copyCode(){const L=curLeague();if(!L)return;const t=inviteLink(L);
+ if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(()=>toast('Invite link copied.'),()=>toast('Invite link: '+t));else toast('Invite link: '+t)}
 function shareCode(){const L=curLeague();if(!L)return;
- window.open('https://wa.me/?text='+encodeURIComponent('Join our golf league "'+L.name+'" on The Hundred: '+redirect()+' Sign up, then enter invite code '+L.invite_code),'_blank','noopener')}
+ window.open('https://wa.me/?text='+encodeURIComponent('Join our golf league "'+L.name+'" on The Hundred. Tap to join: '+inviteLink(L)+' (If the link does not open, sign up and use invite code '+L.invite_code+'.)'),'_blank','noopener')}
+function shareRecap(r){
+ const L=curLeague(),yr0=String(r.played_on).slice(0,4),info=rankInfo(r.user_id,yr0);
+ let t=nameOf(r.user_id)+' '+r.points+' pts at '+r.course_name+' ('+dmy(r.played_on)+')';
+ if(L&&info&&info.pos)t+=', now '+ordinal(info.pos)+' of '+info.of+' in '+L.name;else if(L)t+=' in '+L.name;
+ t+=' on The Hundred.'+(L?' Join us: '+inviteLink(L):'');
+ window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank','noopener')}
+
+/* Round edit */
+let redit=null,rdraft=null,lconf=null;
+function editRoundForm(r){
+ const d=rdraft||{},v=k=>esc(d[k]==null?'':d[k]);
+ return '<div class="lab">Editing '+esc(nameOf(r.user_id))+'</div>'+
+  '<label class="lab" for="ered" style="margin-top:8px">Date</label><input type="date" id="ered" data-er="played_on" data-dh="eredh" value="'+v('played_on')+'"><div class="dh" id="eredh" aria-live="polite">'+esc(longDate(d.played_on))+'</div>'+
+  '<label class="lab" for="erec" style="margin-top:8px">Course</label><input type="text" id="erec" list="cl" data-er="course_name" value="'+v('course_name')+'" autocomplete="off">'+
+  '<div class="pgrid2"><div><label class="lab" for="ereg">Gross</label><input type="number" inputmode="numeric" id="ereg" data-er="gross" value="'+v('gross')+'"></div><div><label class="lab" for="eres">Points</label><input type="number" inputmode="numeric" id="eres" data-er="points" value="'+v('points')+'"></div><div><label class="lab" for="ereh">Handicap</label><input type="number" step="0.1" inputmode="decimal" id="ereh" data-er="handicap" value="'+v('handicap')+'"></div></div>'+
+  '<div class="fmsg" id="eremsg" role="alert"></div><div class="row wrap2" style="margin-top:8px"><button class="btn primary" data-res="'+r.id+'">Save changes</button><button class="btn" data-rec="1">Cancel</button></div>'}
+document.addEventListener('input',e=>{const k=e.target&&e.target.dataset&&e.target.dataset.er;if(k&&rdraft){rdraft[k]=e.target.value;if($('eremsg'))setMsg('eremsg','')}});
+function startRoundEdit(id){const r=rounds.find(x=>x.id===id);if(!r)return;redit=id;rdraft={played_on:r.played_on,course_name:r.course_name,gross:String(r.gross),points:String(r.points),handicap:r.handicap==null?'':String(r.handicap)};renderLeague();setTimeout(()=>{const e=$('ered');if(e)e.focus()},0)}
+function stopRoundEdit(){redit=null;rdraft=null;renderLeague()}
+async function saveRoundEdit(id){
+ const r=rounds.find(x=>x.id===id);if(!r||!rdraft||!sb)return;
+ const d=rdraft,name=String(d.course_name).trim(),msg=m=>setMsg('eremsg',m);
+ if(!name)return msg('Pick or type the course you played.');
+ if(!d.played_on)return msg('Pick the date you played.');
+ const m=chkVal(d.gross,'g')||chkVal(d.points,'s')||chkVal(d.handicap,'h');if(m)return msg(m);
+ if(d.gross===''||d.points==='')return msg('Enter both gross strokes and Stableford points.');
+ if(rounds.some(x=>x.id!==id&&x.user_id===r.user_id&&x.played_on===d.played_on&&x.course_name.toLowerCase()===name.toLowerCase()))return msg(nameOf(r.user_id)+' already has a round at that course on that date.');
+ const c=D.find(x=>x.name.toLowerCase()===name.toLowerCase());
+ const upd={played_on:d.played_on,course_rank:c?c.rank:null,course_name:c?c.name:name,gross:+d.gross,points:+d.points,handicap:d.handicap===''?null:+d.handicap};
+ const b=document.querySelector('[data-res]');if(b)b.disabled=true;
+ const res=await sb.from('rounds').update(upd).eq('id',id).select('id');
+ if(b)b.disabled=false;
+ if(res.error)return msg(errMsg(res.error));
+ if(!res.data||!res.data.length)return msg('Editing rounds is not switched on yet. The latest database update still needs to run. Until then, delete the round and log it again.');
+ redit=null;rdraft=null;await loadLeague();renderLeague();render();toast('Round updated.')}
 
 function setMsg(id,m,inp){$(id).textContent=m||'';if(inp)inp.setAttribute('aria-invalid',m?'true':'false')}
-const chkField=(el,kind)=>{if(el.value==='')return '';const v=+el.value;if(kind==='g'&&(v<30||v>200))return 'Gross looks off. Enter total strokes for the round, between 30 and 200.';if(kind==='s'&&(v<0||v>80))return 'Points look off. Stableford points for a round are usually between 0 and 60.';if(kind==='h'&&(v<-10||v>54))return 'Handicap looks off. Use your handicap index, between -10 and 54.';return ''};
-$('rd').value=new Date().toISOString().slice(0,10);
+const chkField=(el,kind)=>chkVal(el.value,kind);
+const chkVal=(raw,kind)=>{if(raw===''||raw==null)return '';const v=+raw;if(kind==='g'&&(v<30||v>200))return 'Gross looks off. Enter total strokes for the round, between 30 and 200.';if(kind==='s'&&(v<0||v>80))return 'Points look off. Stableford points for a round are usually between 0 and 60.';if(kind==='h'&&(v<-10||v>54))return 'Handicap looks off. Use your handicap index, between -10 and 54.';return ''};
+$('rd').value=todayStr();
 $('cl').innerHTML=D.map(c=>'<option value="'+esc(c.name)+'">').join('');
 ['rg','rs','rh'].forEach(id=>{$(id).addEventListener('blur',e=>setMsg('smsg',chkField(e.target,e.target.dataset.k),e.target));$(id).addEventListener('input',e=>{if($('smsg').textContent&&!chkField(e.target,e.target.dataset.k))setMsg('smsg','',e.target)})});
 $('rcc').addEventListener('input',()=>setMsg('cmsg','',$('rcc')));
@@ -586,7 +719,7 @@ $('rfor').addEventListener('change',fillHcp);
 $('hsave').onclick=async()=>{
  if(!sb||!me)return;const el=$('hcp'),m=chkField(el,'h');if(m){setMsg('hmsg',m,el);return}
  const v=el.value===''?null:+el.value;$('hsave').disabled=true;const r=await sb.from('profiles').update({handicap:v}).eq('id',me.id);$('hsave').disabled=false;
- if(r.error){setMsg('hmsg',SAVEFAIL,el);return}
+ if(r.error){setMsg('hmsg',errMsg(r.error),el);return}
  setMsg('hmsg','',el);prof.handicap=v;if(profs[me.id])profs[me.id].handicap=v;fillHcp();toast(v==null?'Handicap cleared.':'Handicap saved.')};
 $('hcp').addEventListener('input',()=>{if($('hmsg').textContent&&!chkField($('hcp'),'h'))setMsg('hmsg','',$('hcp'))});
 $('saveR').onclick=async()=>{
@@ -598,23 +731,25 @@ $('saveR').onclick=async()=>{
  if(!date){setMsg('smsg','Pick the date you played.');return}
  const c=D.find(x=>x.name.toLowerCase()===name.toLowerCase());
  if(rounds.some(r=>r.user_id===uid&&r.played_on===date&&r.course_name.toLowerCase()===name.toLowerCase())){setMsg('smsg',nameOf(uid)+' already has a round at that course on that date. Delete the old one first if it was a mistake.');return}
- const btn=$('saveR');btn.disabled=true;
+ const btn=$('saveR');btn.disabled=true;const s0=s.value;
  const row={league_id:curL,user_id:uid,played_on:date,course_rank:c?c.rank:null,course_name:c?c.name:name,gross:+g.value,points:+s.value,created_by:myId()};if(hh.value!=='')row.handicap=+hh.value;
  const res=await sb.from('rounds').insert(row);
  btn.disabled=false;
- if(res.error){setMsg('smsg',SAVEFAIL);return}
- let extra='';
- if(c&&uid===myId()&&!played.has(c.rank)){const pr=await sb.from('played').upsert({user_id:myId(),course_rank:c.rank,played_on:date},{onConflict:'user_id,course_rank',ignoreDuplicates:true});if(!pr.error){played.add(c.rank);playedOn[c.rank]=date;extra=' and '+c.name+' ticked as played'}}
- setMsg('smsg','');setMsg('cmsg','');$('rcc').value='';g.value='';s.value='';
- await loadLeague();renderLeague();fillHcp();render();toast('Round saved'+extra+'.')};
+ if(res.error){setMsg('smsg',errMsg(res.error));return}
+ let extra='',bg='';const before=new Set(played);
+ if(c&&uid===myId()&&!played.has(c.rank)){const pr=await sb.from('played').upsert({user_id:myId(),course_rank:c.rank,played_on:date},{onConflict:'user_id,course_rank',ignoreDuplicates:true});if(!pr.error){played.add(c.rank);playedOn[c.rank]=date;extra=' and '+c.name+' ticked as played';bg=badgeGain(before,played)}}
+ setMsg('smsg','');setMsg('cmsg','');$('rcc').value='';g.value='';s.value='';$('rpanel').open=false;
+ await loadLeague();renderLeague();fillHcp();render();
+ const saved={user_id:uid,played_on:date,course_name:c?c.name:name,points:+s0};
+ toast('Round saved'+extra+'.'+(bg?' Milestone unlocked: '+bg+'.':''),'Share recap',()=>shareRecap(saved))};
 async function deleteRound(id){
  const r=rounds.find(x=>x.id===id);if(!r)return;
  const res=await sb.from('rounds').delete().eq('id',id);
- if(res.error){toast(SAVEFAIL);return}
+ if(res.error){toast(errMsg(res.error));return}
  await loadLeague();renderLeague();
- toast('Round deleted.','Undo',async()=>{const row={league_id:r.league_id,user_id:r.user_id,played_on:r.played_on,course_rank:r.course_rank,course_name:r.course_name,gross:r.gross,points:r.points,created_by:myId()};if(r.handicap!=null)row.handicap=r.handicap;const x=await sb.from('rounds').insert(row);if(x.error)toast(SAVEFAIL);else{await loadLeague();renderLeague()}})}
+ toast('Round deleted.','Undo',async()=>{const row={league_id:r.league_id,user_id:r.user_id,played_on:r.played_on,course_rank:r.course_rank,course_name:r.course_name,gross:r.gross,points:r.points,created_by:myId()};if(r.handicap!=null)row.handicap=r.handicap;const x=await sb.from('rounds').insert(row);if(x.error)toast(errMsg(x.error));else{await loadLeague();renderLeague()}})}
 
-$('md').value=new Date().toISOString().slice(0,10);
+$('md').value=todayStr();
 ['ma1','ma2','mb1','mb2'].forEach(id=>$(id).addEventListener('change',()=>{setMsg('mmsg','');updateMres()}));
 $('saveM').onclick=async()=>{
  if(!sb||!curL)return;
@@ -628,42 +763,89 @@ $('saveM').onclick=async()=>{
  if(matches.some(m=>m.played_on===date&&((key(m.side_a)===key(a)&&key(m.side_b)===key(b))||(key(m.side_a)===key(b)&&key(m.side_b)===key(a)))))return setMsg('mmsg','That match is already logged for this date. Delete the old one first if it was a mistake.');
  const row={league_id:curL,played_on:date,side_a:a,side_b:b,result:S.mres,created_by:myId()},cn=$('mc').value.trim();if(cn)row.course_name=cn;
  $('saveM').disabled=true;const res=await sb.from('matches').insert(row);$('saveM').disabled=false;
- if(res.error)return setMsg('mmsg',SAVEFAIL);
- setMsg('mmsg','');S.mres='';$('mc').value='';await loadLeague();renderLeague();toast('Match saved.')};
+ if(res.error)return setMsg('mmsg',errMsg(res.error));
+ setMsg('mmsg','');S.mres='';$('mc').value='';$('mpanel').open=false;await loadLeague();renderLeague();toast('Match saved.')};
 async function deleteMatch(id){
  const m=matches.find(x=>x.id===id);if(!m)return;
  const res=await sb.from('matches').delete().eq('id',id);
- if(res.error){toast(SAVEFAIL);return}
+ if(res.error){toast(errMsg(res.error));return}
  await loadLeague();renderLeague();
- toast('Match deleted.','Undo',async()=>{const row={league_id:m.league_id,played_on:m.played_on,side_a:m.side_a,side_b:m.side_b,result:m.result,created_by:myId()};if(m.course_name)row.course_name=m.course_name;const x=await sb.from('matches').insert(row);if(x.error)toast(SAVEFAIL);else{await loadLeague();renderLeague()}})}
+ toast('Match deleted.','Undo',async()=>{const row={league_id:m.league_id,played_on:m.played_on,side_a:m.side_a,side_b:m.side_b,result:m.result,created_by:myId()};if(m.course_name)row.course_name=m.course_name;const x=await sb.from('matches').insert(row);if(x.error)toast(errMsg(x.error));else{await loadLeague();renderLeague()}})}
 
-$('jgo').onclick=async()=>{
- const code=$('jc').value.trim();if(!code){setMsg('jmsg','Type the invite code your organiser sent you.',$('jc'));return}
- $('jgo').disabled=true;const r=await sb.rpc('join_league',{code});$('jgo').disabled=false;
- if(r.error){setMsg('jmsg',/invalid/i.test(r.error.message||'')?'That code does not match a league. Check it with the person who invited you.':SAVEFAIL,$('jc'));return}
- setMsg('jmsg','',$('jc'));$('jc').value='';curL=r.data;try{localStorage.setItem('hundredLeague',curL)}catch(e){}
- await loadMine();curL=r.data;await loadLeague();renderLeague();toast('You have joined the league.');openPendingBooking()};
+const dropPending=()=>{pendingJ=null;try{localStorage.removeItem('hundredPendingJoin')}catch(e){}};
+const NOMATCH='That code does not match a league. Check it with the person who invited you.';
+async function joinWith(raw,fromLink){
+ const code=cleanCode(raw);
+ if(!code){setMsg('jmsg','Type the invite code your organiser sent you.',$('jc'));return false}
+ if(!sb||!me)return false;
+ const fail=m=>{setMsg('jmsg',m,$('jc'));if(fromLink){toast(m);$('jc').value=code;$('lJoin').open=true;showTab('L');$('lJoin').scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'})}return false};
+ const r=await sb.rpc('join_league',{code});
+ if(r.error){if(/invalid/i.test(r.error.message||'')){dropPending();return fail(NOMATCH)}return fail(errMsg(r.error))}
+ if(!r.data){dropPending();return fail(NOMATCH)}
+ const had=myLeagues.some(l=>l.id===r.data);
+ dropPending();setMsg('jmsg','',$('jc'));$('jc').value='';try{localStorage.setItem('hundredLeague',r.data)}catch(e){}
+ await loadMine();if(curL!==r.data){curL=r.data;await loadLeague()}
+ renderLeague();showTab('L');const L=curLeague();
+ toast(had?'You are already in '+(L?L.name:'that league')+'.':'You have joined '+(L?L.name:'the league')+'.');return true}
+async function consumePendingJoin(){if(pendingJ)await joinWith(pendingJ,true)}
+$('jgo').onclick=async()=>{$('jgo').disabled=true;const ok=await joinWith($('jc').value,false);$('jgo').disabled=false;if(ok)openPendingBooking()};
 $('cgo').onclick=async()=>{
  const nm=$('cn').value.trim();if(!nm){setMsg('cmsg2','Give your league a name.',$('cn'));return}
  $('cgo').disabled=true;const r=await sb.rpc('create_league',{league_name:nm});$('cgo').disabled=false;
- if(r.error){setMsg('cmsg2',SAVEFAIL,$('cn'));return}
+ if(r.error){setMsg('cmsg2',errMsg(r.error),$('cn'));return}
  setMsg('cmsg2','',$('cn'));$('cn').value='';try{localStorage.setItem('hundredLeague',r.data)}catch(e){}
  await loadMine();curL=r.data;await loadLeague();renderLeague();toast('League created. Share the invite code.')};
 $('logout').onclick=async()=>{if(sb)await sb.auth.signOut()};
+$('aVerify').onclick=verifyCode;
+$('aCode').addEventListener('input',()=>$('aCode').removeAttribute('aria-invalid'));
 
 let lastFocus=null;
+function leagueBox(){
+ const L=curLeague();if(!L)return '<p class="about" style="margin:0">You are not in a league yet.</p>';
+ const own=iOwn(),sole=own&&!members.some(m=>m.role==='owner'&&m.user_id!==myId());
+ let h='<div class="lab">League</div><b>'+esc(L.name)+'</b>';
+ if(own)h+='<p class="about" style="margin:8px 0 4px">Invite code <span class="code" style="font-size:1rem;padding:4px 8px">'+esc(L.invite_code)+'</span></p><button class="btn" data-rr="1">'+(lconf==='rr'?'Tap again to replace the code':'Make a new invite code')+'</button><p class="about" style="margin:4px 0 0">The old code and link stop working straight away.</p>';
+ h+=sole?'<p class="about" style="margin:12px 0 0">You are the only owner, so you cannot leave this league yet.</p>':'<div style="margin-top:12px"><button class="btn" data-lv="1">'+(lconf==='lv'?'Tap again to leave '+esc(L.name):'Leave league')+'</button></div>';
+ return h}
+const refreshLeagueBox=()=>{const e=$('shLeague');if(e)e.innerHTML=leagueBox()};
+async function leaveLeague(){
+ if(lconf!=='lv'){lconf='lv';refreshLeagueBox();return}
+ lconf=null;const L=curLeague();if(!L||!sb)return;
+ const r=await sb.from('league_members').delete().eq('league_id',L.id).eq('user_id',myId()).select('user_id');
+ if(r.error){toast(errMsg(r.error));refreshLeagueBox();return}
+ if(!r.data||!r.data.length){toast('Could not leave. A league owner can only leave once another owner exists.');refreshLeagueBox();return}
+ closeProfile();try{localStorage.removeItem('hundredLeague')}catch(e){}
+ await loadMine();renderLeague();render();toast('You have left '+L.name+'.')}
+async function regenerateCode(){
+ if(lconf!=='rr'){lconf='rr';refreshLeagueBox();return}
+ lconf=null;const L=curLeague();if(!L||!sb)return;
+ const r=await sb.rpc('regenerate_invite_code',{p_league:L.id});
+ if(r.error||!r.data){toast(errMsg(r.error));refreshLeagueBox();return}
+ L.invite_code=r.data;refreshLeagueBox();renderLeague();toast('New invite code ready. The old one no longer works.')}
+$('dsave').onclick=async()=>{
+ if(!sb||!me)return;const el=$('dn'),v=el.value.trim();
+ if(!v||v.length>40){setMsg('dmsg','Use between 1 and 40 characters.',el);return}
+ $('dsave').disabled=true;const r=await sb.from('profiles').update({display_name:v}).eq('id',me.id).select('id');$('dsave').disabled=false;
+ if(r.error){setMsg('dmsg',errMsg(r.error),el);return}
+ if(!r.data||!r.data.length){setMsg('dmsg','That did not save. Try again.',el);return}
+ setMsg('dmsg','',el);prof.display_name=v;if(profs[me.id])profs[me.id].display_name=v;$('shName').textContent=v;renderLeague();toast('Name updated.')};
 async function openProfile(uid){
- lastFocus=document.activeElement;const sh=$('sheet');sh.hidden=false;
+ lastFocus=document.activeElement;const sh=$('sheet'),mine=uid===myId();sh.hidden=false;lconf=null;
  $('shName').textContent=nameOf(uid);$('shBody').innerHTML='<p class="about">Loading...</p>';$('shClose').focus();
+ $('shMine').hidden=!mine;
+ if(mine){$('hcp').value=prof&&prof.handicap!=null?prof.handicap:'';$('dn').value=prof?prof.display_name:'';setMsg('hmsg','');setMsg('dmsg','');refreshLeagueBox();
+  $('shCard').innerHTML='<button class="btn primary" data-gc="1" style="width:100%">Share my Hundred card</button>'}
  const r=await sb.from('played').select('course_rank,played_on').eq('user_id',uid);
  if(r.error){$('shBody').innerHTML='<div class="banner err" role="alert">Could not load this profile. Check your signal and try again.</div>';return}
  const rows=(r.data||[]).filter(x=>D[x.course_rank-1]).sort((a,b)=>a.course_rank-b.course_rank),a=stats()[uid]||{n:0,tot:0,best:0,wins:0,low:null},mp=mstats()[uid]||{pts:0,n:0},L=curLeague();
- $('shBody').innerHTML=(L?'<p class="about" style="margin:0 0 12px">'+(uid===myId()?'Your profile':'Member of '+esc(L.name))+'. Round and match stats: '+seasonLabel().toLowerCase()+'.</p>':'')+
+ $('shBody').innerHTML=(L?'<p class="about" style="margin:0 0 12px">'+(mine?'Your profile':'Member of '+esc(L.name))+'. Round and match stats: '+seasonLabel().toLowerCase()+'.</p>':'')+
   '<div class="sgrid"><div><b>'+rows.length+'</b><span>of 100 played</span></div><div><b>'+a.n+'</b><span>rounds</span></div><div><b>'+a.tot+'</b><span>points</span></div><div><b>'+(a.n?(a.tot/a.n).toFixed(1):'-')+'</b><span>average</span></div><div><b>'+a.wins+'</b><span>wins</span></div><div><b>'+(a.low==null?'-':a.low)+'</b><span>low gross</span></div><div><b>'+(hcpOf(uid)==null?'-':hcpOf(uid))+'</b><span>handicap</span></div><div><b>'+mp.pts+'</b><span>match pts</span></div><div><b>'+a.best+'</b><span>best round</span></div></div>'+
   '<div class="prog" aria-hidden="true" style="margin:12px 0"><i style="width:'+rows.length+'%"></i></div>'+
+  h2hHtml(uid)+badgesHtml(new Set(rows.map(x=>x.course_rank)))+
+  '<div class="lab" style="margin-top:16px">Courses played</div>'+
   (rows.length?'<table class="ltable">'+rows.map(x=>{const c=D[x.course_rank-1];return '<tr><td class="r">'+c.rank+'</td><td class="nm"><b>'+esc(c.name)+'</b><span class="s">'+esc(c.town)+', '+c.province+(x.played_on?' &middot; '+dmy(x.played_on):'')+'</span></td></tr>'}).join('')+'</table>':'<div class="empty"><p>No courses ticked yet.</p></div>')+
   '<p class="about">Self-reported by the golfer.</p>'}
-function closeProfile(){$('sheet').hidden=true;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+function closeProfile(){lconf=null;$('sheet').hidden=true;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('sheet').hidden)closeProfile()});
 
 $('aForm').addEventListener('submit',e=>{e.preventDefault();authSubmit()});
@@ -678,13 +860,11 @@ async function boot(){
  if(!sb){authMode='in';showAuth(true);renderAuth();authInfo('Sign-in is not available right now. Check your signal and reopen the app.','err');return}
  sb.auth.onAuthStateChange((ev)=>{
   if(ev==='PASSWORD_RECOVERY'){authMode='reset';showAuth(true);renderAuth()}
-  else if(ev==='SIGNED_OUT'){me=null;resetData();authMode='in';showAuth(true);renderAuth()}});
+  else if(ev==='SIGNED_OUT'){me=null;resetData();$('sheet').hidden=true;authMode='link';linkSent=false;$('aPass').value='';$('aCode').value='';showAuth(true);renderAuth()}});
  const s=await sb.auth.getSession();
  if(s.data&&s.data.session&&authMode!=='reset')await enter(s.data.session.user);
  else if(authMode!=='reset'){showAuth(true);renderAuth()}}
 
-const pad2=n=>String(n).padStart(2,'0');
-const todayStr=()=>{const d=new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())};
 const wdate=d=>new Date(d+'T12:00:00').toLocaleDateString('en-ZA',{weekday:'short',day:'numeric',month:'short'});
 const hhmm=t=>String(t).slice(0,5);
 const bIds=b=>bplayers.filter(p=>p.booking_id===b.id).map(p=>p.user_id);
@@ -706,11 +886,11 @@ function editForm(b){
  const ids=bIds(b),d=bdraft,v=k=>esc(d[k]!==undefined?d[k]:k==='c'?b.course_name:k==='d'?b.play_on:k==='t'?hhmm(b.tee_time):k==='n'?(b.note||''):String(b.spots));
  const sp=+(d.s!==undefined?d.s:b.spots),opts=[2,3,4,5,6,7,8].filter(n=>n>=ids.length||n===sp).map(n=>'<option'+(n===sp?' selected':'')+'>'+n+'</option>').join('');
  return '<div class="bk npin" id="bk-'+b.id+'"><div class="c">Edit this round</div><p class="ln">'+ids.length+' booked so far. Players stay booked when you change details.</p>'+
-  '<div class="lab" style="margin-top:12px">Date</div><input type="date" data-ef="d" value="'+v('d')+'" aria-label="Date of round">'+
-  '<div class="lab" style="margin-top:12px">Tee time</div><input type="time" data-ef="t" value="'+v('t')+'" aria-label="Tee time">'+
-  '<div class="lab" style="margin-top:12px">Course</div><input type="text" data-ef="c" list="cl" value="'+v('c')+'" aria-label="Course" autocomplete="off">'+
-  '<div class="lab" style="margin-top:12px">Spots in the group</div><select data-ef="s" aria-label="Spots in the group">'+opts+'</select>'+
-  '<div class="lab" style="margin-top:12px">Note (optional)</div><input type="text" data-ef="n" maxlength="140" value="'+v('n')+'" aria-label="Note">'+
+  '<label class="lab" for="efd" style="margin-top:12px">Date</label><input type="date" id="efd" data-ef="d" value="'+v('d')+'"><div class="dh" id="efdh">'+esc(longDate(d.d!==undefined?d.d:b.play_on))+'</div>'+
+  '<label class="lab" for="eft" style="margin-top:12px">Tee time</label><input type="time" id="eft" data-ef="t" value="'+v('t')+'">'+
+  '<label class="lab" for="efc" style="margin-top:12px">Course</label><input type="text" id="efc" data-ef="c" list="cl" value="'+v('c')+'" autocomplete="off">'+
+  '<label class="lab" for="efs" style="margin-top:12px">Spots in the group</label><select id="efs" data-ef="s">'+opts+'</select>'+
+  '<label class="lab" for="efn" style="margin-top:12px">Note (optional)</label><input type="text" id="efn" data-ef="n" maxlength="140" value="'+v('n')+'">'+
   '<div class="fmsg" id="bemsg" role="alert"></div><div class="row wrap2" style="margin-top:12px"><button class="btn primary" data-bes="'+b.id+'">Save changes</button><button class="btn" data-bec="'+b.id+'">Cancel</button></div></div>'}
 function bookingCard(b){
  if(bedit===b.id)return editForm(b);
@@ -735,9 +915,9 @@ function renderBookings(){
  if(f.dataset.sig!==sig){bpick=new Set();f.dataset.sig=sig}
  const others=members.filter(m=>m.user_id!==myId());
  $('bpick').innerHTML=others.length?others.map(m=>'<button class="chip" data-bp="'+m.user_id+'" aria-pressed="'+bpick.has(m.user_id)+'">'+esc(nameOf(m.user_id))+'</button>').join(''):'<p class="about" style="margin:0">Invite golfers to the league to add them here.</p>';edges($('bpick'));navDot()}
-function bookErr(e){const t=(e&&e.message||'').toLowerCase();return /full/.test(t)?'Sorry, that round just filled up.':/closed/.test(t)?'The organiser has closed joining for this round.':/past/.test(t)?'That round has already been played.':/too few/.test(t)?'More golfers are already booked than that. Keep at least that many spots, or remove someone first.':/not owner/.test(t)?'Only the organiser can edit this round.':/not found/.test(t)?'That round is no longer available.':SAVEFAIL}
+function bookErr(e){const t=(e&&e.message||'').toLowerCase();return /full/.test(t)?'Sorry, that round just filled up.':/closed/.test(t)?'The organiser has closed joining for this round.':/past/.test(t)?'That round has already been played.':/too few/.test(t)?'More golfers are already booked than that. Keep at least that many spots, or remove someone first.':/not owner/.test(t)?'Only the organiser can edit this round.':/not found/.test(t)?'That round is no longer available.':errMsg(e)}
 const bAfter=async m=>{await loadLeague();renderLeague();if(m)toast(m)};
-$('bd').value=(()=>{const d=new Date(Date.now()+864e5);return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())})();
+$('bd').value=(()=>{const d=new Date();d.setDate(d.getDate()+1);return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())})();
 $('saveB').onclick=async()=>{
  if(!sb||!curL)return;
  const name=$('bc').value.trim(),date=$('bd').value,time=$('bt').value,spots=+$('bspots').value;
@@ -750,14 +930,14 @@ $('saveB').onclick=async()=>{
  $('saveB').disabled=true;
  const r=await sb.rpc('create_booking',{p_league:curL,p_course:c?c.name:name,p_rank:c?c.rank:null,p_date:date,p_time:time,p_spots:spots,p_open:$('bopen').checked,p_note:$('bnote').value.trim()||null,p_extras:[...bpick]});
  $('saveB').disabled=false;
- if(r.error)return setMsg('bmsg',SAVEFAIL);
+ if(r.error)return setMsg('bmsg',errMsg(r.error));
  setMsg('bmsg','');$('bc').value='';$('bnote').value='';bpick=new Set();$('bpanel').open=false;
  await bAfter('Round pinned.');
  const b=bookings.find(x=>x.id===r.data);if(b&&b.is_open&&b.spots>bIds(b).length)toast('Round pinned. Share it with the group.','Share',()=>shareBooking(b.id))};
 $('bc').addEventListener('input',()=>setMsg('bmsg',''));
 async function joinBooking(id){const r=await sb.rpc('join_booking',{p_booking:id});if(r.error){await bAfter();toast(bookErr(r.error));return}await bAfter('You have joined this round.')}
-async function leaveBooking(id){const r=await sb.from('booking_players').delete().eq('booking_id',id).eq('user_id',myId());if(r.error)return toast(SAVEFAIL);await bAfter('You have left the round.')}
-async function removeFromBooking(id,uid){const r=await sb.from('booking_players').delete().eq('booking_id',id).eq('user_id',uid);if(r.error)return toast(SAVEFAIL);await bAfter(nameOf(uid)+' removed from the round.')}
+async function leaveBooking(id){const r=await sb.from('booking_players').delete().eq('booking_id',id).eq('user_id',myId());if(r.error)return toast(errMsg(r.error));await bAfter('You have left the round.')}
+async function removeFromBooking(id,uid){const r=await sb.from('booking_players').delete().eq('booking_id',id).eq('user_id',uid);if(r.error)return toast(errMsg(r.error));await bAfter(nameOf(uid)+' removed from the round.')}
 function startEdit(id){bedit=id;bdraft={};renderBookings();const el=$('bk-'+id);if(el)el.scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'})}
 function stopEdit(){bedit=null;bdraft={};renderBookings()}
 async function saveEdit(id){
@@ -773,11 +953,11 @@ async function saveEdit(id){
  const r=await sb.rpc('update_booking',{p_booking:id,p_course:c?c.name:name,p_rank:c?c.rank:null,p_date:date,p_time:time,p_spots:spots,p_note:g('n').trim()||null});
  if(r.error)return setMsg('bemsg',/function|schema cache/i.test(r.error.message||'')?'Editing is not switched on yet. The update_booking SQL still needs to run.':bookErr(r.error));
  bedit=null;bdraft={};await bAfter('Round updated.')}
-document.addEventListener('input',e=>{const k=e.target&&e.target.dataset&&e.target.dataset.ef;if(k&&bedit&&e.target.closest('.bk')){bdraft[k]=e.target.value;setMsg('bemsg','')}});
-async function toggleBooking(id){const b=bookings.find(x=>x.id===id);if(!b)return;const r=await sb.from('bookings').update({is_open:!b.is_open}).eq('id',id);if(r.error)return toast(SAVEFAIL);await bAfter(b.is_open?'Joining closed.':'Joining open.')}
+document.addEventListener('input',e=>{const k=e.target&&e.target.dataset&&e.target.dataset.ef;if(k&&bedit&&e.target.closest('.bk')){bdraft[k]=e.target.value;setMsg('bemsg','');if(k==='d'&&$('efdh'))$('efdh').textContent=longDate(e.target.value)}});
+async function toggleBooking(id){const b=bookings.find(x=>x.id===id);if(!b)return;const r=await sb.from('bookings').update({is_open:!b.is_open}).eq('id',id);if(r.error)return toast(errMsg(r.error));await bAfter(b.is_open?'Joining closed.':'Joining open.')}
 async function cancelBooking(id){
  if(bconf!==id){bconf=id;renderBookings();return}
- bconf=null;const r=await sb.from('bookings').delete().eq('id',id);if(r.error)return toast(SAVEFAIL);await bAfter('Round cancelled.')}
+ bconf=null;const r=await sb.from('bookings').delete().eq('id',id);if(r.error)return toast(errMsg(r.error));await bAfter('Round cancelled.')}
 function shareBooking(id){const b=bookings.find(x=>x.id===id);if(!b)return;const left=b.spots-bIds(b).length;
  window.open('https://wa.me/?text='+encodeURIComponent('Golf at '+b.course_name+', '+wdate(b.play_on)+' at '+hhmm(b.tee_time)+'. '+left+' spot'+(left===1?'':'s')+' left on The Hundred. Join here: '+bLink(id)),'_blank','noopener')}
 function copyBooking(id){const l=bLink(id);if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(l).then(()=>toast('Round link copied.'),()=>toast('Link: '+l));else toast('Link: '+l)}
@@ -797,9 +977,9 @@ async function loadPhotos(){
  if(!curL){photos=[];bmore=false;return}
  const r=await sb.from('board_photos').select('*').eq('league_id',curL).order('created_at',{ascending:false}).limit(bmax+1);
  const rows=r.error?[]:(r.data||[]);bmore=rows.length>bmax;photos=rows.slice(0,bmax);
- if(Date.now()-purlsAt>36e5*4){purls={};purlsAt=Date.now()}
+ if(Date.now()-purlsAt>36e5*.75){purls={};purlsAt=Date.now()}
  const need=photos.map(p=>p.path).filter(p=>!purls[p]);
- if(need.length){const s=await sb.storage.from('board').createSignedUrls(need,21600);(s.data||[]).forEach(x=>{if(x.signedUrl)purls[x.path]=x.signedUrl})}}
+ if(need.length){const s=await sb.storage.from('board').createSignedUrls(need,3600);(s.data||[]).forEach(x=>{if(x.signedUrl)purls[x.path]=x.signedUrl})}}
 const daysAgo=d=>Math.round((new Date(todayStr()+'T12:00:00')-new Date(d+'T12:00:00'))/864e5);
 const recentPast=()=>bookings.filter(b=>b.play_on<todayStr()&&daysAgo(b.play_on)<=14).sort((x,y)=>y.play_on.localeCompare(x.play_on));
 function photoPin(p){
@@ -851,16 +1031,136 @@ $('pdt').value=todayStr();
 async function deletePhoto(id){
  if(pconf!==id){pconf=id;renderBoard();return}
  pconf=null;const p=photos.find(x=>x.id===id);if(!p)return;
- const r=await sb.from('board_photos').delete().eq('id',id);if(r.error)return toast(SAVEFAIL);
- await sb.storage.from('board').remove([p.path]);delete purls[p.path];
+ const o=await sb.storage.from('board').remove([p.path]);if(o.error)return toast(errMsg(o.error));
+ const r=await sb.from('board_photos').delete().eq('id',id);if(r.error)return toast(errMsg(r.error));
+ delete purls[p.path];
  await loadLeague();renderLeague();toast('Photo removed.')}
-function openPhoto(id){
+async function openPhoto(id){
  const p=photos.find(x=>x.id===id);if(!p||!purls[p.path])return;
  lbFocus=document.activeElement;$('lbimg').src=purls[p.path];$('lbimg').alt=p.caption||p.course_name||'Round photo';
- $('lbcap').textContent=[p.course_name,p.caption,nameOf(p.user_id)].filter(Boolean).join(' - ');
- $('lbx').hidden=false;$('lbclose').focus()}
+ const cap=[p.course_name,p.caption,nameOf(p.user_id)].filter(Boolean).join(' - ');$('lbcap').textContent=cap;
+ $('lbx').hidden=false;$('lbclose').focus();
+ try{const s=await sb.storage.from('board').createSignedUrl(p.path,3600);const u=s&&s.data&&s.data.signedUrl;
+  if(u){purls[p.path]=u;if(!$('lbx').hidden&&$('lbimg').getAttribute('src')!==u)$('lbimg').src=u}}catch(e){}}
 function closePhoto(){$('lbx').hidden=true;$('lbimg').removeAttribute('src');if(lbFocus&&lbFocus.focus)lbFocus.focus()}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('lbx').hidden)closePhoto()});
+
+/* Extras: milestones, head to head, Hundred card, course of the month, install nudge */
+const BADGES=[
+ {id:'p10',t:'Ten down',d:'Play 10 of the Top 100.',n:10,cur:s=>s.size},
+ {id:'p25',t:'Quarter century',d:'Play 25 of the Top 100.',n:25,cur:s=>s.size},
+ {id:'p50',t:'Halfway there',d:'Play 50 of the Top 100.',n:50,cur:s=>s.size},
+ {id:'p100',t:'The full Hundred',d:'Play every course on the list.',n:100,cur:s=>s.size},
+ {id:'prov',t:'Every province',d:'Play at least one course in each province.',n:provs.length,cur:s=>provs.filter(p=>D.some(c=>c.province===p&&s.has(c.rank))).length},
+ {id:'top10',t:'Top 10 done',d:'Play all ten of the top ten courses.',n:10,cur:s=>D.filter(c=>c.rank<=10&&s.has(c.rank)).length}];
+const earnedIds=s=>BADGES.filter(b=>b.cur(s)>=b.n).map(b=>b.id);
+function badgeGain(before,after){const had=new Set(earnedIds(before)),g=BADGES.filter(b=>!had.has(b.id)&&b.cur(after)>=b.n);return g.length?g[0].t:''}
+function badgesHtml(s){
+ return '<div class="lab" style="margin-top:16px">Milestones</div><div class="bdgs">'+BADGES.map(b=>{const c=Math.min(b.cur(s),b.n),ok=c>=b.n;
+  return '<div class="bgx'+(ok?' on':'')+'"><b>'+esc(b.t)+'</b><span>'+(ok?'Earned':c+' of '+b.n)+'</span><small>'+esc(b.d)+'</small></div>'}).join('')+'</div>'}
+
+function h2hHtml(uid){
+ const mid=myId();if(!mid||uid===mid||!members.some(m=>m.user_id===uid)||!members.some(m=>m.user_id===mid))return '';
+ let w=0,h=0,l=0;
+ matches.filter(m=>inSeason(m.played_on)).forEach(m=>{
+  const mine=m.side_a.includes(mid)?'a':m.side_b.includes(mid)?'b':null,th=m.side_a.includes(uid)?'a':m.side_b.includes(uid)?'b':null;
+  if(!mine||!th||mine===th)return;if(m.result==='half')h++;else if(m.result===mine)w++;else l++});
+ const by={};rounds.filter(r=>inSeason(r.played_on)).forEach(r=>{const k=r.played_on+'|'+r.course_name.toLowerCase();(by[k]=by[k]||{})[r.user_id]=r});
+ let rw=0,rt=0,rl=0;Object.values(by).forEach(g=>{const a=g[mid],b=g[uid];if(!a||!b)return;if(a.points>b.points)rw++;else if(a.points<b.points)rl++;else rt++});
+ const st=stats(),a=st[mid]||{n:0,tot:0},b=st[uid]||{n:0,tot:0},nm=esc(nameOf(uid));
+ const avg=x=>x.n?(x.tot/x.n).toFixed(1):'-';
+ const none=!(w+h+l+rw+rt+rl);
+ return '<div class="lab" style="margin-top:16px">You vs '+nm+' ('+esc(seasonLabel().toLowerCase())+')</div>'+
+  '<div class="sgrid" style="margin-top:4px"><div><b>'+w+'-'+h+'-'+l+'</b><span>matches W-H-L</span></div><div><b>'+rw+'-'+rt+'-'+rl+'</b><span>same-day rounds</span></div><div><b>'+avg(a)+' v '+avg(b)+'</b><span>avg points</span></div></div>'+
+  (none?'<p class="about" style="margin:8px 0 0">No matches or shared rounds yet. Log a match against '+nm+' to start the rivalry.</p>':'<p class="about" style="margin:8px 0 0">Same-day rounds compare Stableford points at the same course on the same date. Your result first.</p>')}
+
+/* Hundred card */
+let cardBlob=null,cardUrl='',cardText='';
+function cardCanvas(){
+ const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+ const cs=getComputedStyle(document.documentElement),V=n=>cs.getPropertyValue(n).trim()||'#000';
+ const bone=V('--bone'),ink=V('--ink'),muted=V('--muted'),good=V('--good'),amber=V('--amber'),sand=V('--sand');
+ const SER='"Instrument Serif",Georgia,"Times New Roman",serif',MONO='"JetBrains Mono",ui-monospace,Menlo,monospace',SANS='Geist,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
+ x.fillStyle=bone;x.fillRect(0,0,W,H);x.strokeStyle=ink;x.lineWidth=3;x.strokeRect(36,36,W-72,H-72);
+ x.fillStyle=ink;x.textBaseline='alphabetic';x.textAlign='left';
+ x.font='400 84px '+SER;x.fillText('The Hundred',84,170);
+ x.font='500 28px '+SANS;x.fillStyle=muted;x.fillText('SA TOP 100 GOLF COURSES',86,214);
+ const nm=(prof&&prof.display_name)||'Golfer',n=played.size;
+ x.fillStyle=ink;x.font='400 64px '+SER;x.fillText(nm.length>22?nm.slice(0,21)+'.':nm,84,330);
+ x.font='600 190px '+MONO;x.fillText(String(n),84,520);const tw=x.measureText(String(n)).width;
+ x.font='400 56px '+SER;x.fillStyle=muted;x.fillText('of 100 played',84+tw+24,520);
+ const ax=84,ay=600,aw=912,ah=640;
+ x.fillStyle=sand;x.fillRect(ax,ay,aw,ah);
+ const pr=(la,lo)=>[ax+40+(lo-16)/17.5*(aw-80),ay+40+(-22-la)/13*(ah-80)];
+ D.forEach(d=>{const [px,py]=pr(d.lat,d.lng);x.beginPath();if(played.has(d.rank)){x.arc(px,py,13,0,7);x.fillStyle=good;x.fill();if(d.rank<=10){x.lineWidth=5;x.strokeStyle=amber;x.stroke()}}else{x.arc(px,py,7,0,7);x.lineWidth=2.5;x.strokeStyle=muted;x.stroke()}});
+ const info=rankInfo(myId());let ln=[];
+ if(info&&info.pos&&info.of>1)ln.push(ordinal(info.pos)+' of '+info.of+' in '+((curLeague()||{}).name||'my league'));
+ const eb=earnedIds(played).length;if(eb)ln.push(eb+' milestone'+(eb===1?'':'s'));
+ x.fillStyle=ink;x.font='500 34px '+SANS;x.fillText(ln.join('   |   ')||'Ticking them off one at a time',84,1296-12);
+ return c}
+const ordinal=n=>{const t=n%100,s=['th','st','nd','rd'];return n+(s[(t-20)%10]||s[t]||s[0])};
+async function makeCard(){
+ const area=$('shCard');if(!area)return;area.innerHTML='<p class="about">Making your card...</p>';
+ try{if(document.fonts&&document.fonts.load){await Promise.race([Promise.all([document.fonts.load('400 64px "Instrument Serif"'),document.fonts.load('600 40px "JetBrains Mono"'),document.fonts.load('500 30px Geist')]),new Promise(r=>setTimeout(r,1500))])}}catch(e){}
+ try{
+  const c=cardCanvas();cardBlob=await new Promise((ok,no)=>c.toBlob(b=>b?ok(b):no(new Error('blob')),'image/png'));
+  if(cardUrl)URL.revokeObjectURL(cardUrl);cardUrl=URL.createObjectURL(cardBlob);
+  cardText='I have played '+played.size+' of the SA Top 100 golf courses. Track yours on The Hundred: '+redirect();
+  area.innerHTML='<img class="cardimg" src="'+cardUrl+'" alt="Your Hundred card: '+played.size+' of 100 courses played"><div class="row wrap2" style="margin-top:8px"><button class="btn primary" data-gs="1">Share image</button><button class="btn" data-gd="1">Save image</button><button class="btn" data-gw="1">WhatsApp text</button></div>'
+ }catch(e){area.innerHTML='<div class="banner err" role="alert">Could not make the card on this device. Try again.</div>'}}
+function saveCard(){if(!cardBlob)return;const a=document.createElement('a');a.href=cardUrl;a.download='my-hundred-card.png';document.body.appendChild(a);a.click();a.remove()}
+async function shareCard(){
+ if(!cardBlob)return;const f=new File([cardBlob],'my-hundred-card.png',{type:'image/png'});
+ if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],text:cardText});return}catch(e){if(e&&e.name==='AbortError')return}}
+ saveCard();toast('Card saved. Attach it in WhatsApp or your status.')}
+function shareCardText(){window.open('https://wa.me/?text='+encodeURIComponent(cardText),'_blank','noopener')}
+
+/* Course of the month: deterministic from the calendar month, same for everyone */
+function cotm(){const d=new Date(),k=d.getFullYear()*12+d.getMonth();return D[(k*37)%D.length]}
+function cotmHtml(){
+ const c=cotm(),ym=todayStr().slice(0,7),mlabel=new Date().toLocaleDateString('en-ZA',{month:'long',year:'numeric'});
+ const done=new Set(rounds.filter(r=>String(r.played_on).slice(0,7)===ym&&(r.course_rank===c.rank||String(r.course_name).toLowerCase()===c.name.toLowerCase())).map(r=>r.user_id));
+ const mine=done.has(myId());
+ return '<h2>Course of the month</h2><div class="lab" style="margin-top:4px">'+esc(mlabel)+'</div><div class="cmc">'+c.rank+'. '+esc(c.name)+'</div><div class="ln">'+esc(c.town)+', '+c.province+'</div>'+
+  '<p class="about" style="margin:8px 0">Play it this month and log the round. '+done.size+' of '+members.length+' golfer'+(members.length===1?' has':'s have')+' played it so far.</p>'+
+  (done.size?'<div class="chips" style="margin-bottom:8px">'+members.filter(m=>done.has(m.user_id)).map(m=>'<span class="chip" style="cursor:default">'+esc(nameOf(m.user_id))+' &#10003;</span>').join('')+'</div>':'')+
+  '<div class="row wrap2"><button class="btn'+(mine?'':' primary')+'" data-cm="'+c.rank+'">Pin a round here</button><button class="btn" data-cl="'+c.rank+'">Log a round here</button></div>'}
+function pinAt(rank){const c=D[rank-1];if(!c)return;$('bc').value=c.name;const p=$('bpanel');p.open=true;p.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
+function logAt(rank){const c=D[rank-1];if(!c)return;showTab('L');$('rcc').value=c.name;setMsg('cmsg','',$('rcc'));const p=$('rpanel');p.open=true;p.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
+
+/* Add to home screen nudge, shown once someone has logged a round */
+let deferredInstall=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;renderLeague()});
+const standalone=()=>(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||window.navigator.standalone===true;
+const iosDevice=()=>/iphone|ipad|ipod/i.test(navigator.userAgent||'');
+function pwaHtml(){
+ let gone=false;try{gone=!!localStorage.getItem('hundredPwaNudge')}catch(e){}
+ if(gone||standalone()||!me||!rounds.some(r=>r.user_id===myId()))return '';
+ const how=deferredInstall?'<button class="btn primary" data-pi="1">Add to home screen</button>':iosDevice()?'<span class="about" style="margin:0">Tap Share in Safari, then Add to Home Screen.</span>':'<span class="about" style="margin:0">Use your browser menu and choose Add to Home screen or Install app.</span>';
+ return '<div class="banner ok" role="status"><b>Keep The Hundred one tap away.</b><div class="row wrap2" style="margin-top:8px">'+how+'<button class="btn link" data-px="1">Not now</button></div></div>'}
+async function installApp(){if(!deferredInstall)return;deferredInstall.prompt();try{await deferredInstall.userChoice}catch(e){}deferredInstall=null;renderLeague()}
+function dismissNudge(){try{localStorage.setItem('hundredPwaNudge','1')}catch(e){}renderLeague()}
+
+/* Live league board: Realtime with a refresh fallback */
+let lastRef=0,rtCh=null,rtL=null,rtT=null;
+function unsubRT(){if(rtCh&&sb&&sb.removeChannel){try{sb.removeChannel(rtCh)}catch(e){}}rtCh=null;rtL=null}
+function softRefresh(wait){clearTimeout(rtT);rtT=setTimeout(()=>{if(document.hidden||!me||!curL)return;const a=document.activeElement;if(a&&/INPUT|SELECT|TEXTAREA/.test(a.tagName)&&a.closest&&a.closest('#hist,#blist')){softRefresh(3000);return}refreshLeague()},wait||800)}
+function syncRT(){
+ if(!sb||!sb.channel||!curL||!me){if(rtCh)unsubRT();return}
+ if(rtL===curL)return;unsubRT();
+ try{const ch=sb.channel('league-'+curL);
+  ['rounds','matches','bookings','board_photos'].forEach(t=>ch.on('postgres_changes',{event:'*',schema:'public',table:t,filter:'league_id=eq.'+curL},()=>softRefresh()));
+  ch.on('postgres_changes',{event:'*',schema:'public',table:'booking_players'},()=>softRefresh());
+  ch.subscribe();rtCh=ch;rtL=curL}catch(e){rtCh=null;rtL=null}}
+async function refreshLeague(){if(!me)return;await loadLeague();lastRef=Date.now();renderLeague()}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&me&&curL&&Date.now()-lastRef>60000)refreshLeague()});
+async function manualRefresh(){const b=$('lrefresh');if(b)b.disabled=true;await refreshLeague();if(b)b.disabled=false;toast('Leaderboard is up to date.')}
+
+/* Date helper lines under date inputs (DD/MM/YYYY style long form) */
+function dhAll(){document.querySelectorAll('[data-dh]').forEach(i=>{const t=$(i.dataset.dh);if(t)t.textContent=longDate(i.value)})}
+const dhOne=e=>{const t=e.target;if(t&&t.dataset&&t.dataset.dh){const x=$(t.dataset.dh);if(x)x.textContent=longDate(t.value)}};
+document.addEventListener('input',dhOne);document.addEventListener('change',dhOne);
+function openLog(){showTab('L');const p=$('rpanel');p.open=true;p.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
 
 render();renderLeague();boot();
 
