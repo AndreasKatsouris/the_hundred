@@ -375,6 +375,9 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  else if(d.bj){joinBooking(d.bj)}
  else if(d.bl){leaveBooking(d.bl)}
  else if(d.bo){toggleBooking(d.bo)}
+ else if(d.be){startEdit(d.be)}
+ else if(d.bes){saveEdit(d.bes)}
+ else if(d.bec){stopEdit()}
  else if(d.bs){shareBooking(d.bs)}
  else if(d.bc){copyBooking(d.bc)}
  else if(d.bx){cancelBooking(d.bx)}
@@ -686,7 +689,7 @@ const wdate=d=>new Date(d+'T12:00:00').toLocaleDateString('en-ZA',{weekday:'shor
 const hhmm=t=>String(t).slice(0,5);
 const bIds=b=>bplayers.filter(p=>p.booking_id===b.id).map(p=>p.user_id);
 const bLink=id=>redirect()+'?b='+id;
-let bpick=new Set(),pendingB=null,bconf=null;
+let bpick=new Set(),pendingB=null,bconf=null,bedit=null,bdraft={};
 try{pendingB=new URLSearchParams(location.search).get('b');if(pendingB){localStorage.setItem('hundredPendingB',pendingB);history.replaceState(null,'',location.pathname+location.hash)}else pendingB=localStorage.getItem('hundredPendingB')}catch(e){}
 let bSeenK='',bSeenAt='';
 const seenKey=()=>'hundredSeenB:'+myId()+':'+curL;
@@ -699,7 +702,18 @@ function navDot(){const t=$('tH');if(!t)return;let s=t.querySelector('.nb');if(!
 const _showTab=showTab;showTab=function(t){_showTab(t);const on=t==='H';$('pH').classList.toggle('on',on);if(on)$('tH').setAttribute('aria-current','page');else $('tH').removeAttribute('aria-current');if(on){renderBookings();markBSeen()}navDot()};
 $('tH').onclick=()=>showTab('H');$('hgo').onclick=()=>showTab('L');
 const upcoming=()=>{const t=todayStr();return bookings.filter(b=>b.play_on>=t).sort((x,y)=>(x.play_on+x.tee_time).localeCompare(y.play_on+y.tee_time))};
+function editForm(b){
+ const ids=bIds(b),d=bdraft,v=k=>esc(d[k]!==undefined?d[k]:k==='c'?b.course_name:k==='d'?b.play_on:k==='t'?hhmm(b.tee_time):k==='n'?(b.note||''):String(b.spots));
+ const sp=+(d.s!==undefined?d.s:b.spots),opts=[2,3,4,5,6,7,8].filter(n=>n>=ids.length||n===sp).map(n=>'<option'+(n===sp?' selected':'')+'>'+n+'</option>').join('');
+ return '<div class="bk npin" id="bk-'+b.id+'"><div class="c">Edit this round</div><p class="ln">'+ids.length+' booked so far. Players stay booked when you change details.</p>'+
+  '<div class="lab" style="margin-top:12px">Date</div><input type="date" data-ef="d" value="'+v('d')+'" aria-label="Date of round">'+
+  '<div class="lab" style="margin-top:12px">Tee time</div><input type="time" data-ef="t" value="'+v('t')+'" aria-label="Tee time">'+
+  '<div class="lab" style="margin-top:12px">Course</div><input type="text" data-ef="c" list="cl" value="'+v('c')+'" aria-label="Course" autocomplete="off">'+
+  '<div class="lab" style="margin-top:12px">Spots in the group</div><select data-ef="s" aria-label="Spots in the group">'+opts+'</select>'+
+  '<div class="lab" style="margin-top:12px">Note (optional)</div><input type="text" data-ef="n" maxlength="140" value="'+v('n')+'" aria-label="Note">'+
+  '<div class="fmsg" id="bemsg" role="alert"></div><div class="row wrap2" style="margin-top:12px"><button class="btn primary" data-bes="'+b.id+'">Save changes</button><button class="btn" data-bec="'+b.id+'">Cancel</button></div></div>'}
 function bookingCard(b){
+ if(bedit===b.id)return editForm(b);
  const past=b.play_on<todayStr(),fresh=isNewB(b);
  const ids=bIds(b),left=b.spots-ids.length,mine=ids.includes(myId()),owner=b.owner_id===myId();
  const badge=past?'Played':left<=0?'Full':!b.is_open?'Invite only':left+' spot'+(left===1?'':'s')+' left';
@@ -710,6 +724,7 @@ function bookingCard(b){
  if(!past&&mine&&!owner)act+='<button class="btn" data-bl="'+b.id+'">Leave round</button>';
  if(owner){
   if(!past&&left>0&&b.is_open)act+='<button class="btn" data-bs="'+b.id+'">Share on WhatsApp</button><button class="btn" data-bc="'+b.id+'">Copy link</button>';
+  act+='<button class="btn" data-be="'+b.id+'">Edit round</button>';
   if(!past)act+='<button class="btn" data-bo="'+b.id+'">'+(b.is_open?'Close joining':'Open joining')+'</button>';
   if(!past)act+=ids.filter(id=>id!==b.owner_id).map(id=>'<button class="btn link" data-brm="'+b.id+'|'+id+'">Remove '+esc(nameOf(id))+'</button>').join('');
   act+='<button class="btn link" data-bx="'+b.id+'">'+(bconf===b.id?'Tap again to cancel for everyone':(past?'Delete round':'Cancel round'))+'</button>'}
@@ -720,7 +735,7 @@ function renderBookings(){
  if(f.dataset.sig!==sig){bpick=new Set();f.dataset.sig=sig}
  const others=members.filter(m=>m.user_id!==myId());
  $('bpick').innerHTML=others.length?others.map(m=>'<button class="chip" data-bp="'+m.user_id+'" aria-pressed="'+bpick.has(m.user_id)+'">'+esc(nameOf(m.user_id))+'</button>').join(''):'<p class="about" style="margin:0">Invite golfers to the league to add them here.</p>';edges($('bpick'));navDot()}
-function bookErr(e){const t=(e&&e.message||'').toLowerCase();return /full/.test(t)?'Sorry, that round just filled up.':/closed/.test(t)?'The organiser has closed joining for this round.':/past/.test(t)?'That round has already been played.':/not found/.test(t)?'That round is no longer available.':SAVEFAIL}
+function bookErr(e){const t=(e&&e.message||'').toLowerCase();return /full/.test(t)?'Sorry, that round just filled up.':/closed/.test(t)?'The organiser has closed joining for this round.':/past/.test(t)?'That round has already been played.':/too few/.test(t)?'More golfers are already booked than that. Keep at least that many spots, or remove someone first.':/not owner/.test(t)?'Only the organiser can edit this round.':/not found/.test(t)?'That round is no longer available.':SAVEFAIL}
 const bAfter=async m=>{await loadLeague();renderLeague();if(m)toast(m)};
 $('bd').value=(()=>{const d=new Date(Date.now()+864e5);return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())})();
 $('saveB').onclick=async()=>{
@@ -743,6 +758,22 @@ $('bc').addEventListener('input',()=>setMsg('bmsg',''));
 async function joinBooking(id){const r=await sb.rpc('join_booking',{p_booking:id});if(r.error){await bAfter();toast(bookErr(r.error));return}await bAfter('You have joined this round.')}
 async function leaveBooking(id){const r=await sb.from('booking_players').delete().eq('booking_id',id).eq('user_id',myId());if(r.error)return toast(SAVEFAIL);await bAfter('You have left the round.')}
 async function removeFromBooking(id,uid){const r=await sb.from('booking_players').delete().eq('booking_id',id).eq('user_id',uid);if(r.error)return toast(SAVEFAIL);await bAfter(nameOf(uid)+' removed from the round.')}
+function startEdit(id){bedit=id;bdraft={};renderBookings();const el=$('bk-'+id);if(el)el.scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'})}
+function stopEdit(){bedit=null;bdraft={};renderBookings()}
+async function saveEdit(id){
+ const b=bookings.find(x=>x.id===id);if(!b||!sb)return;
+ const g=k=>bdraft[k]!==undefined?bdraft[k]:k==='c'?b.course_name:k==='d'?b.play_on:k==='t'?hhmm(b.tee_time):k==='n'?(b.note||''):String(b.spots);
+ const name=g('c').trim(),date=g('d'),time=g('t'),spots=+g('s');
+ if(!name)return setMsg('bemsg','Pick or type the course.');
+ if(!date)return setMsg('bemsg','Pick the date.');
+ if(date!==b.play_on&&date<todayStr())return setMsg('bemsg','That date has already passed.');
+ if(!time)return setMsg('bemsg','Set the tee time.');
+ if(spots<bIds(b).length)return setMsg('bemsg','More golfers are already booked than that. Keep at least '+bIds(b).length+' spots.');
+ const c=D.find(x=>x.name.toLowerCase()===name.toLowerCase());
+ const r=await sb.rpc('update_booking',{p_booking:id,p_course:c?c.name:name,p_rank:c?c.rank:null,p_date:date,p_time:time,p_spots:spots,p_note:g('n').trim()||null});
+ if(r.error)return setMsg('bemsg',/function|schema cache/i.test(r.error.message||'')?'Editing is not switched on yet. The update_booking SQL still needs to run.':bookErr(r.error));
+ bedit=null;bdraft={};await bAfter('Round updated.')}
+document.addEventListener('input',e=>{const k=e.target&&e.target.dataset&&e.target.dataset.ef;if(k&&bedit&&e.target.closest('.bk')){bdraft[k]=e.target.value;setMsg('bemsg','')}});
 async function toggleBooking(id){const b=bookings.find(x=>x.id===id);if(!b)return;const r=await sb.from('bookings').update({is_open:!b.is_open}).eq('id',id);if(r.error)return toast(SAVEFAIL);await bAfter(b.is_open?'Joining closed.':'Joining open.')}
 async function cancelBooking(id){
  if(bconf!==id){bconf=id;renderBookings();return}
