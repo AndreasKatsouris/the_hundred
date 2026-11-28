@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-ZA"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-2xQoPcLsXu9e2209f2j3CQTLwxis3825+jEZX0e6NzQ=' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://uqyseljsxwdeikmoapxu.supabase.co https://unpkg.com; connect-src 'self' https://uqyseljsxwdeikmoapxu.supabase.co wss://uqyseljsxwdeikmoapxu.supabase.co; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="en-ZA"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-klquyZR8UWo0ttDbivM6NJoTZJbKCiQW0flpjsNl7/A=' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://uqyseljsxwdeikmoapxu.supabase.co https://unpkg.com; connect-src 'self' https://uqyseljsxwdeikmoapxu.supabase.co wss://uqyseljsxwdeikmoapxu.supabase.co; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Hundred</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -211,7 +211,7 @@ input[type=text],input[type=number],input[type=date]{max-width:100%}
 #tour .tnp{max-width:760px;margin:0 auto}#tour .tdoc{max-width:760px;margin:0 auto}
 .tbar2{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .trow{display:flex;gap:8px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:8px 0}.trow div{display:flex;flex-direction:column;flex:1;min-width:0}.trow label{flex:0 0 96px}.trow input{width:100%}
-.trow2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0}.trow2 select,#tour input,#tour select{width:100%;min-height:44px}
+.trow2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.trow2 select,#tour input,#tour select{width:100%;min-height:44px}
 .tas{display:grid;gap:8px;margin-top:10px}
 .ts{font:500 .72rem var(--mono);color:var(--muted)}
 .tkick{font:600 .72rem var(--mono);letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin:18px 0 6px}
@@ -1530,7 +1530,7 @@ async function toggleOther(idx,isP){
 
 /* Tour planner: pick courses on the map, get a route, days and costing. Estimates only. */
 const TORIG=[['Pretoria',-25.7479,28.2293],['Johannesburg',-26.2041,28.0473],['Cape Town',-33.9249,18.4241],['Durban',-29.8587,31.0218],['Gqeberha',-33.9608,25.6022],['Bloemfontein',-29.0852,26.1596],['Polokwane',-23.9045,29.4689],['Mbombela',-25.4753,30.9694],['East London',-33.0153,27.9116]];
-const TS={sel:[],orig:0,pl:4,rpd:1,name:'',fuel:29,lph:11,stay:4500,food:550,extra:300,fee:{}};
+const TS={sel:[],orig:0,pl:4,rpd:1,name:'',fuel:29,lph:11,stay:4500,food:550,extra:300,fee:{},dur:0};
 const TSC=[{k:'Lean',f:.85,s:.8,fo:400/550,e:.5,cart:0,d:'Lower-end fees and rooms, no carts, lighter food and extras'},{k:'Base',f:1,s:1,fo:1,e:1,cart:0,d:'Tier fees, shared house, no carts charged, your food and extras'},{k:'Premium',f:1.5,s:1.6,fo:900/550,e:2,cart:450,d:'Top-of-range fees and rooms, a cart each, generous food and extras'}];
 try{const t=JSON.parse(localStorage.getItem('hundredTour')||'null');if(t&&Array.isArray(t.sel))TS.sel=t.sel.filter(n=>D[n-1]).slice(0,12)}catch(e){}
 const tSave=()=>{try{localStorage.setItem('hundredTour',JSON.stringify({sel:TS.sel}))}catch(e){}};
@@ -1556,25 +1556,38 @@ function tOrder(o,cs){
  return path}
 function tPlan(){
  const cs=TS.sel.map(n=>D[n-1]);if(!cs.length)return null;
- const o=tOrigin(),path=tOrder(o,cs),days=[];
- path.forEach(c=>{const d=days[days.length-1];if(d&&d.cs.length<TS.rpd&&tkm(d.cs[0],c)<=25)d.cs.push(c);else days.push({cs:[c]})});
- let prev=o,km=0,rn=0;const hopMin=(a,b)=>Math.round(tkm(a,b)*.75);
- days.forEach((d,i)=>{
+ const o=tOrigin(),path=tOrder(o,cs),gd=[];
+ path.forEach(c=>{const d=gd[gd.length-1];if(d&&d.cs.length<TS.rpd&&tkm(d.cs[0],c)<=25)d.cs.push(c);else gd.push({type:'golf',cs:[c]})});
+ const G=gd.length,warn=[],dur=TS.dur|0,hasGaps=G>1;
+ const inKm0=tkm(o,path[0]),inMin0=Math.round(inKm0*.75),outKm0=tkm(path[path.length-1],o),outMin0=Math.round(outKm0*.75);
+ let extra=dur>G?dur-G:0;
+ let cand=[{k:'out',m:inMin0},{k:'home',m:outMin0}];if(hasGaps)cand=cand.filter(x=>x.m>120);
+ cand=cand.sort((a,b)=>b.m-a.m).slice(0,extra);
+ const tOut=cand.some(x=>x.k==='out'),tHome=cand.some(x=>x.k==='home');
+ let rest=hasGaps?extra-cand.length:0;const dropped=hasGaps?0:extra-cand.length;
+ let prev=tOut?path[0]:o,rn=0;
+ gd.forEach((d,i)=>{
   d.from=prev;d.base=d.cs[d.cs.length-1];d.inKm=tkm(prev,d.cs[0]);d.inMin=Math.round(d.inKm*.75);
-  d.hop=0;for(let k=1;k<d.cs.length;k++)d.hop+=tkm(d.cs[k-1],d.cs[k]);
-  d.hopMin=Math.round(d.hop*.75);
+  d.hop=0;for(let k=1;k<d.cs.length;k++)d.hop+=tkm(d.cs[k-1],d.cs[k]);d.hopMin=Math.round(d.hop*.75);
   if(d.inKm>=40){d.dep=i===0?(d.inMin>150?330:390):420;d.tee=[tC30(Math.max(480,d.dep+d.inMin+45))]}else{d.dep=null;d.tee=[510]}
   if(d.cs.length===2)d.tee.push(tC30(d.tee[0]+330+d.hopMin));
-  d.end=d.tee[d.tee.length-1]+270;d.r0=rn;rn+=d.cs.length;prev=d.base;km+=d.inKm+d.hop});
- const last=days[days.length-1];last.outKm=tkm(last.base,o);last.outMin=Math.round(last.outKm*.75);km+=last.outKm;
- last.arr=last.end+60+last.outMin;
- const warn=[];
- days.forEach((d,i)=>{if(d.inMin>270)warn.push('Day '+(i+1)+' starts with a '+tH(d.inMin)+' drive. Consider an extra night or a closer course.')});
- if(last.outMin>270)warn.push('The drive home on day '+days.length+' is '+tH(last.outMin)+' after golf.');
- if(last.arr>1230)warn.push('Day '+days.length+' ends late, around '+tT(last.arr)+'. Consider leaving earlier or staying another night.');
- if(TS.rpd===2&&days.some(d=>d.cs.length===2))warn.push('Two rounds in a day needs early tee times. In winter, check daylight and whether the club allows it.');
+  d.end=d.tee[d.tee.length-1]+270;d.r0=rn;rn+=d.cs.length;prev=d.base});
+ const days=[];
+ if(tOut){const dep=inMin0>300?420:480;days.push({type:'travel',dir:'out',cs:[],from:o,to:path[0],km:inKm0,min:inMin0,dep,arr:dep+inMin0,base:path[0]})}
+ const rc=new Array(G).fill(0),slots=Math.max(G-1,1);for(let r=0;r<rest;r++)rc[r%slots]++;
+ gd.forEach((d,i)=>{days.push(d);for(let r=0;r<rc[i];r++)days.push({type:'rest',cs:[],base:d.base})});
+ if(tHome){const b=gd[G-1].base,dep=outMin0>300?420:480;days.push({type:'travel',dir:'home',cs:[],from:b,to:o,km:outKm0,min:outMin0,dep,arr:dep+outMin0,base:b})}
+ days.forEach((d,i)=>{d.last=i===days.length-1});
+ let km=0;days.forEach(d=>{km+=d.type==='golf'?d.inKm+d.hop:d.type==='travel'?d.km:0});
+ const fin=days[days.length-1];
+ if(fin.type==='golf'){fin.outKm=outKm0;fin.outMin=outMin0;fin.arr=fin.end+60+outMin0;km+=outKm0}
+ if(dur&&dur<G)warn.push('Fitting '+rn+' round'+(rn===1?'':'s')+' needs at least '+G+' days'+(TS.rpd===1?', or set rounds a day to 2 to shorten it':', as some courses are too far apart to share a day')+'. Showing '+G+' days.');
+ if(dropped>0)warn.push('A '+dur+' day tour is longer than these courses need. Showing '+days.length+' days.');
+ days.forEach((d,i)=>{const m=d.type==='golf'?d.inMin:d.type==='travel'?d.min:0;if(m>270)warn.push('Day '+(i+1)+(d.type==='golf'?' starts with a '+tH(m)+' drive. Consider an extra night or a closer course.':' is a '+tH(m)+' drive.'))});
+ if(fin.type==='golf'){if(fin.outMin>270)warn.push('The drive home on day '+days.length+' is '+tH(fin.outMin)+' after golf.');if(fin.arr>1230)warn.push('Day '+days.length+' ends late, around '+tT(fin.arr)+'. Consider leaving earlier or staying another night.')}
+ if(TS.rpd===2&&gd.some(d=>d.cs.length===2))warn.push('Two rounds in a day needs early tee times. In winter, check daylight and whether the club allows it.');
  const dup={};cs.forEach(c=>dup[tTn(c)]=(dup[tTn(c)]||0)+1);
- if(Object.values(dup).some(v=>v>1)&&TS.rpd===1)warn.push('Some courses share a town. Setting "Rounds a day" to 2 saves a night.');
+ if(Object.values(dup).some(v=>v>1)&&TS.rpd===1&&!dur)warn.push('Some courses share a town. Setting "Rounds a day" to 2 saves a night.');
  warn.push('Distances are straight-line from town-level pins, plus 30%. Treat them as roughly right, not exact.');
  const ph=path.filter(c=>tFeeBasis(c.rank)==='tier').map(c=>c.name);
  warn.push(ph.length?'Green fees for '+ph.join(', ')+' are placeholders by ranking tier, not quotes. Edit them above, or share a real figure to help other members.':'Fees come from your figures and member reports. They are still not quotes, so confirm before booking.');
@@ -1598,11 +1611,14 @@ function tRoute(p){
 function tDocHtml(p){
  const n=TS.pl,cs=TSC.map(s=>tCost(p,n,s)),b=cs[1],nm=tName(p);
  const rh=p.rounds===1?'1 round':p.rounds+' rounds',nt=p.nights===0?'Day trip':p.nights+(p.nights===1?' night':' nights');
- const dayH=p.days.map((d,i)=>{
-  const isL=i===p.days.length-1;d.last=isL;const k=p.days.length===1?'Golf day':i===0?'Drive and golf':isL?'Golf and home':'Golf';let l='';
-  if(d.dep!=null)l+='<p>Leave '+esc(d.from.name||tTn(d.from))+' ~'+tT(d.dep)+': '+d.inKm+' km, '+tH(d.inMin)+' drive.</p>';
-  d.cs.forEach((c,j)=>{l+='<p><b>Round '+(d.r0+j+1)+':</b> '+esc(c.name)+' ('+esc(tTn(c))+'), tee ~'+tT(d.tee[j])+'.</p>'});
-  l+=isL?'<p>Finish ~'+tT(d.end)+'. Lunch at the club, then home to '+esc(p.o.name)+': '+d.outKm+' km, '+tH(d.outMin)+', arrive ~'+tT(d.arr)+'.</p>':'<p>Overnight near '+esc(tTn(d.base))+'.</p>';
+ const dayH=p.days.map((d,i)=>{let k,l='';
+  if(d.type==='travel'){k=d.dir==='out'?'Travel day':'Travel home';
+   l='<p>Leave '+esc(d.from.name)+' ~'+tT(d.dep)+': '+d.km+' km, '+tH(d.min)+' drive.</p><p>Arrive ~'+tT(d.arr)+(d.dir==='out'?'. No golf planned, the rest of the day is free.</p><p>Overnight near '+esc(tTn(d.to))+'.':'.')+'</p>'}
+  else if(d.type==='rest'){k='Spare day';l='<p>No golf planned. Rest, or add another round.</p><p>Overnight near '+esc(tTn(d.base))+'.</p>'}
+  else{k=d.last?(d.dep!=null?'Drive, golf and home':'Golf and home'):(d.dep!=null?'Drive and golf':'Golf');
+   if(d.dep!=null)l+='<p>Leave '+esc(d.from.name)+' ~'+tT(d.dep)+': '+d.inKm+' km, '+tH(d.inMin)+' drive.</p>';
+   d.cs.forEach((c,j)=>{l+='<p><b>Round '+(d.r0+j+1)+':</b> '+esc(c.name)+' ('+esc(tTn(c))+'), tee ~'+tT(d.tee[j])+'.</p>'});
+   l+=d.last?'<p>Finish ~'+tT(d.end)+'. Lunch at the club, then home to '+esc(p.o.name)+': '+d.outKm+' km, '+tH(d.outMin)+', arrive ~'+tT(d.arr)+'.</p>':'<p>Overnight near '+esc(tTn(d.base))+'.</p>'}
   return '<div class="tdc"><h4>Day '+(i+1)+'</h4><span class="tk">'+k+'</span>'+l+'</div>'}).join('');
  const rdH=p.days.map(d=>d.cs.map((c,j)=>{const m=j===d.cs.length-1?0:d.hopMin;
   return '<div class="tdc"><span class="tk">Round '+(d.r0+j+1)+'</span><h4>'+esc(c.name)+'</h4><span class="ts">'+esc(tTn(c))+', '+esc(c.province)+'</span><div class="tbig">'+tR(tFee(c.rank))+' <small>'+tFeeNote(c.rank)+'</small></div><p>SA Top 100 number '+c.rank+'.</p><span class="ts">'+(m?m+' min from the stay':d.last?'Last round, then home':'Round before the overnight stay')+'</span></div>'}).join('')).join('');
@@ -1632,7 +1648,7 @@ function tForm(){
  const o=TORIG.map((x,i)=>'<option value="'+i+'"'+(i===TS.orig?' selected':'')+'>'+x[0]+'</option>').join(''),pl=[2,3,4,5,6,7,8].map(x=>'<option'+(x===TS.pl?' selected':'')+'>'+x+'</option>').join('');
  const ls=TS.sel.map(n=>{const c=D[n-1];return '<div class="trow"><div><b>'+n+'. '+esc(c.name)+'</b><span class="ts">'+esc(tTn(c))+'</span>'+(me?'<button class="btn link" type="button" data-tfs="'+n+'">Share this fee</button>':'')+'</div><label class="ts">R per player<input type="number" inputmode="numeric" min="0" data-tfee="'+n+'" value="'+tFee(n)+'"></label><button class="btn" type="button" data-trm="'+n+'" aria-label="Remove '+esc(c.name)+'">Remove</button></div>'}).join('');
  const as=[['fuel','Fuel price, R per litre'],['lph','Car use, L per 100 km'],['stay','Stay, R per house per night'],['food','Food, R per player per day'],['extra','Range, tips, 19th hole, R per player']].map(a=>'<label class="lab">'+a[1]+'<input type="number" inputmode="decimal" min="0" data-tk="'+a[0]+'" value="'+TS[a[0]]+'"></label>').join('');
- $('tform').innerHTML='<label class="lab" for="tname">Tour name (optional)</label><input id="tname" type="text" maxlength="50" value="'+esc(TS.name)+'" placeholder="Auto"><div class="trow2"><label class="lab">Start and finish<select id="torig">'+o+'</select></label><label class="lab">Players<select id="tpl">'+pl+'</select></label><label class="lab">Rounds a day<select id="trpd"><option'+(TS.rpd===1?' selected':'')+'>1</option><option'+(TS.rpd===2?' selected':'')+'>2</option></select></label></div><div class="lab">Your courses ('+TS.sel.length+')</div>'+(ls||'<p class="about">None yet.</p>')+'<details class="set"><summary>Edit cost assumptions</summary><div class="tas">'+as+'</div></details>'}
+ $('tform').innerHTML='<label class="lab" for="tname">Tour name (optional)</label><input id="tname" type="text" maxlength="50" value="'+esc(TS.name)+'" placeholder="Auto"><div class="trow2"><label class="lab">Start and finish<select id="torig">'+o+'</select></label><label class="lab">Players<select id="tpl">'+pl+'</select></label><label class="lab">Tour length<select id="tdur">'+['<option value="0"'+(!TS.dur?' selected':'')+'>Auto</option>'].concat([1,2,3,4,5,6,7,8,9,10].map(x=>'<option value="'+x+'"'+(x===TS.dur?' selected':'')+'>'+x+(x===1?' day':' days')+'</option>')).join('')+'</select></label><label class="lab">Rounds a day<select id="trpd"><option'+(TS.rpd===1?' selected':'')+'>1</option><option'+(TS.rpd===2?' selected':'')+'>2</option></select></label></div><div class="lab">Your courses ('+TS.sel.length+')</div>'+(ls||'<p class="about">None yet.</p>')+'<details class="set"><summary>Edit cost assumptions</summary><div class="tas">'+as+'</div></details>'}
 function tourOpen(){if(!TS.sel.length){toast('Pick some courses on the map first.');return}
  $('tour').hidden=false;tLoadFees();document.body.classList.add('tourOpen');$('tour').scrollTop=0;tForm();tDoc();$('tclose').focus()}
 function tourClose(){$('tour').hidden=true;document.body.classList.remove('tourOpen')}
@@ -1648,9 +1664,13 @@ function tourAddView(){if(!map){toast('Open the map first.');return}
  toast('Added '+add.length+' course'+(add.length===1?'':'s')+(v.length>room?'. A tour holds up to 12, zoom in for the rest.':'.'))}
 function tourClear(){TS.sel=[];tChanged()}
 function tourText(){const p=tPlan();if(!p)return '';const b=tCost(p,TS.pl,TSC[1]);
- let t=tName(p)+'\n'+p.o.name+' road trip, '+p.nights+' night'+(p.nights===1?'':'s')+', '+p.rounds+' round'+(p.rounds===1?'':'s')+', '+p.km+' km\n';
- p.days.forEach((d,i)=>{t+='\nDay '+(i+1)+'\n';if(d.dep!=null)t+='Leave '+(d.from.name||tTn(d.from))+' ~'+tT(d.dep)+' ('+d.inKm+' km, '+tH(d.inMin)+')\n';d.cs.forEach((c,j)=>{t+='Round '+(d.r0+j+1)+': '+c.name+', tee ~'+tT(d.tee[j])+'\n'});t+=i===p.days.length-1?'Home ~'+tT(d.arr)+'\n':'Overnight near '+tTn(d.base)+'\n'});
+ let t=tName(p)+'\n'+p.o.name+' road trip, '+p.days.length+' day'+(p.days.length===1?'':'s')+', '+p.rounds+' round'+(p.rounds===1?'':'s')+', '+p.km+' km\n';
+ p.days.forEach((d,i)=>{t+='\nDay '+(i+1)+'\n';
+  if(d.type==='travel'){t+='Leave '+d.from.name+' ~'+tT(d.dep)+' ('+d.km+' km, '+tH(d.min)+'), arrive ~'+tT(d.arr)+'\n'+(d.dir==='out'?'Overnight near '+tTn(d.to)+'\n':'')}
+  else if(d.type==='rest'){t+='Spare day, overnight near '+tTn(d.base)+'\n'}
+  else{if(d.dep!=null)t+='Leave '+d.from.name+' ~'+tT(d.dep)+' ('+d.inKm+' km, '+tH(d.inMin)+')\n';d.cs.forEach((c,j)=>{t+='Round '+(d.r0+j+1)+': '+c.name+', tee ~'+tT(d.tee[j])+'\n'});t+=d.last?'Home ~'+tT(d.arr)+'\n':'Overnight near '+tTn(d.base)+'\n'}});
  return t+'\nAbout '+tR(b.pp)+' per player for '+TS.pl+' players (estimate, fees are placeholders).\nPlanned on The Hundred: '+redirect()}
+
 async function tourShare(){const t=tourText();try{if(navigator.share){await navigator.share({text:t});return}}catch(e){if(e&&e.name==='AbortError')return}
  try{await navigator.clipboard.writeText(t);toast('Tour copied.')}catch(e){toast('Could not copy on this device.')}}
 (function(){
@@ -1658,7 +1678,7 @@ async function tourShare(){const t=tourText();try{if(navigator.share){await navi
  const _dm=drawMap;drawMap=function(){_dm();tMark()};
  const _st=showTab;showTab=function(t){_st(t);if(t==='M'&&map&&!map._tourHook){map._tourHook=1;map.on('popupopen',e=>{const pp=e.popup.getElement()&&e.popup.getElement().querySelector('.pp');if(!pp||pp.querySelector('[data-tadd]'))return;const r=parseInt(pp.textContent,10);if(!r)return;const on=TS.sel.includes(r);pp.insertAdjacentHTML('beforeend','<br><button class="btn" type="button" data-tadd="'+r+'">'+(on?'Remove from tour':'Add to tour')+'</button>')});tMark()}};
  document.addEventListener('input',e=>{const t=e.target;if(!$('tour')||$('tour').hidden||!$('tour').contains(t))return;
-  if(t.id==='tname')TS.name=t.value;else if(t.id==='torig')TS.orig=+t.value;else if(t.id==='tpl')TS.pl=+t.value;else if(t.id==='trpd')TS.rpd=+t.value;
+  if(t.id==='tname')TS.name=t.value;else if(t.id==='torig')TS.orig=+t.value;else if(t.id==='tpl')TS.pl=+t.value;else if(t.id==='trpd')TS.rpd=+t.value;else if(t.id==='tdur')TS.dur=+t.value;
   else if(t.dataset.tfee)TS.fee[t.dataset.tfee]=t.value;else if(t.dataset.tk){const v=parseFloat(t.value);if(isFinite(v)&&v>=0)TS[t.dataset.tk]=v}
   TS.ai=null;tDoc()})})();
 
@@ -1675,7 +1695,7 @@ async function tourAi(){
  const p=tPlan();if(!p)return;if(!sb||!me){toast('Sign in to use the AI brief.');return}
  const btn=document.querySelector('[data-tai]');if(btn){btn.disabled=true;btn.textContent='Writing...'}
  const b=tCost(p,TS.pl,TSC[1]);
- const body={players:TS.pl,start:p.o.name,perPlayerBase:Math.round(b.pp),days:p.days.map((d,i)=>({day:i+1,leave:d.dep!=null?{from:d.from.name||tTn(d.from),km:d.inKm,time:tT(d.dep)}:null,rounds:d.cs.map((c,j)=>({course:c.name,town:tTn(c),province:c.province,rank:c.rank,tee:tT(d.tee[j])})),overnight:d.last?null:tTn(d.base),home:d.last?{km:d.outKm,arrive:tT(d.arr)}:null})),warnings:p.warn.slice(0,-1)};
+ const body={players:TS.pl,start:p.o.name,perPlayerBase:Math.round(b.pp),days:p.days.map((d,i)=>d.type==='travel'?{day:i+1,type:'travel',direction:d.dir,from:d.from.name,km:d.km,leave:tT(d.dep),arrive:tT(d.arr)}:d.type==='rest'?{day:i+1,type:'spare day, no golf'}:{day:i+1,type:'golf',leave:d.dep!=null?{from:d.from.name,km:d.inKm,time:tT(d.dep)}:null,rounds:d.cs.map((c,j)=>({course:c.name,town:tTn(c),province:c.province,rank:c.rank,tee:tT(d.tee[j])})),overnight:d.last?null:tTn(d.base),home:d.last?{km:d.outKm,arrive:tT(d.arr)}:null}),warnings:p.warn.slice(0,-1)};
  let msg='';
  try{const r=await sb.functions.invoke('tour-brief',{body});
   if(r.error){msg=r.error.context&&r.error.context.status===429?"You have used today's AI briefs. Try again tomorrow.":'The AI brief is not switched on yet.'}
