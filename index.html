@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-ZA"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-XCSTHBnyRM88ovhLTk5xQqbq8xNFJkW8EaKh3nZ4Gq8=' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://uqyseljsxwdeikmoapxu.supabase.co https://unpkg.com; connect-src 'self' https://uqyseljsxwdeikmoapxu.supabase.co wss://uqyseljsxwdeikmoapxu.supabase.co; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="en-ZA"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-zFtSlrQ5rjwPAMmhDyth+ypFTG7y/8Kw7rN4P1GYeks=' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://uqyseljsxwdeikmoapxu.supabase.co https://unpkg.com; connect-src 'self' https://uqyseljsxwdeikmoapxu.supabase.co wss://uqyseljsxwdeikmoapxu.supabase.co; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Hundred</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -71,7 +71,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
 .banner.ok{border-color:var(--good);color:var(--ink);background:rgb(92 122 74 / .1)}
 .fmsg{min-height:22px;font-size:.85rem;color:var(--crit);padding-top:4px}
 #map{height:60dvh;min-height:360px;border:1px solid var(--line2);border-radius:var(--r4);background:var(--sand)}
-.leaflet-container{font-family:var(--sans)}
+.leaflet-container{font-family:var(--sans)}.leaflet-touch .leaflet-bar a{width:44px;height:44px;line-height:44px}.leaflet-touch .leaflet-bar a.leaflet-control-zoom-in,.leaflet-touch .leaflet-bar a.leaflet-control-zoom-out{font-size:22px}.leaflet-control-attribution a{display:inline-block;padding:14px 2px;margin:-14px 0}
 .pin{width:44px;height:44px;display:flex;align-items:center;justify-content:center}
 .pin i{font:600 11px var(--mono);font-style:normal;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--ink);background:var(--sand);color:var(--ink)}
 .pin i.top{background:var(--ink);color:var(--bone)}.pin i.pl{background:var(--good);border-color:var(--good);color:#fff}
@@ -101,7 +101,7 @@ nav.nav button[aria-current=page]{font-weight:600;color:var(--ink);border-top-co
 nav.nav button[aria-current=page] svg{stroke-width:2}
 #toast{position:fixed;left:16px;right:16px;bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 8px);z-index:30;background:var(--ink);color:var(--bone);border-radius:var(--r3);padding:4px 8px 4px 14px;display:none;align-items:center;justify-content:space-between;gap:8px;max-width:728px;margin:0 auto;min-height:48px}
 #toast.on{display:flex}#toast button{background:none;border:none;color:var(--amber);font-weight:600;min-height:44px;min-width:44px;cursor:pointer}
-@media(min-width:640px){.list{grid-template-columns:1fr 1fr}}
+@media(min-width:640px){.list{grid-template-columns:1fr 1fr}}@media(min-width:640px){.scroll{flex-wrap:wrap;overflow:visible}.scroll.fl,.scroll.fr{-webkit-mask-image:none;mask-image:none}nav.nav{justify-content:center}nav.nav button{flex:0 1 220px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 
 .brandrow{display:flex;align-items:center;gap:10px}.brandrow canvas{width:36px;height:36px;flex:none}
@@ -225,12 +225,12 @@ input[type=text],input[type=number],input[type=date]{max-width:100%}
 .tgr{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .tdc{background:var(--cream);border:1px solid var(--line);border-radius:var(--r3);padding:12px}.tdc h4{font:400 1.35rem var(--serif);margin:0}.tdc p{margin:6px 0;font-size:.9rem}
 .tk{font:600 .68rem var(--mono);letter-spacing:1.2px;text-transform:uppercase;color:var(--amberink)}
-.tbig{font:400 1.5rem var(--serif);margin:4px 0}.tbig small{font:500 .7rem var(--mono);color:var(--muted)}
+.tbig{font:400 1.5rem var(--serif);margin:4px 0}.tbig small{display:block;font:500 .7rem var(--mono);color:var(--muted);margin-top:2px}
 .tbr{display:grid;grid-template-columns:120px 1fr 70px;gap:8px;align-items:center;margin:6px 0;font-size:.85rem}.tbr small{display:block;color:var(--muted);font:500 .68rem var(--mono)}.tbr i{display:block;background:var(--sand);height:12px;border-radius:2px}.tbr b{display:block;height:12px;border-radius:2px}.tbr em{font:500 .8rem var(--mono);font-style:normal;text-align:right}
 .tcost{width:100%;border-collapse:collapse;font-size:.85rem}.tcost th{text-align:left;font:600 .68rem var(--mono);text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--ink);padding:6px 4px}.tcost td{padding:7px 4px;border-bottom:1px solid var(--line)}.tn{text-align:right;font-family:var(--mono);white-space:nowrap}.tfin td{background:var(--ink);color:var(--bone);font-weight:600}
 .tul{padding-left:18px;font-size:.9rem}.tul li{margin:6px 0}.tck{list-style:square}
 .tfoot{font:500 .72rem var(--mono);color:var(--muted);margin-top:20px;border-top:1px solid var(--line2);padding-top:8px}
-@media print{body.tourOpen>*:not(#tour){display:none!important}body.tourOpen{background:#fff}#tour{position:static!important;overflow:visible!important;padding:0}.tnp{display:none!important}.tdc,.tst>div,.tbr,.tcost tr{break-inside:avoid}.tsl{break-after:avoid}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+@page{margin:14mm}@media print{body.tourOpen>*:not(#tour){display:none!important}body.tourOpen{background:#fff}#tour{position:static!important;overflow:visible!important;padding:0;background:#fff!important}.tnp{display:none!important}.tdc,.tst>div,.tbr,.tcost tr{break-inside:avoid}.tsl{break-after:avoid}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 .trow .btn.link{justify-self:start;min-height:44px;padding:0}
 body.tourOpen #map{visibility:hidden}body.tourOpen #toast{z-index:2100}
 </style></head><body class="gate">
@@ -474,6 +474,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  else if(d.cm){pinAt(+d.cm)}
  else if(d.cl){logAt(+d.cl)}
  else if(d.lr){openLog()}
+ else if(d.open){openPanel(d.open)}
  else if(d.rf){manualRefresh()}
  else if(d.pi){installApp()}
  else if(d.px){dismissNudge()}
@@ -538,7 +539,7 @@ function renderAuth(){
  $('aEmailW').style.display=reset?'none':'';$('aPassW').style.display=forgot||link?'none':'';
  $('aHint').style.display=up||reset?'':'none';$('aForgot').style.display=authMode==='in'?'':'none';$('aBack').style.display=forgot?'':'none';
  $('aLink').style.display=pw?'':'none';$('aPwd').style.display=link?'':'none';
- $('aCodeW').style.display=link&&linkSent?'':'none';
+ $('aCodeW').style.display=link&&linkSent?'':'none';$('aGo').classList.toggle('primary',!(link&&linkSent));
  $('aInvite').style.display=pendingJ&&!reset?'':'none';
  $('aPassL').textContent=reset?'New password':'Password';
  $('aGo').textContent=reset?'Save new password':up?'Create account':forgot?'Email me a reset link':link?(linkSent?'Send a new link':'Email me a sign-in link'):'Log in';
@@ -660,7 +661,7 @@ function indBoard(){
 const whl=a=>a.w+'-'+a.h+'-'+a.l;
 function mpBoard(){
  const rows=Object.entries(mstats()).map(([id,a])=>Object.assign({id},a)),pr=pairs();
- if(!rows.some(x=>x.n))return '<div class="empty"><p>No matches '+(S.season==='all'?'yet':'in '+S.season+' yet')+'. Log a match above: win is 3 points each, halved is 1 point each.</p></div>';
+ if(!rows.some(x=>x.n))return '<div class="empty"><p>No matches '+(S.season==='all'?'yet':'in '+S.season+' yet')+'. Win is 3 points each, halved is 1 point each.</p><button class="btn primary" data-open="mpanel">Log a match</button></div>';
  const ord=(x,y)=>y.pts-x.pts||y.w-x.w||x.n-y.n;rows.sort(ord);pr.sort(ord);
  const hd='<div class="lb h m"><span>#</span><span>NAME</span><span style="text-align:right">Pts</span><span style="text-align:right">W-H-L</span><span style="text-align:right">P</span></div>';
  const line=(x,i,name,attr)=>'<'+(attr?'button':'div')+' class="lb m"'+attr+'><span class="pos'+(i===0&&x.pts?' lead':'')+'">'+(i+1)+'</span><span class="who"><b>'+name+'</b></span><span class="num k">'+x.pts+'</span><span class="num">'+whl(x)+'</span><span class="num">'+x.n+'</span></'+(attr?'button':'div')+'>';
@@ -709,8 +710,8 @@ function renderLeague(){
  $('hist').innerHTML=rs.length?rs.map(r=>{
   if(redit===r.id)return '<div class="rnd redit">'+editRoundForm(r)+'</div>';
   const can=r.created_by===myId()||own;
-  return '<div class="rnd"><div class="d">'+dmy(r.played_on)+'</div><div class="c">'+esc(r.course_name)+'</div><div class="ln">'+esc(nameOf(r.user_id))+': '+r.gross+' gross, '+r.points+' pts'+(r.handicap!=null?' (hcp '+r.handicap+')':'')+'</div><div class="row wrap2" style="gap:0 16px">'+(r.user_id===myId()?'<button class="btn link" data-rsh="'+r.id+'" style="padding-left:0">Share</button>':'')+(can?'<button class="btn link" data-re="'+r.id+'" style="padding-left:0">Edit</button><button class="btn link" data-dr="'+r.id+'" style="padding-left:0">Delete round</button>':'')+'</div></div>'}).join(''):'<div class="empty"><p>Rounds you log will be listed here, newest first.</p></div>';
- $('mhist').innerHTML=ms.length?ms.map(m=>'<div class="rnd"><div class="d">'+dmy(m.played_on)+'</div>'+(m.course_name?'<div class="c">'+esc(m.course_name)+'</div>':'')+'<div class="ln">'+esc(matchLine(m))+'</div>'+(m.created_by===myId()||own?'<button class="btn link" data-dm="'+m.id+'" style="padding-left:0">Delete match</button>':'')+'</div>').join(''):'<div class="empty"><p>Matches you log will be listed here, newest first.</p></div>'}
+  return '<div class="rnd"><div class="d">'+dmy(r.played_on)+'</div><div class="c">'+esc(r.course_name)+'</div><div class="ln">'+esc(nameOf(r.user_id))+': '+r.gross+' gross, '+r.points+' pts'+(r.handicap!=null?' (hcp '+r.handicap+')':'')+'</div><div class="row wrap2" style="gap:0 16px">'+(r.user_id===myId()?'<button class="btn link" data-rsh="'+r.id+'" style="padding-left:0">Share</button>':'')+(can?'<button class="btn link" data-re="'+r.id+'" style="padding-left:0">Edit</button><button class="btn link" data-dr="'+r.id+'" style="padding-left:0">Delete round</button>':'')+'</div></div>'}).join(''):'<div class="empty"><p>Rounds you log will be listed here, newest first.</p><button class="btn" data-lr="1">Log a round</button></div>';
+ $('mhist').innerHTML=ms.length?ms.map(m=>'<div class="rnd"><div class="d">'+dmy(m.played_on)+'</div>'+(m.course_name?'<div class="c">'+esc(m.course_name)+'</div>':'')+'<div class="ln">'+esc(matchLine(m))+'</div>'+(m.created_by===myId()||own?'<button class="btn link" data-dm="'+m.id+'" style="padding-left:0">Delete match</button>':'')+'</div>').join(''):'<div class="empty"><p>Matches you log will be listed here, newest first.</p><button class="btn" data-open="mpanel">Log a match</button></div>'}
 
 const inviteLink=L=>redirect()+'?join='+L.invite_code;
 function copyCode(){const L=curLeague();if(!L)return;const t=inviteLink(L);
@@ -1043,9 +1044,9 @@ function renderBoard(){
  chipRow($('bfilter'),[['all','Everything'],['rounds','Rounds'],['photos','Photos']],bfilter,'data-bf');
  const up=upcoming(),past=recentPast(),showR=bfilter!=='photos',showP=bfilter!=='rounds';
  let h='';
- if(showR){const rs=up.concat(past);h+=rs.length?'<div class="npins">'+rs.map(bookingCard).join('')+'</div>':(bfilter==='rounds'?'<div class="empty"><p>No rounds pinned. Pin one below and share it with the group.</p></div>':'')}
- if(showP){h+=photos.length?'<div class="pgal">'+photos.map(photoPin).join('')+'</div>'+(bmore?'<button class="btn" data-pm="1" style="width:100%;margin-top:8px">Show older photos</button>':''):(bfilter==='photos'?'<div class="empty"><p>No photos yet. Pin the first one from your last round.</p></div>':'')}
- if(!h)h='<div class="empty"><p>The board is empty. Pin a round or a photo from your last game.</p></div>';
+ if(showR){const rs=up.concat(past);h+=rs.length?'<div class="npins">'+rs.map(bookingCard).join('')+'</div>':(bfilter==='rounds'?'<div class="empty"><p>No rounds pinned. Pin one and share it with the group.</p><button class="btn primary" data-open="bpanel">Pin a round</button></div>':'')}
+ if(showP){h+=photos.length?'<div class="pgal">'+photos.map(photoPin).join('')+'</div>'+(bmore?'<button class="btn" data-pm="1" style="width:100%;margin-top:8px">Show older photos</button>':''):(bfilter==='photos'?'<div class="empty"><p>No photos yet. Pin the first one from your last round.</p><button class="btn primary" data-open="ppanel">Pin a photo</button></div>':'')}
+ if(!h)h='<div class="empty"><p>The board is empty. Pin a round or a photo from your last game.</p><div class="row wrap2"><button class="btn primary" data-open="bpanel">Pin a round</button><button class="btn" data-open="ppanel">Pin a photo</button></div></div>';
  $('blist').innerHTML=h}
 function openPhotoForm(course,date){const f=$('ppanel');f.open=true;if(course)$('pcourse').value=course;if(date)$('pdt').value=date;f.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
 async function shrink(file){
@@ -1198,7 +1199,7 @@ function cotmHtml(){
   '<p class="about" style="margin:8px 0">Play it this month and log the round. '+done.size+' of '+members.length+' golfer'+(members.length===1?' has':'s have')+' played it so far.</p>'+
   (done.size?'<div class="chips" style="margin-bottom:8px">'+members.filter(m=>done.has(m.user_id)).map(m=>'<span class="chip" style="cursor:default">'+esc(nameOf(m.user_id))+' &#10003;</span>').join('')+'</div>':'')+
   '<div class="row wrap2"><button class="btn'+(mine?'':' primary')+'" data-cm="'+c.rank+'">Pin a round here</button><button class="btn" data-cl="'+c.rank+'">Log a round here</button></div>'}
-function pinAt(rank){const c=D[rank-1];if(!c)return;$('bc').value=c.name;const p=$('bpanel');p.open=true;p.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
+function pinAt(rank){const c=D[rank-1];if(!c)return;$('bc').value=c.name;openPanel('bpanel')}
 function logAt(rank){const c=D[rank-1];if(!c)return;showTab('L');$('rcc').value=c.name;setMsg('cmsg','',$('rcc'));const p=$('rpanel');p.open=true;p.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
 
 /* Add to home screen nudge, shown once someone has logged a round */
@@ -1233,6 +1234,7 @@ async function manualRefresh(){const b=$('lrefresh');if(b)b.disabled=true;await 
 function dhAll(){document.querySelectorAll('[data-dh]').forEach(i=>{const t=$(i.dataset.dh);if(t)t.textContent=longDate(i.value)})}
 const dhOne=e=>{const t=e.target;if(t&&t.dataset&&t.dataset.dh){const x=$(t.dataset.dh);if(x)x.textContent=longDate(t.value)}};
 document.addEventListener('input',dhOne);document.addEventListener('change',dhOne);
+function openPanel(id){const p=$(id);if(!p)return;showTab(p.closest('.pane').id.slice(1));p.open=true;p.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
 function openLog(){showTab('L');const p=$('rpanel');p.open=true;p.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
 
 const pcUrls={};let pcBlobs=null,pcStyle='highlands',pcPrevUrls=[],pcBusy=false;
@@ -1604,11 +1606,16 @@ function tRoute(p){
  const pts=[{n:p.o.name,k:0}];let cum=0,prev=p.o;
  p.path.forEach(c=>{cum+=tkm(prev,c);pts.push({n:c.name,k:cum});prev=c});
  const back=tkm(prev,p.o);cum+=back;pts.push({n:'Home',k:cum});
- const W=340,x=k=>14+(cum?k/cum:0)*312,cut=s=>s.length>17?s.slice(0,16)+'.':s;
- let g='<line x1="14" y1="45" x2="326" y2="45" stroke="var(--ink)" stroke-width="3"/>';
- pts.forEach((q,i)=>{const px=x(q.k),up=i%2===0,anc=i===0?'start':i===pts.length-1?'end':'middle',tx=i===0?14:i===pts.length-1?326:px;
-  g+='<circle cx="'+px+'" cy="45" r="'+(i===0||i===pts.length-1?7:5)+'" fill="'+(i===0||i===pts.length-1?'var(--ink)':'var(--amber)')+'"/><text x="'+tx+'" y="'+(up?25:72)+'" text-anchor="'+anc+'" font-size="10" fill="var(--ink)" font-weight="600">'+esc(cut(q.n))+'</text><text x="'+tx+'" y="'+(up?36:83)+'" text-anchor="'+anc+'" font-size="9" fill="var(--muted)">'+q.k+' km</text>'});
- return '<svg viewBox="0 0 '+W+' 92" role="img" aria-label="Route from '+esc(p.o.name)+' and back, '+cum+' km in total" width="100%">'+g+'</svg>'}
+ const W=340,x=k=>14+(cum?k/cum:0)*312,cut=s=>s.length>17?s.slice(0,16)+'.':s,last=[[-99,-99,-99,-99],[-99,-99,-99,-99]],L=pts.length-1;let u=0,d=0;
+ pts.forEach((q,i)=>{const px=x(q.k),nm=cut(q.n),w=Math.max(nm.length*5.8,(q.k+' km').length*5)+6,anc=i===0?'start':i===L?'end':'middle',l=anc==='start'?14:anc==='end'?326-w:px-w/2,r=l+w;let dir=i%2,t=-1;
+  for(let a=0;a<2&&t<0;a++){const dd=(dir+a)%2;for(let k=0;k<4;k++)if(last[dd][k]+2<=l){t=k;dir=dd;break}}
+  if(t<0){t=3}
+  last[dir][t]=r;q.dir=dir;q.t=t;q.px=px;q.nm=nm;q.anc=anc;if(dir===0)u=Math.max(u,t+1);else d=Math.max(d,t+1)});
+ const ln=Math.max(u,1)*26+10,H=ln+Math.max(d,1)*26+8;
+ let g='<line x1="14" y1="'+ln+'" x2="326" y2="'+ln+'" stroke="var(--ink)" stroke-width="2"/>';
+ pts.forEach((q,i)=>{const end=i===0||i===L,tx=i===0?14:i===L?326:q.px,ny=q.dir===0?ln-25-q.t*26+11:ln+22+q.t*26,ky=ny+11;
+  g+='<circle cx="'+q.px+'" cy="'+ln+'" r="'+(end?7:5)+'" fill="'+(end?'var(--ink)':'var(--amber)')+'"/><text x="'+tx+'" y="'+(q.dir===0?ny-11:ny)+'" text-anchor="'+q.anc+'" font-size="10" fill="var(--ink)" font-weight="600">'+esc(q.nm)+'</text><text x="'+tx+'" y="'+(q.dir===0?ny:ky)+'" text-anchor="'+q.anc+'" font-size="9" fill="var(--muted)">'+q.k+' km</text>'});
+ return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Route from '+esc(p.o.name)+' and back, '+cum+' km in total" width="100%">'+g+'</svg>'}
 function tDocHtml(p){
  const n=TS.pl,cs=TSC.map(s=>tCost(p,n,s)),b=cs[1],nm=tName(p);
  const rh=p.rounds===1?'1 round':p.rounds+' rounds',nt=p.nights===0?'Day trip':p.nights+(p.nights===1?' night':' nights');
@@ -1644,6 +1651,10 @@ function tDocHtml(p){
   +'<div class="tsl">Where the money goes, per player</div><div class="tdc">'+barH+'</div><div class="tsl">Three scenarios, per player</div><div class="tgr">'+scH+'</div><div class="tsl">Base case costing</div>'+tbl
   +'<div class="tsl">Watch-outs</div><ul class="tul">'+p.warn.map(w=>'<li>'+esc(w)+'</li>').join('')+'</ul><div class="tsl">Booking checklist</div><ul class="tul tck">'+ck+'</ul>'
   +'<p class="tfoot">Rands (R) &middot; estimates, confirm before booking. Fees and rooms are placeholders, not quotes. Made on The Hundred.</p></div>'}
+let tTitle=null;
+function tFile(){const p=tPlan(),nm=p?tName(p):'Tour',yr=new Date().toLocaleDateString('en-CA',{timeZone:'Africa/Johannesburg'}).slice(0,4);return ('The Hundred - '+nm+' - '+yr).replace(/[\\/:*?"<>|]+/g,' ').replace(/\s+/g,' ').trim()}
+window.addEventListener('beforeprint',()=>{const t=$('tour');if(t&&!t.hidden){if(tTitle===null)tTitle=document.title;document.title=tFile()}});
+window.addEventListener('afterprint',()=>{if(tTitle!==null){document.title=tTitle;tTitle=null}});
 function tSum(){const o=TORIG[TS.orig];return 'Edit plan <span class="ts">'+esc(o?o[0]:'')+', '+TS.pl+' players, '+(TS.dur?TS.dur+(TS.dur===1?' day':' days'):'auto length')+', '+TS.sel.length+(TS.sel.length===1?' course':' courses')+'</span>'}
 function tDoc(){const p=tPlan(),el=$('tdoc');if(!el)return;const s=$('tsum');if(s)s.innerHTML=tSum();el.innerHTML=p?tDocHtml(p):'<p class="about">No courses in this tour yet.</p><button class="btn primary" type="button" data-tclose="1">Back to the map</button>'}
 function tForm(){
