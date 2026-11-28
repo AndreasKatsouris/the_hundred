@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-ZA"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-KvG4Z4KhiPrNQ0ArgZGRTq+H0EVfYE2otaw7tbDZrns=' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://uqyseljsxwdeikmoapxu.supabase.co https://unpkg.com; connect-src 'self' https://uqyseljsxwdeikmoapxu.supabase.co wss://uqyseljsxwdeikmoapxu.supabase.co; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="en-ZA"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-ldLgaYXpYx7zhZ57ZtnZpthQ4RsQ0pTMpuX79PDOSeM=' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://uqyseljsxwdeikmoapxu.supabase.co https://unpkg.com; connect-src 'self' https://uqyseljsxwdeikmoapxu.supabase.co wss://uqyseljsxwdeikmoapxu.supabase.co; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Hundred</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -196,7 +196,7 @@ input[type=text],input[type=number],input[type=date]{max-width:100%}
 .pbl{margin:0 0 10px;font-size:.85rem}.pbl summary{min-height:44px;display:flex;align-items:center;color:var(--muted)}.pbr{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--line)}.pbr small{display:block;color:var(--muted)}.pbf{margin:0 0 14px}.pbf input{flex:1;min-width:0;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
 .pfav span{color:var(--muted)}.pfav b{font-weight:500;text-align:right}
 .pcprev{display:block;width:160px;height:160px;border-radius:50%;object-fit:cover;margin:10px 0 0}
-[data-pcs][aria-pressed=true],[data-gbv][aria-pressed=true]{background:var(--ink);color:var(--cream)}
+[data-pcs][aria-pressed=true]{background:var(--ink);color:var(--cream)}
 #shMine input[type=text],#shMine input[type=number]{width:100%;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
 #auth input[type=text]{width:100%;min-height:44px;padding:10px 12px;background:var(--cream);border:1px solid var(--line2);border-radius:var(--r3);font-size:16px}
 #aInvite{margin-top:12px}
@@ -438,7 +438,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  else if(d.rsh){const r=rounds.find(x=>x.id===d.rsh);if(r)shareRecap(r)}
  else if(d.lv){leaveLeague()}
  else if(d.rr){regenerateCode()}
- else if(d.gc){makeCard()}else if(d.gb){makeCard('b')}else if(d.gbv){makeCard(cardKind,d.gbv)}
+ else if(d.gc){makeCard()}else if(d.gb){makeCard('b')}
  else if(d.gs){shareCard()}
  else if(d.gd){saveCard()}
  else if(d.gw){shareCardText()}
@@ -1119,15 +1119,15 @@ function cardCanvas(){
  if(info&&info.pos&&info.of>1)ln.push(ordinal(info.pos)+' of '+info.of+' in '+((curLeague()||{}).name||'my league'));
  const eb=earnedIds(played).length;if(eb)ln.push(eb+' milestone'+(eb===1?'':'s'));
  x.fillStyle=ink;x.font='500 34px '+SANS;x.fillText(ln.join('   |   ')||'Ticking them off one at a time',84,1296-12);
- drawBadge(x,BADGES,played,BADGES.filter(b=>b.cur(played)>=b.n));
+ drawBadge(x,BADGES.filter(b=>b.cur(played)>=b.n));
  return c}
-let cardVar='p',cardAv=null;
-function drawBadge(x,list,cnt,earned){
+let cardAv=null;
+function drawBadge(x,earned){
  const cs=getComputedStyle(document.documentElement),V=n=>cs.getPropertyValue(n).trim()||'#000';
  const ink=V('--ink'),muted=V('--muted'),amber=V('--amber'),bone=V('--bone'),sand=V('--sand');
  const SER='"Instrument Serif",Georgia,"Times New Roman",serif',MONO='"JetBrains Mono",ui-monospace,Menlo,monospace',SANS='Geist,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
  const cx=918,cy=148,R=82,ea=earned.length;x.save();x.textAlign='center';x.textBaseline='alphabetic';
- if(cardVar==='p'){
+ {
   x.save();x.beginPath();x.arc(cx,cy,R,0,7);x.clip();x.fillStyle='#1f4a3a';x.fillRect(cx-R,cy-R,2*R,2*R);
   for(let i=-R;i<R;i+=30){x.fillStyle='rgba(35,47,92,.75)';x.fillRect(cx+i,cy-R,10,2*R);x.fillRect(cx-R,cy+i,2*R,10);x.fillStyle='rgba(154,42,42,.8)';x.fillRect(cx+i+10,cy-R,2,2*R);x.fillRect(cx-R,cy+i+10,2*R,2)}
   x.restore();
@@ -1135,20 +1135,14 @@ function drawBadge(x,list,cnt,earned){
   if(cardAv)x.drawImage(cardAv,cx-r,cy-r,2*r,2*r);else{x.fillStyle=muted;x.font='400 80px '+SER;x.fillText(((prof&&prof.display_name)||'G').trim().charAt(0).toUpperCase(),cx,cy+27)}
   x.restore();x.beginPath();x.arc(cx,cy,r,0,7);x.lineWidth=3;x.strokeStyle=bone;x.stroke();
   if(ea){const px=cx+R*.72,py=cy+R*.72;x.beginPath();x.arc(px,py,27,0,7);x.fillStyle=ink;x.fill();x.lineWidth=4;x.strokeStyle=bone;x.stroke();x.fillStyle=amber;x.font='600 30px '+MONO;x.fillText(String(ea),px,py+11)}
- }else{
-  const top=earned.length?earned[earned.length-1]:list.find(b=>b.cur(cnt)<b.n)||list[0],on=ea>0;
-  x.beginPath();x.arc(cx,cy,R,0,7);x.fillStyle=on?ink:bone;x.fill();x.lineWidth=4;x.strokeStyle=on?ink:muted;if(!on)x.setLineDash([10,9]);x.stroke();x.setLineDash([]);
-  if(on){x.beginPath();x.arc(cx,cy,R-9,0,7);x.lineWidth=2;x.strokeStyle=amber;x.stroke()}
-  x.fillStyle=on?bone:muted;const m=String(top.n);x.font='600 '+(m.length>2?46:58)+'px '+MONO;x.fillText(m,cx,cy+8);
-  x.fillStyle=on?amber:muted;x.font='600 15px '+MONO;const cap=(on?top.t:'Next: '+top.t).toUpperCase();x.fillText(cap.length>17?cap.slice(0,16)+'.':cap,cx,cy+38);
  }
  x.restore()}
 async function cardPortrait(){cardAv=null;
- if(cardVar!=='p'||!sb||!prof||!prof.avatar_path)return;
+ if(!sb||!prof||!prof.avatar_path)return;
  try{const s=await sb.storage.from('avatars').createSignedUrl(prof.avatar_path,3600),u=s&&s.data&&s.data.signedUrl;if(!u)return;
   cardAv=await new Promise(ok=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>ok(im);im.onerror=()=>ok(null);setTimeout(()=>ok(null),5000);im.src=u})}catch(err){cardAv=null}}
 const ordinal=n=>{const t=n%100,s=['th','st','nd','rd'];return n+(s[(t-20)%10]||s[t]||s[0])};
-async function makeCard(kind,v){cardKind=kind||'';if(v)cardVar=v;
+async function makeCard(kind){cardKind=kind||'';
  const area=$('shCard');if(!area)return;area.innerHTML='<p class="about">Making your card...</p>';
  try{if(document.fonts&&document.fonts.load){await Promise.race([Promise.all([document.fonts.load('400 64px "Instrument Serif"'),document.fonts.load('600 40px "JetBrains Mono"'),document.fonts.load('500 30px Geist')]),new Promise(r=>setTimeout(r,1500))])}}catch(e){}
  try{
@@ -1156,7 +1150,7 @@ async function makeCard(kind,v){cardKind=kind||'';if(v)cardVar=v;
   const c=cardKind==='b'?beyondCanvas():cardCanvas();cardBlob=await new Promise((ok,no)=>c.toBlob(b=>b?ok(b):no(new Error('blob')),'image/png'));
   if(cardUrl)URL.revokeObjectURL(cardUrl);cardUrl=URL.createObjectURL(cardBlob);
   const nb=lastBeyond?lastBeyond.c.n:0;cardText=cardKind==='b'?'I have played '+nb+' SA golf courses beyond the Top 100. See how far you can get on The Hundred: '+redirect():'I have played '+played.size+' of the SA Top 100 golf courses. Track yours on The Hundred: '+redirect();
-  area.innerHTML='<img class="cardimg" src="'+cardUrl+'" alt="'+(cardKind==='b'?'Your Beyond the Hundred card: '+nb+' off-list courses played':'Your Hundred card: '+played.size+' of 100 courses played')+'"><div class="row wrap2" style="margin-top:8px"><button class="btn primary" data-gs="1">Share image</button><button class="btn" data-gd="1">Save image</button><button class="btn" data-gw="1">WhatsApp text</button></div><div class="row" style="margin-top:8px"><button class="btn" type="button" data-gbv="p" aria-pressed="'+(cardVar==='p')+'">Portrait badge</button><button class="btn" type="button" data-gbv="m" aria-pressed="'+(cardVar==='m')+'">Milestone badge</button></div>'
+  area.innerHTML='<img class="cardimg" src="'+cardUrl+'" alt="'+(cardKind==='b'?'Your Beyond the Hundred card: '+nb+' off-list courses played':'Your Hundred card: '+played.size+' of 100 courses played')+'"><div class="row wrap2" style="margin-top:8px"><button class="btn primary" data-gs="1">Share image</button><button class="btn" data-gd="1">Save image</button><button class="btn" data-gw="1">WhatsApp text</button></div>'
  }catch(e){area.innerHTML='<div class="banner err" role="alert">Could not make the card on this device. Try again.</div>'}}
 function saveCard(){if(!cardBlob)return;const a=document.createElement('a');a.href=cardUrl;a.download=cardKind==='b'?'my-beyond-card.png':'my-hundred-card.png';document.body.appendChild(a);a.click();a.remove()}
 async function shareCard(){
@@ -1396,7 +1390,7 @@ function beyondCanvas(){
   x.fillStyle=n?ink:muted;x.fillText(p+(n?' '+n:''),cx+38,cy)});
  const e=oEarned(c).length;
  x.fillStyle=ink;x.font='500 34px '+SANS;x.fillText(c.prov+' of '+provs.length+' provinces   |   '+e+' milestone'+(e===1?'':'s'),84,1284);
- drawBadge(x,OBADGES,c,oEarned(c));
+ drawBadge(x,oEarned(c));
  return cv}
 let vtot={},vmine={},vFor=null,vBusy=false,oplay={},owish=new Set(),osub='all';
 $('cl').innerHTML=D.concat(OTH.map(o=>({name:o.n}))).map(c=>'<option value="'+esc(c.name)+'">').join('');
