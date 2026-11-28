@@ -207,7 +207,7 @@ input[type=text],input[type=number],input[type=date]{max-width:100%}
 .lbh{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .tbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}.tbar .ts{font-size:.8rem}
 .pin i.tsel{outline:3px solid var(--amber);outline-offset:2px}
-#tour{position:fixed;inset:0;z-index:60;background:var(--bone);overflow:auto;padding:14px 16px 40px}#tour[hidden]{display:none}
+#tour{position:fixed;inset:0;z-index:2000;background:var(--bone);overflow:auto;padding:14px 16px 40px}#tour[hidden]{display:none}
 #tour .tnp{max-width:760px;margin:0 auto}#tour .tdoc{max-width:760px;margin:0 auto}
 .tbar2{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .trow{display:flex;gap:8px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:8px 0}.trow div{display:flex;flex-direction:column;flex:1;min-width:0}.trow label{flex:0 0 96px}.trow input{width:100%}
@@ -230,6 +230,7 @@ input[type=text],input[type=number],input[type=date]{max-width:100%}
 .tfoot{font:500 .72rem var(--mono);color:var(--muted);margin-top:20px;border-top:1px solid var(--line2);padding-top:8px}
 @media print{body.tourOpen>*:not(#tour){display:none!important}body.tourOpen{background:#fff}#tour{position:static!important;overflow:visible!important;padding:0}.tnp{display:none!important}.tdc,.tst>div,.tbr,.tcost tr{break-inside:avoid}.tsl{break-after:avoid}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 .trow .btn.link{align-self:flex-start;min-height:0;padding:4px 0}
+body.tourOpen #map{visibility:hidden}body.tourOpen #toast{z-index:2100}
 </style></head><body class="gate">
 <div id="splash" role="img" aria-label="The Hundred is loading"><canvas id="sc"></canvas><p class="sn">The Hundred</p><div class="st" id="sp">0%</div><div class="sb"><i id="sbar"></i></div><div class="sk">Tap to skip</div></div>
 <header class="top"><div class="wrap"><h1 class="brandrow"><canvas id="mark" width="72" height="72" aria-hidden="true"></canvas><span>The Hundred</span></h1>
