@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-ZA"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-5JnQjakw3AIlkU7oGAgHYZm3CikjiG/75bSEWlAEK/E=' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://uqyseljsxwdeikmoapxu.supabase.co https://unpkg.com; connect-src 'self' https://uqyseljsxwdeikmoapxu.supabase.co wss://uqyseljsxwdeikmoapxu.supabase.co; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="en-ZA"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-2xQoPcLsXu9e2209f2j3CQTLwxis3825+jEZX0e6NzQ=' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://uqyseljsxwdeikmoapxu.supabase.co https://unpkg.com; connect-src 'self' https://uqyseljsxwdeikmoapxu.supabase.co wss://uqyseljsxwdeikmoapxu.supabase.co; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Hundred</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -229,6 +229,7 @@ input[type=text],input[type=number],input[type=date]{max-width:100%}
 .tul{padding-left:18px;font-size:.9rem}.tul li{margin:6px 0}.tck{list-style:square}
 .tfoot{font:500 .72rem var(--mono);color:var(--muted);margin-top:20px;border-top:1px solid var(--line2);padding-top:8px}
 @media print{body.tourOpen>*:not(#tour){display:none!important}body.tourOpen{background:#fff}#tour{position:static!important;overflow:visible!important;padding:0}.tnp{display:none!important}.tdc,.tst>div,.tbr,.tcost tr{break-inside:avoid}.tsl{break-after:avoid}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.trow .btn.link{align-self:flex-start;min-height:0;padding:4px 0}
 </style></head><body class="gate">
 <div id="splash" role="img" aria-label="The Hundred is loading"><canvas id="sc"></canvas><p class="sn">The Hundred</p><div class="st" id="sp">0%</div><div class="sb"><i id="sbar"></i></div><div class="sk">Tap to skip</div></div>
 <header class="top"><div class="wrap"><h1 class="brandrow"><canvas id="mark" width="72" height="72" aria-hidden="true"></canvas><span>The Hundred</span></h1>
@@ -350,7 +351,7 @@ input[type=text],input[type=number],input[type=date]{max-width:100%}
 </div></div>
 <div id="lbx" role="dialog" aria-modal="true" aria-label="Photo" hidden><button class="shbk" data-lbc="" aria-label="Close photo"></button><figure><img id="lbimg" alt=""><figcaption id="lbcap"></figcaption></figure><button class="btn" id="lbclose" data-lbc="">Close</button></div>
 <div id="sheet" role="dialog" aria-modal="true" aria-labelledby="shName" hidden><button class="shbk" data-close="" aria-label="Close profile"></button><div class="shp"><div class="shh"><h2 id="shName"></h2><button class="btn" id="shClose" data-close="">Close</button></div><div id="shMine" hidden><div id="shCard"></div><details class="set" id="pcEdit"><summary>Edit your player card</summary><label class="lab" for="pcfile" style="margin-top:12px">Photo</label><input id="pcfile" type="file" accept="image/*"><div id="pcpick" hidden><img id="pcimg" class="pcprev" alt="Preview of your portrait" width="160" height="160"><div class="row" style="margin-top:8px"><button class="btn" type="button" data-pcs="highlands" aria-pressed="true">Highlands</button><button class="btn" type="button" data-pcs="plain" aria-pressed="false">Plain photo</button></div></div><button class="btn link" id="pcrm" type="button" hidden>Remove photo</button><label class="lab" for="pcnick" style="margin-top:12px">Nickname</label><input id="pcnick" type="text" maxlength="24" autocomplete="off"><label class="lab" for="pcdrink" style="margin-top:12px">Favourite drink</label><input id="pcdrink" type="text" maxlength="40" autocomplete="off"><label class="lab" for="pcfav" style="margin-top:12px">Favourite course</label><input id="pcfav" type="text" maxlength="80" list="cl" autocomplete="off"><div class="fmsg" id="pcmsg" role="alert"></div><button class="btn primary" id="pcsave" type="button" style="margin-top:12px;width:100%">Save player card</button><p class="about" style="margin:8px 0 0">League mates can see your card. Your one-line bio is written by your mates, not by you. The Highlands look is made on your phone, the original photo is never uploaded.</p></details><details class="set"><summary>Settings and account</summary><label class="lab" for="hcp" style="margin-top:12px">Your handicap index</label><div class="row"><input id="hcp" type="number" step="0.1" inputmode="decimal" placeholder="e.g. 14.2"><button class="btn" id="hsave">Save</button></div><div class="fmsg" id="hmsg" role="alert"></div><p class="about" style="margin:0">Optional. It shows next to your name and is saved with each round you log. League members can see it. Stableford points already account for it, so it does not change the rankings.</p><label class="lab" for="dn" style="margin-top:12px">Display name</label><div class="row"><input id="dn" type="text" maxlength="40" autocomplete="name"><button class="btn" id="dsave">Save</button></div><div class="fmsg" id="dmsg" role="alert"></div><div id="shLeague"></div><button class="btn" id="logout" style="margin-top:12px">Log out</button></details></div><div id="shBody"></div></div></div>
-<div id="tour" role="dialog" aria-modal="true" aria-labelledby="tourh" hidden><div class="tnp"><div class="shh"><h2 id="tourh">Plan a tour</h2><button class="btn" id="tclose" type="button" data-tclose="">Close</button></div><div id="tform"></div><div class="tbar2"><button class="btn primary" type="button" data-tprint="1">Save as PDF</button><button class="btn" type="button" data-tshare="1">Share text</button></div></div><div id="tdoc"></div></div>
+<div id="tour" role="dialog" aria-modal="true" aria-labelledby="tourh" hidden><div class="tnp"><div class="shh"><h2 id="tourh">Plan a tour</h2><button class="btn" id="tclose" type="button" data-tclose="">Close</button></div><div id="tform"></div><div class="tbar2"><button class="btn primary" type="button" data-tprint="1">Save as PDF</button><button class="btn" type="button" data-tshare="1">Share text</button><button class="btn" type="button" data-tai="1">Write the trip brief (AI)</button></div></div><div id="tdoc"></div></div>
 <div id="toast" role="status"><span id="tmsg"></span><button id="tact"></button></div>
 <nav class="nav" aria-label="Sections">
 <button id="tC" aria-current="page"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Courses</button>
@@ -463,7 +464,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  else if(d.rsh){const r=rounds.find(x=>x.id===d.rsh);if(r)shareRecap(r)}
  else if(d.lv){leaveLeague()}
  else if(d.rr){regenerateCode()}
- else if(d.tadd){tourToggle(+d.tadd)}else if(d.tview){tourAddView()}else if(d.tplan){tourOpen()}else if(d.tclr){tourClear()}else if(d.tclose!==undefined){tourClose()}else if(d.trm){TS.sel=TS.sel.filter(x=>x!==+d.trm);tChanged();if(!TS.sel.length)tourClose();else{tForm();tDoc()}}else if(d.tprint){window.print()}else if(d.tshare){tourShare()}
+ else if(d.tadd){tourToggle(+d.tadd)}else if(d.tview){tourAddView()}else if(d.tplan){tourOpen()}else if(d.tclr){tourClear()}else if(d.tclose!==undefined){tourClose()}else if(d.trm){TS.sel=TS.sel.filter(x=>x!==+d.trm);tChanged();if(!TS.sel.length)tourClose();else{tForm();tDoc()}}else if(d.tprint){window.print()}else if(d.tshare){tourShare()}else if(d.tfs){tourFeeShare(+d.tfs)}else if(d.tai){tourAi()}
  else if(d.gc){makeCard()}else if(d.gb){makeCard('b')}
  else if(d.gs){shareCard()}
  else if(d.gd){saveCard()}
@@ -1540,7 +1541,10 @@ const tH=m=>Math.floor(m/60)+'h'+pad2(Math.round(m%60));
 const tT=m=>pad2(Math.floor(m/60)%24)+':'+pad2(Math.round(m%60));
 const tC30=m=>Math.ceil(m/30)*30;
 const tFeeDef=r=>r<=10?1800:r<=30?1200:r<=60?900:700;
-const tFee=r=>TS.fee[r]!=null&&TS.fee[r]!==''?+TS.fee[r]:tFeeDef(r);
+TS.rf={};TS.ai=null;
+const tFeeBasis=r=>TS.fee[r]!=null&&TS.fee[r]!==''?'yours':TS.rf[r]&&TS.rf[r].n>=2?'reports':'tier';
+const tFee=r=>{const b=tFeeBasis(r);return b==='yours'?+TS.fee[r]:b==='reports'?TS.rf[r].fee:tFeeDef(r)};
+const tFeeNote=r=>{const b=tFeeBasis(r),x=TS.rf[r];if(b==='yours')return 'per player, your figure';if(b==='reports')return 'per player, median of '+x.n+' member reports, latest '+new Date(x.last+'T00:00:00').toLocaleDateString('en-ZA',{month:'short',year:'numeric'});return 'per player, placeholder'+(x?', '+x.n+' report not used yet':'')};
 const tOrigin=()=>({name:TORIG[TS.orig][0],lat:TORIG[TS.orig][1],lng:TORIG[TS.orig][2]});
 function tOrder(o,cs){
  let rest=cs.slice(),path=[],cur=o;
@@ -1571,7 +1575,8 @@ function tPlan(){
  const dup={};cs.forEach(c=>dup[tTn(c)]=(dup[tTn(c)]||0)+1);
  if(Object.values(dup).some(v=>v>1)&&TS.rpd===1)warn.push('Some courses share a town. Setting "Rounds a day" to 2 saves a night.');
  warn.push('Distances are straight-line from town-level pins, plus 30%. Treat them as roughly right, not exact.');
- warn.push('Green fees are placeholders by ranking tier, not quotes. Edit them per course above.');
+ const ph=path.filter(c=>tFeeBasis(c.rank)==='tier').map(c=>c.name);
+ warn.push(ph.length?'Green fees for '+ph.join(', ')+' are placeholders by ranking tier, not quotes. Edit them above, or share a real figure to help other members.':'Fees come from your figures and member reports. They are still not quotes, so confirm before booking.');
  return{o,days,km,rounds:rn,nights:days.length-1,warn,path}}
 function tCost(p,n,sc){
  const veh=Math.ceil(n/4),dn=p.days.length,kmv=p.km+dn*15;
@@ -1599,7 +1604,7 @@ function tDocHtml(p){
   l+=isL?'<p>Finish ~'+tT(d.end)+'. Lunch at the club, then home to '+esc(p.o.name)+': '+d.outKm+' km, '+tH(d.outMin)+', arrive ~'+tT(d.arr)+'.</p>':'<p>Overnight near '+esc(tTn(d.base))+'.</p>';
   return '<div class="tdc"><h4>Day '+(i+1)+'</h4><span class="tk">'+k+'</span>'+l+'</div>'}).join('');
  const rdH=p.days.map(d=>d.cs.map((c,j)=>{const m=j===d.cs.length-1?0:d.hopMin;
-  return '<div class="tdc"><span class="tk">Round '+(d.r0+j+1)+'</span><h4>'+esc(c.name)+'</h4><span class="ts">'+esc(tTn(c))+', '+esc(c.province)+'</span><div class="tbig">'+tR(tFee(c.rank))+' <small>per player, placeholder</small></div><p>SA Top 100 number '+c.rank+'.</p><span class="ts">'+(m?m+' min from the stay':d.last?'Last round, then home':'Round before the overnight stay')+'</span></div>'}).join('')).join('');
+  return '<div class="tdc"><span class="tk">Round '+(d.r0+j+1)+'</span><h4>'+esc(c.name)+'</h4><span class="ts">'+esc(tTn(c))+', '+esc(c.province)+'</span><div class="tbig">'+tR(tFee(c.rank))+' <small>'+tFeeNote(c.rank)+'</small></div><p>SA Top 100 number '+c.rank+'.</p><span class="ts">'+(m?m+' min from the stay':d.last?'Last round, then home':'Round before the overnight stay')+'</span></div>'}).join('')).join('');
  const sh=[['Golf',b.fees,'var(--good)'],['Accommodation',b.stay,'var(--ink)'],['Food and drink',b.food,'var(--amber)'],['Fuel',b.fuel,'#b4573c'],['Tolls and extras',b.toll+b.ex,'#a89f88']],tp=sh.reduce((a,x)=>a+x[1],0)||1;
  const barH=sh.map(x=>'<div class="tbr"><span>'+x[0]+'<small>'+Math.round(x[1]/tp*100)+'%</small></span><i><b style="width:'+Math.round(x[1]/tp*100)+'%;background:'+x[2]+'"></b></i><em>'+tR(x[1]/n)+'</em></div>').join('');
  const scH=TSC.map((s,i)=>'<div class="tdc'+(i===1?' tdk':'')+'"><span class="tk">'+s.k+'</span><div class="tbig">'+tR(cs[i].pp)+'</div><p>'+[...new Set([n,4,8])].sort((x,y)=>x-y).map(k=>k+' players '+tR(k===n?cs[i].tot:tCost(p,k,s).tot)).join('<br>')+'</p><p class="ts">'+s.d+'</p></div>').join('');
@@ -1616,7 +1621,7 @@ function tDocHtml(p){
  const ck=p.path.map(c=>'<li>'+esc(c.name)+': visitor fee, tee time for '+n+' players, and rules for non-members.</li>').join('')+(p.nights?'<li>Accommodation: availability for '+p.nights+' night'+(p.nights===1?'':'s')+', house or rooms for '+n+' players.</li>':'')+'<li>Closed days: many clubs close on Mondays or hold competitions at weekends.</li>';
  return '<div class="tdoc"><p class="tkick">'+esc(p.o.name)+' road trip &middot; '+nt+' &middot; '+rh+'</p><div class="thd"><div><h2>'+esc(nm)+'</h2><p class="tsub">'+p.path.map(c=>esc(c.name)).join(', ')+'</p></div><div class="thr"><span class="ts">'+n+' players</span><div class="tbig2">'+tR(b.pp)+'</div><span class="ts">per player, base case</span></div></div>'
   +'<div class="tst"><div><span class="ts">Drive</span><b>'+p.km+' km</b></div><div><span class="ts">Drive time</span><b>'+tH(Math.round(p.km*.75))+'</b></div><div><span class="ts">Golf</span><b>'+rh+'</b></div><div><span class="ts">Stay</span><b>'+nt+'</b></div><div class="tdk"><span class="ts">Total, '+n+'</span><b>'+tR(b.tot)+'</b></div></div>'
-  +'<div class="tsl">The days</div><div class="tgr">'+dayH+'</div><div class="tsl">The rounds</div><div class="tgr">'+rdH+'</div><div class="tsl">Route, km from '+esc(p.o.name)+'</div><div class="tdc">'+tRoute(p)+'</div>'
+  +(TS.ai?'<div class="tsl">Trip brief</div><div class="tdc">'+TS.ai.split(/\n{2,}/).map(x=>'<p>'+esc(x)+'</p>').join('')+'<p class="ts">Written by AI from the plan in this document. It does not know fees, closures or conditions. Confirm before booking.</p></div>':'')+'<div class="tsl">The days</div><div class="tgr">'+dayH+'</div><div class="tsl">The rounds</div><div class="tgr">'+rdH+'</div><div class="tsl">Route, km from '+esc(p.o.name)+'</div><div class="tdc">'+tRoute(p)+'</div>'
   +'<div class="tsl">The stay</div><div class="tdc"><p>'+stays+'</p></div>'
   +'<div class="tsl">Where the money goes, per player</div><div class="tdc">'+barH+'</div><div class="tsl">Three scenarios, per player</div><div class="tgr">'+scH+'</div><div class="tsl">Base case costing</div>'+tbl
   +'<div class="tsl">Watch-outs</div><ul class="tul">'+p.warn.map(w=>'<li>'+esc(w)+'</li>').join('')+'</ul><div class="tsl">Booking checklist</div><ul class="tul tck">'+ck+'</ul>'
@@ -1624,16 +1629,16 @@ function tDocHtml(p){
 function tDoc(){const p=tPlan(),el=$('tdoc');if(!el)return;el.innerHTML=p?tDocHtml(p):'<p class="about">Pick some courses on the map first.</p>'}
 function tForm(){
  const o=TORIG.map((x,i)=>'<option value="'+i+'"'+(i===TS.orig?' selected':'')+'>'+x[0]+'</option>').join(''),pl=[2,3,4,5,6,7,8].map(x=>'<option'+(x===TS.pl?' selected':'')+'>'+x+'</option>').join('');
- const ls=TS.sel.map(n=>{const c=D[n-1];return '<div class="trow"><div><b>'+n+'. '+esc(c.name)+'</b><span class="ts">'+esc(tTn(c))+'</span></div><label class="ts">R per player<input type="number" inputmode="numeric" min="0" data-tfee="'+n+'" value="'+tFee(n)+'"></label><button class="btn" type="button" data-trm="'+n+'" aria-label="Remove '+esc(c.name)+'">Remove</button></div>'}).join('');
+ const ls=TS.sel.map(n=>{const c=D[n-1];return '<div class="trow"><div><b>'+n+'. '+esc(c.name)+'</b><span class="ts">'+esc(tTn(c))+'</span>'+(me?'<button class="btn link" type="button" data-tfs="'+n+'">Share this fee</button>':'')+'</div><label class="ts">R per player<input type="number" inputmode="numeric" min="0" data-tfee="'+n+'" value="'+tFee(n)+'"></label><button class="btn" type="button" data-trm="'+n+'" aria-label="Remove '+esc(c.name)+'">Remove</button></div>'}).join('');
  const as=[['fuel','Fuel price, R per litre'],['lph','Car use, L per 100 km'],['stay','Stay, R per house per night'],['food','Food, R per player per day'],['extra','Range, tips, 19th hole, R per player']].map(a=>'<label class="lab">'+a[1]+'<input type="number" inputmode="decimal" min="0" data-tk="'+a[0]+'" value="'+TS[a[0]]+'"></label>').join('');
  $('tform').innerHTML='<label class="lab" for="tname">Tour name (optional)</label><input id="tname" type="text" maxlength="50" value="'+esc(TS.name)+'" placeholder="Auto"><div class="trow2"><label class="lab">Start and finish<select id="torig">'+o+'</select></label><label class="lab">Players<select id="tpl">'+pl+'</select></label><label class="lab">Rounds a day<select id="trpd"><option'+(TS.rpd===1?' selected':'')+'>1</option><option'+(TS.rpd===2?' selected':'')+'>2</option></select></label></div><div class="lab">Your courses ('+TS.sel.length+')</div>'+(ls||'<p class="about">None yet.</p>')+'<details class="set"><summary>Edit cost assumptions</summary><div class="tas">'+as+'</div></details>'}
 function tourOpen(){if(!TS.sel.length){toast('Pick some courses on the map first.');return}
- $('tour').hidden=false;document.body.classList.add('tourOpen');$('tour').scrollTop=0;tForm();tDoc();$('tclose').focus()}
+ $('tour').hidden=false;tLoadFees();document.body.classList.add('tourOpen');$('tour').scrollTop=0;tForm();tDoc();$('tclose').focus()}
 function tourClose(){$('tour').hidden=true;document.body.classList.remove('tourOpen')}
 function tMark(){if(typeof layer==='undefined'||!layer)return;layer.eachLayer(m=>{const el=m._icon,c=el&&D.find(x=>x.name===m.options.title),i=el&&el.querySelector('i');if(i&&c)i.classList.toggle('tsel',TS.sel.includes(c.rank))})}
 function tBar(){const el=$('tbar');if(!el)return;const n=TS.sel.length;
  el.innerHTML='<button class="btn" type="button" data-tview="1">Add courses in view</button>'+(n?'<button class="btn primary" type="button" data-tplan="1">Plan tour ('+n+')</button><button class="btn link" type="button" data-tclr="1">Clear</button>':'<span class="ts">Zoom in, or tap pins and choose Add to tour.</span>')}
-function tChanged(){tSave();tBar();tMark()}
+function tChanged(){TS.ai=null;tSave();tBar();tMark()}
 function tourToggle(n){const i=TS.sel.indexOf(n);if(i>=0)TS.sel.splice(i,1);else{if(TS.sel.length>=12){toast('A tour holds up to 12 courses.');return}TS.sel.push(n)}tChanged();if(map)map.closePopup();toast((i>=0?'Removed ':'Added ')+D[n-1].name+(i>=0?' from':' to')+' your tour.')}
 function tourAddView(){if(!map){toast('Open the map first.');return}
  const b=map.getBounds(),v=filtered().filter(c=>b.contains([c.lat,c.lng])&&!TS.sel.includes(c.rank));
@@ -1654,7 +1659,30 @@ async function tourShare(){const t=tourText();try{if(navigator.share){await navi
  document.addEventListener('input',e=>{const t=e.target;if(!$('tour')||$('tour').hidden||!$('tour').contains(t))return;
   if(t.id==='tname')TS.name=t.value;else if(t.id==='torig')TS.orig=+t.value;else if(t.id==='tpl')TS.pl=+t.value;else if(t.id==='trpd')TS.rpd=+t.value;
   else if(t.dataset.tfee)TS.fee[t.dataset.tfee]=t.value;else if(t.dataset.tk){const v=parseFloat(t.value);if(isFinite(v)&&v>=0)TS[t.dataset.tk]=v}
-  tDoc()})})();
+  TS.ai=null;tDoc()})})();
+
+async function tLoadFees(){if(typeof sb==='undefined'||!sb||!me)return;try{const r=await sb.rpc('course_fee_summary');if(r.error||!r.data)return;TS.rf={};r.data.forEach(x=>{TS.rf[x.rank]={fee:Math.round(+x.median_fee),n:+x.reports,last:x.last_seen}});tDoc()}catch(e){}}
+async function tourFeeShare(r){
+ if(!sb||!me){toast('Sign in to share a fee.');return}
+ if(TS.fee[r]==null||TS.fee[r]===''){toast('Type the visitor fee you paid or were quoted first.');return}
+ const v=Math.round(+TS.fee[r]);if(!(v>=100&&v<=10000)){toast('Enter the visitor fee per player, R100 to R10 000.');return}
+ const day=new Date().toLocaleDateString('en-CA',{timeZone:'Africa/Johannesburg'});
+ const x=await sb.from('course_fee_reports').upsert({user_id:me.id,rank:r,fee:v,seen_on:day},{onConflict:'user_id,rank'});
+ if(x.error){toast('Could not save that fee. Try again.');return}
+ toast('Saved. Your fee for '+D[r-1].name+' counts once another member agrees.');tLoadFees()}
+async function tourAi(){
+ const p=tPlan();if(!p)return;if(!sb||!me){toast('Sign in to use the AI brief.');return}
+ const btn=document.querySelector('[data-tai]');if(btn){btn.disabled=true;btn.textContent='Writing...'}
+ const b=tCost(p,TS.pl,TSC[1]);
+ const body={players:TS.pl,start:p.o.name,perPlayerBase:Math.round(b.pp),days:p.days.map((d,i)=>({day:i+1,leave:d.dep!=null?{from:d.from.name||tTn(d.from),km:d.inKm,time:tT(d.dep)}:null,rounds:d.cs.map((c,j)=>({course:c.name,town:tTn(c),province:c.province,rank:c.rank,tee:tT(d.tee[j])})),overnight:d.last?null:tTn(d.base),home:d.last?{km:d.outKm,arrive:tT(d.arr)}:null})),warnings:p.warn.slice(0,-1)};
+ let msg='';
+ try{const r=await sb.functions.invoke('tour-brief',{body});
+  if(r.error){msg=r.error.context&&r.error.context.status===429?"You have used today's AI briefs. Try again tomorrow.":'The AI brief is not switched on yet.'}
+  else if(!r.data||!r.data.text)msg='The AI brief came back empty. Try again.';
+  else{TS.ai=String(r.data.text).slice(0,2500);tDoc()}}
+ catch(e){msg='The AI brief is not switched on yet.'}
+ if(btn){btn.disabled=false;btn.textContent='Write the trip brief (AI)'}
+ if(msg)toast(msg)}
 
 render();renderLeague();boot();
 
